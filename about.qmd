@@ -1,0 +1,15 @@
+---
+title: "About"
+image: images\IMG_7218.jpg
+---
+
+I’m an ML engineer focused on representation learning and efficient training.
+This site is a notebook of algorithm notes and small demos.
+
+- **Interests:** contrastive/self-supervised learning, distillation, retrieval
+- **LinkedIn:**  [LinkedIn](www.linkedin.com/in/dmazhi) 
+- **Code:** [GitHub](https://github.com/saint1st) · **Contact:** <bolatovichhh@gmail.com>
+
+
+
+

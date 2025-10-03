@@ -1,0 +1,11 @@
+---
+title: "Projects"
+listing:
+  contents: projects
+  type: grid
+  fields: [image, title, description]
+  sort: "date desc"
+  page-size: 12
+---
+
+Here are selected projects. Each entry is a Markdown file in `projects/`.

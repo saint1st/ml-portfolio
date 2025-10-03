@@ -1,0 +1,31 @@
+:root {
+  /* primary accent color */
+  --bs-primary: #6d28d9; /* purple-700 vibe */
+  /* fonts */
+  --bs-body-font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --bs-headings-font-family: "Source Serif Pro", Georgia, "Times New Roman", serif;
+}
+
+/* nav + headings */
+.navbar-brand { font-weight: 700; letter-spacing: .2px; }
+h1, h2, h3 { letter-spacing: .3px; }
+
+/* hero section */
+.hero {
+  padding: 3.5rem 1.25rem 2.25rem;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(109,40,217,.12), rgba(109,40,217,.05));
+  margin-bottom: 1.25rem;
+}
+.hero h1 { margin-bottom: .25rem; }
+.hero p { margin: 0; opacity: .9; }
+
+/* project cards */
+.card-img-top { object-fit: cover; height: 160px; }
+.quarto-grid .quarto-grid-item { border-radius: 14px; }
+
+/* code blocks */
+pre code { font-size: 0.95rem; }
+
+/* callouts */
+.callout { border-radius: 12px; }

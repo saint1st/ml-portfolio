@@ -1,0 +1,42 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Darkhan — Portfolio"
+  site-url: https://darkhanislam.github.io/ml-portfolio
+  description: "Algorithms, experiments, and projects."
+  favicon: images/favicon.png
+  navbar:
+    logo: images/logo.svg   # optional; remove if you don't have one
+    left:
+      - text: Blog
+        href: index.qmd
+      - text: Projects
+        href: projects.qmd
+      - text: About
+        href: about.qmd
+    right:
+      - icon: github
+        href: https://github.com/saint1st
+      - icon: linkedin
+        href: https://www.linkedin.com/in/dmazhi/
+  page-footer:
+    left: "© saint1st"
+    right: "Built with Quarto"
+  search: true
+
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    highlight-style: atom-one
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+    smooth-scroll: true
+    css: styles.css
+    include-in-header:
+      - fonts.html
+    link-external-newwindow: true

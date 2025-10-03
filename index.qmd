@@ -1,0 +1,19 @@
+---
+title: "Blog"
+listing:
+  contents: posts
+  type: default
+  sort: "date desc"
+  fields: [date, title, categories, description, reading-time]
+  filter-ui: true     # quick filters by tag/category
+  feed: true
+page-layout: article
+---
+
+<div class="hero">
+  <h1>ML Notes & Projects</h1>
+  <p>Algorithms explained, experiments reproduced, and tiny demos.</p>
+</div>
+
+Welcome! I write about the math behind algorithms, minimal PyTorch/NumPy reference
+implementations, and reproducible experiments. Below are the latest posts.
