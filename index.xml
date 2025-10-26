@@ -10,10 +10,10 @@
 <atom:link href="https://darkhanislam.github.io/ml-portfolio/index.xml" rel="self" type="application/rss+xml"/>
 <description>Algorithms, experiments, and projects.</description>
 <generator>quarto-1.8.25</generator>
-<lastBuildDate>Fri, 03 Oct 2025 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 26 Oct 2025 00:00:00 GMT</lastBuildDate>
 <item>
-  <title>Post With Code</title>
-  <dc:creator>Hello, World!</dc:creator>
+  <title>Gradient Descent, how does it work?</title>
+  <dc:creator>Darkhan Islam</dc:creator>
   <link>https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/</link>
   <description><![CDATA[ 
 
@@ -22,7 +22,7 @@
 
 
 
-<p>This is a post with executable code.</p>
+<p>Gradient Descent is an algorithm used in optimization to reach the global minima of the function. It moves in the direction of</p>
 
 
 
@@ -31,12 +31,12 @@
   <category>code</category>
   <category>analysis</category>
   <guid>https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/</guid>
-  <pubDate>Fri, 03 Oct 2025 00:00:00 GMT</pubDate>
-  <media:content url="https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
+  <pubDate>Sun, 26 Oct 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/gd.jpeg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Welcome To My Blog</title>
-  <dc:creator>Tristan O&#39;Malley</dc:creator>
+  <dc:creator>Darkhan Islam</dc:creator>
   <link>https://darkhanislam.github.io/ml-portfolio/posts/welcome/</link>
   <description><![CDATA[ 
 
@@ -52,9 +52,9 @@
 
 
  ]]></description>
-  <category>news</category>
+  <category>tips</category>
   <guid>https://darkhanislam.github.io/ml-portfolio/posts/welcome/</guid>
-  <pubDate>Tue, 30 Sep 2025 00:00:00 GMT</pubDate>
+  <pubDate>Fri, 03 Oct 2025 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
