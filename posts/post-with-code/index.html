@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Darkhan Islam">
-<meta name="dcterms.date" content="2025-10-26">
+<meta name="dcterms.date" content="2024-10-26">
 
 <title>Gradient Descent, how does it work? – Darkhan — Portfolio</title>
 <style>
@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -33,6 +68,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../images/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-listing/list.min.js"></script>
+<script src="../../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -75,14 +112,72 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-image','listing-title','listing-date','listing-categories','listing-description','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Source+Serif+Pro:wght@600&amp;display=swap" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
-</head>
+<link rel="alternate" type="application/rss+xml" title="Darkhan — Portfolio" href="index.xml" data-external="1"></head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
@@ -305,9 +400,8 @@ ul.task-list li input[type="checkbox"] {
     <div class="quarto-title column-body">
       <h1 class="title">Gradient Descent, how does it work?</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">news</div>
+                <div class="quarto-category">theory</div>
                 <div class="quarto-category">code</div>
-                <div class="quarto-category">analysis</div>
               </div>
                   </div>
   </div>
@@ -325,7 +419,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">October 26, 2025</p>
+        <p class="date">October 26, 2024</p>
       </div>
     </div>
     
@@ -336,9 +430,18 @@ ul.task-list li input[type="checkbox"] {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#problem-statement" id="toc-problem-statement" class="nav-link active" data-scroll-target="#problem-statement">Problem Statement</a></li>
+  <li><a href="#define-cost-function" id="toc-define-cost-function" class="nav-link" data-scroll-target="#define-cost-function">Define cost function</a></li>
+  <li><a href="#gradient-descent-code-implementation" id="toc-gradient-descent-code-implementation" class="nav-link" data-scroll-target="#gradient-descent-code-implementation">Gradient descent code implementation</a></li>
+  <li><a href="#training-with-gd" id="toc-training-with-gd" class="nav-link" data-scroll-target="#training-with-gd">Training with GD</a></li>
+  </ul>
+</nav>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(0)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
@@ -347,11 +450,148 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>Gradient Descent is an algorithm used in optimization to reach the global minima of the function. It moves in the direction of</p>
+<p>Gradient Descent is a method for unconstrained math optimization. It is a <strong>first order</strong> iterative algorithm for minimizing differentiable multivariate function. The key idea is to take repeated steps in the opposite direction of the gradient of the function at the current point, because this is a direction of steepest descent. –&gt; Conversely, stepping in the direction of the gradient will lead to a trajectory that maximizes that function, the procedure is then know as <strong>gradient ascent</strong></p>
+<p><img src="gd.jpeg" class="img-fluid" width="1200"></p>
+<p>In this tutorial we will automate the process of optimizing <span class="math inline">\(w\)</span> and <span class="math inline">\(b\)</span> usig gradient descent</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math, copy</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="problem-statement" class="level2">
+<h2 class="anchored" data-anchor-id="problem-statement">Problem Statement</h2>
+<p>Let’s use the same two data points as before - a house with 1000 square feet sold for \$300,000 and a house with 2000 square feet sold for \$500,000.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Size (1000 sqft)</th>
+<th>Price (1000s of dollars)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>300</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>500</td>
+</tr>
+</tbody>
+</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x_train <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">2.0</span>])</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.array([<span class="fl">300.0</span>, <span class="fl">500.0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="define-cost-function" class="level2">
+<h2 class="anchored" data-anchor-id="define-cost-function">Define cost function</h2>
+<p>We consider a linear model that predicts <span class="math inline">\(f_{w,b}(x^{(i)})\)</span>: <span class="math display">\[f_{w,b}(x^{(i)}) = wx^{(i)} + b \tag{1}\]</span> In linear regression, we utilize input training data to fit the parameters <span class="math inline">\(w\)</span>,<span class="math inline">\(b\)</span> by minimizing a measure of the error between our predictions <span class="math inline">\(f_{w,b}(x^{(i)})\)</span> and the actual data <span class="math inline">\(y^{(i)}\)</span>. The measure is called the <span class="math inline">\(cost\)</span>, <span class="math inline">\(J(w,b)\)</span>. In training we measure the cost over all of our training samples <span class="math inline">\(x^{(i)},y^{(i)}\)</span> <span class="math display">\[J(w,b) = \frac{1}{2m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)})^2\tag{2}\]</span></p>
+<p>Let’s define cost function described above.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_cost(x, y, w, b):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> x.shape[<span class="dv">0</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    cost <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(m):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        f_wb <span class="op">=</span> w <span class="op">*</span> x[i] <span class="op">+</span> b</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        cost <span class="op">=</span> cost <span class="op">+</span> (f_wb <span class="op">-</span> y[i])<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    total_cost <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> m) <span class="op">*</span> cost</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total_cost</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="gradient-descent-code-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="gradient-descent-code-implementation">Gradient descent code implementation</h2>
+<p><span class="math display">\[\begin{align*} \text{repeat}&amp;\text{ until convergence:} \; \lbrace \newline
+\;  w &amp;= w -  \alpha \frac{\partial J(w,b)}{\partial w} \tag{3}  \; \newline
+b &amp;= b -  \alpha \frac{\partial J(w,b)}{\partial b}  \newline \rbrace
+\end{align*}\]</span> where, parameters <span class="math inline">\(w\)</span>, <span class="math inline">\(b\)</span> are updated simultaneously. The gradient is defined as: <span class="math display">\[
+\begin{align}
+\frac{\partial J(w,b)}{\partial w}  &amp;= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)})x^{(i)} \tag{4}\\
+  \frac{\partial J(w,b)}{\partial b}  &amp;= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)}) \tag{5}\\
+\end{align}
+\]</span></p>
+<p>Here <em>simultaniously</em> means that you calculate the partial derivatives for all the parameters before updating any of the parameters.</p>
+<p>We will implement GD algorithm for <strong>one</strong> feature. We need three functions:</p>
+<ul>
+<li><code>compute_gradient</code> implementing equation (4) and (5) above</li>
+<li><code>compute_cost</code> implementing equation (2) above (code from previous lab)</li>
+<li><code>gradient_descent</code>, utilizing compute_gradient and compute_cost</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_gradient(x, y, w, b):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>   m <span class="op">=</span> x.shape[<span class="dv">0</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>   dj_dw <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>   dj_db <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(m):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>       f_wb <span class="op">=</span> w <span class="op">*</span> x[i] <span class="op">+</span> b</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>       dw_dw_i <span class="op">=</span> (f_wb <span class="op">-</span> y[i]) <span class="op">*</span> x[i]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>       dj_db_i <span class="op">=</span> (f_wb <span class="op">-</span> y[i])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>       dj_db <span class="op">+=</span> dj_db_i</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>       dj_dw <span class="op">+=</span> dj_dw_i</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>   dj_dw <span class="op">=</span> dj_dw <span class="op">/</span> m</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>   dj_db <span class="op">=</span> dj_db <span class="op">/</span> m</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> dj_dw, dj_db</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="plot1.png" class="img-fluid"></p>
+<p>Above, the left plot shows <span class="math inline">\(\frac{\partial J(w,b)}{\partial w}\)</span> or the slope of the cost curve relative to <span class="math inline">\(w\)</span> at three points. On the right side of the plot, the derivative is positive, while on the left it is negative. Due to the ‘bowl shape’, the derivatives will always lead gradient descent toward the bottom where the gradient is zero.</p>
+<p>The left plot has fixed <span class="math inline">\(b=100\)</span>. Gradient descent will utilize both <span class="math inline">\(\frac{\partial J(w,b)}{\partial w}\)</span> and <span class="math inline">\(\frac{\partial J(w,b)}{\partial b}\)</span> to update parameters. The ‘quiver plot’ on the right provides a means of viewing the gradient of both parameters. The arrow sizes reflect the magnitude of the gradient at that point. The direction and slope of the arrow reflects the ratio of <span class="math inline">\(\frac{\partial J(w,b)}{\partial w}\)</span> and <span class="math inline">\(\frac{\partial J(w,b)}{\partial b}\)</span> at that point. Note that the gradient points <em>away</em> from the minimum. Review equation (3) above. The scaled gradient is <em>subtracted</em> from the current value of <span class="math inline">\(w\)</span> or <span class="math inline">\(b\)</span>. This moves the parameter in a direction that will reduce cost.</p>
+<p>Now that gradients can be computed, gradient descent, described in equation (3) above can be implemented below in <code>gradient_descent</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gradient_descent(x, y, w_in, b_in, alpha, num_iters, cost_function, gradient_function):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    J_history <span class="op">=</span> []</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    p_history <span class="op">=</span> []</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> b_in</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> w_in</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_iters):</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        dj_dw, dj_db <span class="op">=</span> gradient_function(x, y, w, b)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> b <span class="op">-</span> alpha <span class="op">*</span> dj_db</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        w <span class="op">=</span> w <span class="op">-</span> alpha <span class="op">*</span> dj_dw</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i<span class="op">&lt;</span><span class="dv">100000</span>:</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            J_history.append(cost_function(x, y, w, b))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            p.history_append([w,b])</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i<span class="op">%</span>math.ceil(num_iters<span class="op">/</span><span class="dv">10</span>) <span class="op">==</span><span class="dv">0</span>:</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Iteration </span><span class="sc">{</span>i<span class="sc">:4}</span><span class="ss">: Cost </span><span class="sc">{</span>J_history[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:0.2e}</span><span class="ss"> "</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                  <span class="ss">f"dj_dw: </span><span class="sc">{</span>dj_dw<span class="sc">: 0.3e}</span><span class="ss">, dj_db: </span><span class="sc">{</span>dj_db<span class="sc">:0.3e}</span><span class="ss"> "</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                  <span class="ss">f"w: </span><span class="sc">{</span>w<span class="sc">:0.3e}</span><span class="ss">, b:</span><span class="sc">{</span>b<span class="sc">:0.5e}</span><span class="ss">"</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> w, b, J_history, p_history</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="training-with-gd" class="level2">
+<h2 class="anchored" data-anchor-id="training-with-gd">Training with GD</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize parameters</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>w_init <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>b_init <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># some gradient descent settings</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>iterations <span class="op">=</span> <span class="dv">10000</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>tmp_alpha <span class="op">=</span> <span class="fl">1.0e-2</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># run gradient descent</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>w_final, b_final, J_hist, p_hist <span class="op">=</span> gradient_descent(x_train ,y_train, w_init, b_init, tmp_alpha,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                                                    iterations, compute_cost, compute_gradient)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"(w,b) found by gradient descent: (</span><span class="sc">{</span>w_final<span class="sc">:8.4f}</span><span class="ss">,</span><span class="sc">{</span>b_final<span class="sc">:8.4f}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Take a look at the training process by running this code. You will notice that <span class="math inline">\(dj_dw\)</span> and <span class="math inline">\(dj_db\)</span> get smaller, rapidly at first and then more slowly. As the process nears the ‘bottom of the bowl’ progress is slower due to the smaller value of the derivative at that point.</p>
+<p>Now that you have discovered the optimal values for the parameters <span class="math inline">\(w\)</span> and <span class="math inline">\(b\)</span>, you can now use the model to predict housing values based on our learned parameters. As expected, the predicted values are nearly the same as the training values for the same housing. Further, the value not in the prediction is in line with the expected value.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"1000 sqft house prediction </span><span class="sc">{</span>w_final<span class="op">*</span><span class="fl">1.0</span> <span class="op">+</span> b_final<span class="sc">:0.1f}</span><span class="ss"> Thousand dollars"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"1200 sqft house prediction </span><span class="sc">{</span>w_final<span class="op">*</span><span class="fl">1.2</span> <span class="op">+</span> b_final<span class="sc">:0.1f}</span><span class="ss"> Thousand dollars"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2000 sqft house prediction </span><span class="sc">{</span>w_final<span class="op">*</span><span class="fl">2.0</span> <span class="op">+</span> b_final<span class="sc">:0.1f}</span><span class="ss"> Thousand dollars"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I we take a look at the progress of gradient descent during its execution by plotting the cost over iterations on a contour plot of the cost(w,b), we will see:</p>
+<p><img src="plot2.png" class="img-fluid"></p>
+<p>Above, the contour plot shows the <span class="math inline">\(cost(w,b)\)</span> over a range of <span class="math inline">\(w\)</span> and <span class="math inline">\(b\)</span>. Cost levels are represented by the rings. Overlayed, using red arrows, is the path of gradient descent. Here are some things to note: - The path makes steady (monotonic) progress toward its goal. - initial steps are much larger than the steps near the goal</p>
 
 
 
-</main> <!-- /main -->
+</section>
+
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list grid quarto-listing-cols-3">
+
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

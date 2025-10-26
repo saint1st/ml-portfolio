@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Darkhan Islam">
+<meta name="dcterms.date" content="2024-10-26">
 
-<title>index – Darkhan — Portfolio</title>
+<title>Image compression with K-Means – Darkhan — Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -78,6 +115,35 @@ ul.task-list li input[type="checkbox"] {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Source+Serif+Pro:wght@600&amp;display=swap" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -298,11 +364,53 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block"></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Image compression with K-Means</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">theory</div>
+                <div class="quarto-category">code</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Darkhan Islam </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 26, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#implementing-k-means" id="toc-implementing-k-means" class="nav-link active" data-scroll-target="#implementing-k-means">Implementing K-means</a></li>
+  <li><a href="#image-compression-with-k-means" id="toc-image-compression-with-k-means" class="nav-link" data-scroll-target="#image-compression-with-k-means">Image compression with K-means</a>
+  <ul class="collapse">
+  <li><a href="#compress-the-image" id="toc-compress-the-image" class="nav-link" data-scroll-target="#compress-the-image">Compress the image</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -312,7 +420,136 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<section id="implementing-k-means" class="level2">
+<h2 class="anchored" data-anchor-id="implementing-k-means">Implementing K-means</h2>
+<p>The K-means algorithm is a method to automatically cluster similar data points together.</p>
+<ul>
+<li><p>Concretely, you are given a training set <span class="math inline">\(\{x^{(1)}, ..., x^{(m)}\}\)</span>, and you want to group the data into a few cohesive “clusters”.</p></li>
+<li><p>K-means is an iterative procedure that</p>
+<ul>
+<li>Starts by guessing the initial centroids, and then</li>
+<li>Refines this guess by
+<ul>
+<li>Repeatedly assigning examples to their closest centroids, and then</li>
+<li>Recomputing the centroids based on the assignments.</li>
+</ul></li>
+</ul></li>
+<li><p>The <span class="math inline">\(K\)</span>-means algorithm will always converge to some final set of means for the centroids.</p></li>
+<li><p>However, the converged solution may not always be ideal and depends on the initial setting of the centroids.</p>
+<ul>
+<li>Therefore, in practice the K-means algorithm is usually run a few times with different random initializations.</li>
+<li>One way to choose between these different solutions from different random initializations is to choose the one with the lowest cost function value (distortion).</li>
+</ul></li>
+</ul>
+<p><code>find_closest_centroids</code>. * This function takes the data matrix <code>X</code> and the locations of all centroids inside <code>centroids</code> * It should output a one-dimensional array <code>idx</code> (which has the same number of elements as <code>X</code>) that holds the index of the closest centroid (a value in <span class="math inline">\(\{0,...,K-1\}\)</span>, where <span class="math inline">\(K\)</span> is total number of centroids) to every training example . <em>(Note: The index range 0 to K-1 varies slightly from what is shown in the lectures (i.e.&nbsp;1 to K) because Python list indices start at 0 instead of 1)</em> * Specifically, for every example <span class="math inline">\(x^{(i)}\)</span> we set <span class="math display">\[
+c^{(i)} := j \quad \mathrm{that \; minimizes} \quad ||x^{(i)} - \mu_j||^2,
+\]</span> where * <span class="math inline">\(c^{(i)}\)</span> is the index of the centroid that is closest to <span class="math inline">\(x^{(i)}\)</span> (corresponds to <code>idx[i]</code> in the starter code), and * <span class="math inline">\(\mu_j\)</span> is the position (value) of the <span class="math inline">\(j\)</span>’th centroid. (stored in <code>centroids</code> in the starter code) * <span class="math inline">\(||x^{(i)} - \mu_j||\)</span> is the L2-norm</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_closest_centroids(X, centroids):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set K</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    K <span class="op">=</span> centroids.shape[<span class="dv">0</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># You need to return the following variables correctly</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> np.zeros(X.shape[<span class="dv">0</span>], dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(X.shape[<span class="dv">0</span>]):</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Array to hold distance between X[i] and each centroids[j]</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        distance <span class="op">=</span> []</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(centroids.shape[<span class="dv">0</span>]):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            norm_ij <span class="op">=</span> np.linalg.norm(X[i] <span class="op">-</span> centroids[j])</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            distance.append(norm_ij)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        idx[i] <span class="op">=</span> np.argmin(distance)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> idx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select an initial set of centroids (3 Centroids)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>initial_centroids <span class="op">=</span> np.array([[<span class="dv">3</span>,<span class="dv">3</span>], [<span class="dv">6</span>,<span class="dv">2</span>], [<span class="dv">8</span>,<span class="dv">5</span>]])</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Find closest centroids using initial_centroids</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> find_closest_centroids(X, initial_centroids)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Print closest centroids for the first three elements</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First three elements in idx are:"</span>, idx[:<span class="dv">3</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><p>Specifically, for every centroid <span class="math inline">\(\mu_k\)</span> we set <span class="math display">\[
+\mu_k = \frac{1}{|C_k|} \sum_{i \in C_k} x^{(i)}
+\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(C_k\)</span> is the set of examples that are assigned to centroid <span class="math inline">\(k\)</span></li>
+<li><span class="math inline">\(|C_k|\)</span> is the number of examples in the set <span class="math inline">\(C_k\)</span></li>
+</ul></li>
+<li><p>Concretely, if two examples say <span class="math inline">\(x^{(3)}\)</span> and <span class="math inline">\(x^{(5)}\)</span> are assigned to centroid <span class="math inline">\(k=2\)</span>, then you should update <span class="math inline">\(\mu_2 = \frac{1}{2}(x^{(3)}+x^{(5)})\)</span>.</p></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_centroids(X, idx, K):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Useful variables</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    m, n <span class="op">=</span> X.shape</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># You need to return the following variables correctly</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    centroids <span class="op">=</span> np.zeros((K, n))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(K):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        points <span class="op">=</span> X[idx<span class="op">==</span>k]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        centroids[k] <span class="op">=</span> np.mean(points, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> centroids</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>centroids <span class="op">=</span> compute_centroids(X, idx, K)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The centroids are:"</span>, centroids)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To randomly initialize centroids</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kMeans_init_centroids(X, K):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Randomly reorder the indices of examples</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    randidx <span class="op">=</span> np.random.permutation(X.shape[<span class="dv">0</span>])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Take the first K examples as centroids</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    centroids <span class="op">=</span> X[randidx[:K]]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> centroids</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="image-compression-with-k-means" class="level2">
+<h2 class="anchored" data-anchor-id="image-compression-with-k-means">Image compression with K-means</h2>
+<ul>
+<li>In a straightforward 24-bit color representation of an image<span class="math inline">\(^{2}\)</span>, each pixel is represented as three 8-bit unsigned integers (ranging from 0 to 255) that specify the red, green and blue intensity values. This encoding is often refered to as the RGB encoding.</li>
+<li>Our image contains thousands of colors, and in this part of the exercise, you will reduce the number of colors to 16 colors.</li>
+<li>By making this reduction, it is possible to represent (compress) the photo in an efficient way.</li>
+<li>Specifically, you only need to store the RGB values of the 16 selected colors, and for each pixel in the image you now need to only store the index of the color at that location (where only 4 bits are necessary to represent 16 possibilities).</li>
+</ul>
+<p>In this part, you will use the K-means algorithm to select the 16 colors that will be used to represent the compressed image. * Concretely, you will treat every pixel in the original image as a data example and use the K-means algorithm to find the 16 colors that best group (cluster) the pixels in the 3- dimensional RGB space. * Once you have computed the cluster centroids on the image, you will then use the 16 colors to replace the pixels in the original image.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load an image</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>original_img <span class="op">=</span> plt.imread(<span class="st">'bird.png'</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shape of original_img is:"</span>, original_img.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>Shape of original_img is: (128, 128, 3)</code></p>
+<p>As you can see, this creates a three-dimensional matrix <code>original_img</code> where * the first two indices identify a pixel position, and * the third index represents red, green, or blue.</p>
+<p>For example, <code>original_img[50, 33, 2]</code> gives the blue intensity of the pixel at row 50 and column 33.</p>
+<p>To call the <code>run_kMeans</code>, you need to first transform the matrix <code>original_img</code> into a two-dimensional matrix.</p>
+<ul>
+<li>The code below reshapes the matrix <code>original_img</code> to create an <span class="math inline">\(m \times 3\)</span> matrix of pixel colors (where <span class="math inline">\(m=16384 = 128\times128\)</span>)</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X_img <span class="op">=</span> np.reshape(original_img, (original_img.shape[<span class="dv">0</span>] <span class="op">*</span> original_img.shape[<span class="dv">1</span>], <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><a name="4.2"></a> ### K-Means on image pixels</p>
+<p>Now, run the cell below to run K-Means on the pre-processed image.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run your K-Means algorithm on this data</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># You should try different values of K and max_iters here</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>max_iters <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the function you have implemented above.</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>initial_centroids <span class="op">=</span> kMeans_init_centroids(X_img, K)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Run K-Means - this can take a couple of minutes depending on K and max_iters</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>centroids, idx <span class="op">=</span> run_kMeans(X_img, initial_centroids, max_iters)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="compress-the-image" class="level3">
+<h3 class="anchored" data-anchor-id="compress-the-image">Compress the image</h3>
+<p>After finding the top <span class="math inline">\(K=16\)</span> colors to represent the image, you can now assign each pixel position to its closest centroid using the <code>find_closest_centroids</code> function. * This allows you to represent the original image using the centroid assignments of each pixel. * Notice that you have significantly reduced the number of bits that are required to describe the image. * The original image required 24 bits (i.e.&nbsp;8 bits x 3 channels in RGB encoding) for each one of the <span class="math inline">\(128\times128\)</span> pixel locations, resulting in total size of <span class="math inline">\(128 \times 128 \times 24 = 393,216\)</span> bits. * The new representation requires some overhead storage in form of a dictionary of 16 colors, each of which require 24 bits, but the image itself then only requires 4 bits per pixel location. * The final number of bits used is therefore <span class="math inline">\(16 \times 24 + 128 \times 128 \times 4 = 65,920\)</span> bits, which corresponds to compressing the original image by about a factor of 6.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the closest centroid of each pixel</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> find_closest_centroids(X_img, centroids)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace each pixel with the color of the closest centroid</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>X_recovered <span class="op">=</span> centroids[idx, :]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Reshape image into proper dimensions</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>X_recovered <span class="op">=</span> np.reshape(X_recovered, original_img.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="output.png" class="img-fluid"></p>
 
+
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

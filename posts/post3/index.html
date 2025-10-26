@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Darkhan Islam">
+<meta name="dcterms.date" content="2024-10-26">
 
-<title>index – Darkhan — Portfolio</title>
+<title>Neural Networks for Handwritten Digit Recognition with Binary and Multiple outputs – Darkhan — Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -78,6 +115,35 @@ ul.task-list li input[type="checkbox"] {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Source+Serif+Pro:wght@600&amp;display=swap" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -298,11 +364,52 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block"></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Neural Networks for Handwritten Digit Recognition with Binary and Multiple outputs</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">theory</div>
+                <div class="quarto-category">code</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Darkhan Islam </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 26, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#problem-statement" id="toc-problem-statement" class="nav-link active" data-scroll-target="#problem-statement">Problem Statement</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#binary-output" id="toc-binary-output" class="nav-link" data-scroll-target="#binary-output">Binary output</a></li>
+  <li><a href="#multiple-output" id="toc-multiple-output" class="nav-link" data-scroll-target="#multiple-output">Multiple output</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -312,7 +419,185 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<p>In this exercise, you will use a neural network to recognize the hand-written digits zero and one.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.models <span class="im">import</span> Sequential</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> Dense</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> autils <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>logging.getLogger(<span class="st">"tensorflow"</span>).setLevel(logging.ERROR)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>tf.autograph.set_verbosity(<span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="problem-statement" class="level3">
+<h3 class="anchored" data-anchor-id="problem-statement">Problem Statement</h3>
+<p>In this exercise, you will use a neural network to recognize two handwritten digits, zero and one. This is a binary classification task. Automated handwritten digit recognition is widely used today - from recognizing zip codes (postal codes) on mail envelopes to recognizing amounts written on bank checks. You will extend this network to recognize all 10 digits (0-9) in a future assignment.</p>
+<p>This exercise will show you how the methods you have learned can be used for this classification task.</p>
+</section>
+<section id="dataset" class="level3">
+<h3 class="anchored" data-anchor-id="dataset">Dataset</h3>
+<p>You will start by loading the dataset for this task. - The <code>load_data()</code> function shown below loads the data into variables <code>X</code> and <code>y</code></p>
+<ul>
+<li><p>The data set contains 1000 training examples of handwritten digits <span class="math inline">\(^1\)</span>, here limited to zero and one.</p>
+<ul>
+<li>Each training example is a 20-pixel x 20-pixel grayscale image of the digit.
+<ul>
+<li>Each pixel is represented by a floating-point number indicating the grayscale intensity at that location.</li>
+<li>The 20 by 20 grid of pixels is “unrolled” into a 400-dimensional vector.</li>
+<li>Each training example becomes a single row in our data matrix <code>X</code>.</li>
+<li>This gives us a 1000 x 400 matrix <code>X</code> where every row is a training example of a handwritten digit image.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><span class="math display">\[X =
+\left(\begin{array}{cc}
+--- (x^{(1)}) --- \\
+--- (x^{(2)}) --- \\
+\vdots \\
+--- (x^{(m)}) ---
+\end{array}\right)\]</span></p>
+<ul>
+<li>The second part of the training set is a 1000 x 1 dimensional vector <code>y</code> that contains labels for the training set
+<ul>
+<li><code>y = 0</code> if the image is of the digit <code>0</code>, <code>y = 1</code> if the image is of the digit <code>1</code>.</li>
+</ul></li>
+</ul>
+<p><span class="math inline">\(^1\)</span><sub> This is a subset of the MNIST handwritten digit dataset (http://yann.lecun.com/exdb/mnist/)</sub></p>
+<p>You will begin by visualizing a subset of the training set. - In the cell below, the code randomly selects 64 rows from <code>X</code>, maps each row back to a 20 pixel by 20 pixel grayscale image and displays the images together. - The label for each image is displayed above the image</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>warnings.simplefilter(action<span class="op">=</span><span class="st">'ignore'</span>, category<span class="op">=</span><span class="pp">FutureWarning</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># You do not need to modify anything in this cell</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>m, n <span class="op">=</span> X.shape</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">8</span>,<span class="dv">8</span>, figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">8</span>))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>fig.tight_layout(pad<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i,ax <span class="kw">in</span> <span class="bu">enumerate</span>(axes.flat):</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Select random indices</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    random_index <span class="op">=</span> np.random.randint(m)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Select rows corresponding to the random indices and</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># reshape the image</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    X_random_reshaped <span class="op">=</span> X[random_index].reshape((<span class="dv">20</span>,<span class="dv">20</span>)).T</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Display the image</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    ax.imshow(X_random_reshaped, cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Display the label above the image</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    ax.set_title(y[random_index,<span class="dv">0</span>])</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    ax.set_axis_off()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><p>The parameters have dimensions that are sized for a neural network with <span class="math inline">\(25\)</span> units in layer 1, <span class="math inline">\(15\)</span> units in layer 2 and <span class="math inline">\(1\)</span> output unit in layer 3.</p>
+<ul>
+<li>Recall that the dimensions of these parameters are determined as follows:
+<ul>
+<li>If network has <span class="math inline">\(s_{in}\)</span> units in a layer and <span class="math inline">\(s_{out}\)</span> units in the next layer, then
+<ul>
+<li><span class="math inline">\(W\)</span> will be of dimension <span class="math inline">\(s_{in} \times s_{out}\)</span>.</li>
+<li><span class="math inline">\(b\)</span> will a vector with <span class="math inline">\(s_{out}\)</span> elements</li>
+</ul></li>
+</ul></li>
+<li>Therefore, the shapes of <code>W</code>, and <code>b</code>, are
+<ul>
+<li>layer1: The shape of <code>W1</code> is (400, 25) and the shape of <code>b1</code> is (25,)</li>
+<li>layer2: The shape of <code>W2</code> is (25, 15) and the shape of <code>b2</code> is: (15,)</li>
+<li>layer3: The shape of <code>W3</code> is (15, 1) and the shape of <code>b3</code> is: (1,) &gt;<strong>Note:</strong> The bias vector <code>b</code> could be represented as a 1-D (n,) or 2-D (1,n) array. Tensorflow utilizes a 1-D representation and this lab will maintain that convention.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="binary-output" class="level1">
+<h1>Binary output</h1>
+<pre><code>model = Sequential(
+    [
+        tf.keras.Input(shape=(400,)),
+        Dense(25, activation = 'sigmoid')
+        Dense(15, activation = 'sigmoid')
+        Dense(1, activation = 'sigmoid')
+    ], name = "my_model"
+)</code></pre>
+<p>The following code will define a loss function and run gradient descent to fit the weights of the model to the training data.</p>
+<pre><code>model.compile(
+    loss=tf.keras.losses.BinaryCrossentropy(),
+    optimizer=tf.keras.optimizers.Adam(0.001),
+)
 
+model.fit(
+    X,y,
+    epochs=20
+)</code></pre>
+<p>Let’s compare the predictions vs the labels for a random sample of 64 digits. This takes a moment to run.</p>
+<pre><code>import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+# You do not need to modify anything in this cell
+
+m, n = X.shape
+
+fig, axes = plt.subplots(8,8, figsize=(8,8))
+fig.tight_layout(pad=0.1,rect=[0, 0.03, 1, 0.92]) #[left, bottom, right, top]
+
+for i,ax in enumerate(axes.flat):
+    # Select random indices
+    random_index = np.random.randint(m)
+
+    # Select rows corresponding to the random indices and
+    # reshape the image
+    X_random_reshaped = X[random_index].reshape((20,20)).T
+
+    # Display the image
+    ax.imshow(X_random_reshaped, cmap='gray')
+
+    # Predict using the Neural Network
+    prediction = model.predict(X[random_index].reshape(1,400))
+    if prediction &gt;= 0.5:
+        yhat = 1
+    else:
+        yhat = 0
+
+    # Display the label above the image
+    ax.set_title(f"{y[random_index,0]},{yhat}")
+    ax.set_axis_off()
+fig.suptitle("Label, yhat", fontsize=16)
+plt.show()</code></pre>
+</section>
+<section id="multiple-output" class="level1">
+<h1>Multiple output</h1>
+<p>Now we will extend that to multiclass classification. This will utilize the softmax activation.</p>
+<p>Numerical stability is improved if the softmax is grouped with the loss function rather than the output layer during training. This has implications when <em>building</em> the model and <em>using</em> the model. Building: * The final Dense layer should use a ‘linear’ activation. This is effectively no activation. * The <code>model.compile</code> statement will indicate this by including <code>from_logits=True</code>. <code>loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)</code> * This does not impact the form of the target. In the case of SparseCategorialCrossentropy, the target is the expected digit, 0-9.</p>
+<p>Using the model: * The outputs are not probabilities. If output probabilities are desired, apply a softmax function.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tf.random.set_seed(<span class="dv">1234</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Sequential(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        tf.keras.Input(shape<span class="op">=</span>(<span class="dv">400</span>,)),     <span class="co"># @REPLACE</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        Dense(<span class="dv">25</span>, activation<span class="op">=</span><span class="st">'relu'</span>, name <span class="op">=</span> <span class="st">"L1"</span>), <span class="co"># @REPLACE</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        Dense(<span class="dv">15</span>, activation<span class="op">=</span><span class="st">'relu'</span>,  name <span class="op">=</span> <span class="st">"L2"</span>), <span class="co"># @REPLACE</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        Dense(<span class="dv">10</span>, activation<span class="op">=</span><span class="st">'linear'</span>, name <span class="op">=</span> <span class="st">"L3"</span>),  <span class="co"># @REPLACE</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    ], name <span class="op">=</span> <span class="st">"my_model"</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    loss<span class="op">=</span>tf.keras.losses.SparseCategoricalCrossentropy(from_logits<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    optimizer<span class="op">=</span>tf.keras.optimizers.Adam(learning_rate<span class="op">=</span><span class="fl">0.001</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> model.fit(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    X,y,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    epochs<span class="op">=</span><span class="dv">40</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>prediction <span class="op">=</span> model.predict(image_of_two.reshape(<span class="dv">1</span>,<span class="dv">400</span>))  <span class="co"># prediction</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" predicting a Two: </span><span class="ch">\n</span><span class="sc">{</span>prediction<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" Largest Prediction index: </span><span class="sc">{</span>np<span class="sc">.</span>argmax(prediction)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To return an integer representing the predicted target, you want the index of the largest probability. This is accomplished with the Numpy <a href="https://numpy.org/doc/stable/reference/generated/numpy.argmax.html">argmax</a> function.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>yhat <span class="op">=</span> np.argmax(prediction_p)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"np.argmax(prediction_p): </span><span class="sc">{</span>yhat<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
