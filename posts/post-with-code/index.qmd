@@ -3,7 +3,7 @@ title: "Gradient Descent, how does it work?"
 author: "Darkhan Islam"
 date: "2025-10-26"
 categories: [news, code, analysis]
-image: "gd.jpeg"
+image: 'images/gd.jpeg'
 ---
 
 Gradient Descent is an algorithm used in optimization to reach the global minima of the function. It moves in the direction of
