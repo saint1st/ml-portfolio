@@ -1,6 +1,6 @@
 ---
 title: "About"
-image: images\IMG_7218.jpg
+image: \images\IMG_7218.jpg
 ---
 
 I’m an ML engineer focused on representation learning and efficient training.

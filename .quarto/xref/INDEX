@@ -1,20 +1,20 @@
 {
   "about.qmd": {
-    "about.html": "c96c5692"
+    "about.html": "28489d5d"
   },
   "index.qmd": {
-    "index.html": "219cabdc"
+    "index.html": "4b1da358"
   },
   "posts/post-with-code/index.qmd": {
-    "index.html": "9f74524c"
+    "index.html": "896ace10"
   },
   "posts/welcome/index.qmd": {
-    "index.html": "d836a64f"
+    "index.html": "0876ee76"
   },
   "projects/contrastive-learning.md": {
-    "contrastive-learning.html": "13c7923a"
+    "contrastive-learning.html": "5ab6a86f"
   },
   "projects.qmd": {
-    "projects.html": "cf3bdb9a"
+    "projects.html": "8836da69"
   }
 }

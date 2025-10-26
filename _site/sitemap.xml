@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://darkhanislam.github.io/ml-portfolio/about.html</loc>
-    <lastmod>2025-10-03T18:34:51.426Z</lastmod>
+    <loc>https://darkhanislam.github.io/ml-portfolio/projects.html</loc>
+    <lastmod>2025-10-03T19:02:37.873Z</lastmod>
+  </url>
+  <url>
+    <loc>https://darkhanislam.github.io/ml-portfolio/posts/welcome/index.html</loc>
+    <lastmod>2025-10-03T19:17:05.956Z</lastmod>
   </url>
   <url>
     <loc>https://darkhanislam.github.io/ml-portfolio/index.html</loc>
-    <lastmod>2025-10-03T18:15:50.090Z</lastmod>
+    <lastmod>2025-10-03T19:02:37.869Z</lastmod>
   </url>
   <url>
-    <loc>https://darkhanislam.github.io/ml-portfolio/projects.html</loc>
-    <lastmod>2025-10-03T18:16:16.590Z</lastmod>
+    <loc>https://darkhanislam.github.io/ml-portfolio/about.html</loc>
+    <lastmod>2025-10-03T19:15:42.358Z</lastmod>
+  </url>
+  <url>
+    <loc>https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/index.html</loc>
+    <lastmod>2025-10-03T19:29:09.384Z</lastmod>
   </url>
   <url>
     <loc>https://darkhanislam.github.io/ml-portfolio/projects/contrastive-learning.html</loc>
-    <lastmod>2025-10-03T18:17:18.014Z</lastmod>
+    <lastmod>2025-10-03T19:14:31.883Z</lastmod>
   </url>
 </urlset>

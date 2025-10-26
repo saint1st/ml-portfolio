@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Here are selected projects. Each entry is a Markdown file in projects/.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nContrastive Learning Playground\n\n\nSmall SimCLR/InfoNCE experiments with augmentations, τ sweeps, and ablations.\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "posts/welcome/index.html",
     "href": "posts/welcome/index.html",
     "title": "Welcome To My Blog",
@@ -11,7 +18,7 @@
     "href": "index.html",
     "title": "Blog",
     "section": "",
-    "text": "ML Notes & Projects\n\n\nAlgorithms explained, experiments reproduced, and tiny demos.\n\n\nWelcome! I write about the math behind algorithms, minimal PyTorch/NumPy reference implementations, and reproducible experiments. Below are the latest posts.\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nOct 3, 2025\n\n1 min\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nSep 30, 2025\n\n1 min\n\n\n\n\nNo matching items"
+    "text": "ML Notes & Projects\n\n\nAlgorithms explained, experiments reproduced, and tiny demos.\n\n\nWelcome! I write about the math behind algorithms, minimal PyTorch/NumPy reference implementations, and reproducible experiments. Below are the latest posts.\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\nPost With Code\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nOct 3, 2025\n\n1 min\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\ntips\n\n\n\n\n\n\n\n\n\nOct 3, 2025\n\n1 min\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
@@ -26,13 +33,6 @@
     "title": "Post With Code",
     "section": "",
     "text": "This is a post with executable code."
-  },
-  {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "Here are selected projects. Each entry is a Markdown file in projects/.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nContrastive Learning Playground\n\n\nSmall SimCLR/InfoNCE experiments with augmentations, τ sweeps, and ablations.\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "projects/contrastive-learning.html",

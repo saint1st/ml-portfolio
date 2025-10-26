@@ -2,7 +2,7 @@
 title: "Contrastive Learning Playground"
 description: "Small SimCLR/InfoNCE experiments with augmentations, τ sweeps, and ablations."
 date: 2025-09-01
-image: images/contrastive.png
+image: /images/profile.jpg
 ---
 
 - **Repo:** https://github.com/<you>/contrastive-playground  

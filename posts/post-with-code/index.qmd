@@ -1,9 +1,9 @@
 ---
-title: "Post With Code"
-author: "Hello, World!"
-date: "2025-10-03"
+title: "Gradient Descent, how does it work?"
+author: "Darkhan Islam"
+date: "2025-10-26"
 categories: [news, code, analysis]
-image: "image.jpg"
+image: "gd.jpeg"
 ---
 
-This is a post with executable code.
+Gradient Descent is an algorithm used in optimization to reach the global minima of the function. It moves in the direction of
