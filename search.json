@@ -4,7 +4,7 @@
     "href": "projects.html",
     "title": "Projects",
     "section": "",
-    "text": "Here are selected projects. Each entry is a Markdown file in projects/.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nContrastive Learning Playground\n\n\nSmall SimCLR/InfoNCE experiments with augmentations, τ sweeps, and ablations.\n\n\n\n\n\nNo matching items"
+    "text": "Here are selected projects. Each entry is a Markdown file in projects/.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLow-Light Pedestrian Detection\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/welcome/index.html",
@@ -14,25 +14,137 @@
     "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Blog",
-    "section": "",
-    "text": "ML Notes & Projects\n\n\nAlgorithms explained, experiments reproduced, and tiny demos.\n\n\nWelcome! I write about the math behind algorithms, minimal PyTorch/NumPy reference implementations, and reproducible experiments. Below are the latest posts.\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\nGradient Descent, how does it work?\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nOct 26, 2025\n\n1 min\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\ntips\n\n\n\n\n\n\n\n\n\nOct 3, 2025\n\n1 min\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "projects/contrastive-learning.html",
-    "href": "projects/contrastive-learning.html",
-    "title": "Contrastive Learning Playground",
-    "section": "",
-    "text": "Repo: https://github.com//contrastive-playground\n\nDemo: https://.streamlit.app\n\n\n\n\n\n\n\nTip\n\n\n\nTL;DR — Linear eval improves as τ→0.1; projection width 256 was a sweet spot."
-  },
-  {
     "objectID": "posts/post-with-code/index.html",
     "href": "posts/post-with-code/index.html",
     "title": "Gradient Descent, how does it work?",
     "section": "",
     "text": "Gradient Descent is an algorithm used in optimization to reach the global minima of the function. It moves in the direction of"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "ML Notes & Projects\n\n\nAlgorithms explained, experiments reproduced, and tiny demos.\n\n\nWelcome! I write about the math behind algorithms, minimal PyTorch/NumPy reference implementations, and reproducible experiments. Below are the latest posts.\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGradient Descent, how does it work?\n\n\n\nnews\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nOct 26, 2025\n\n1 min\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\ntips\n\n\n\n\n\n\n\n\n\nOct 3, 2025\n\n1 min\n\n\n\n\n\n\nMultiple Variable Linear Regression\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n10 min\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/pedestrian-detection.html",
+    "href": "projects/pedestrian-detection.html",
+    "title": "Low-Light Pedestrian Detection",
+    "section": "",
+    "text": "Pedestrian detection in low-light conditions is notoriously difficult — tiny, noisy, and poorly labeled targets often fool even modern detectors.\nThis project tackles that challenge using YOLOv8 models trained on the Find Person in the Dark (LLVIP subset) Kaggle dataset, with an emphasis on data hygiene and ensemble precision.\nBy designing a scene-aware, leak-free data split, optimizing inference parameters, and combining detectors via Weighted Box Fusion (WBF), I achieved consistent improvements over baseline YOLOv8 models.\n\nKey Insight: Clean validation splits and tuned inference parameters outperform brute-force augmentation and model scaling."
+  },
+  {
+    "objectID": "projects/pedestrian-detection.html#overview",
+    "href": "projects/pedestrian-detection.html#overview",
+    "title": "Low-Light Pedestrian Detection",
+    "section": "",
+    "text": "Pedestrian detection in low-light conditions is notoriously difficult — tiny, noisy, and poorly labeled targets often fool even modern detectors.\nThis project tackles that challenge using YOLOv8 models trained on the Find Person in the Dark (LLVIP subset) Kaggle dataset, with an emphasis on data hygiene and ensemble precision.\nBy designing a scene-aware, leak-free data split, optimizing inference parameters, and combining detectors via Weighted Box Fusion (WBF), I achieved consistent improvements over baseline YOLOv8 models.\n\nKey Insight: Clean validation splits and tuned inference parameters outperform brute-force augmentation and model scaling."
+  },
+  {
+    "objectID": "projects/pedestrian-detection.html#dataset-split-strategy",
+    "href": "projects/pedestrian-detection.html#dataset-split-strategy",
+    "title": "Low-Light Pedestrian Detection",
+    "section": "Dataset & Split Strategy",
+    "text": "Dataset & Split Strategy\nDataset: Find Person in the Dark – Kaggle\n- 15,030 visible-light images (11,782 training, 3,248 testing)\n- Subset of LLVIP: A Visible-Infrared Paired Dataset for Low-Light Vision\n\nLeak-Free Split\nTo prevent near-duplicate leakage: - Grouped similar frames via perceptual hash (pHash) - Split by group to ensure scene disjointness - Verified with visual similarity inspection"
+  },
+  {
+    "objectID": "projects/pedestrian-detection.html#results-summary",
+    "href": "projects/pedestrian-detection.html#results-summary",
+    "title": "Low-Light Pedestrian Detection",
+    "section": "Results Summary",
+    "text": "Results Summary\n\n\n\nModel\nAP@0.5\nAP@0.75\nFinal Score (↓ better)\n\n\n\n\nWBF Ensemble (Best)\n0.8772\n0.5634\n0.2797\n\n\nYOLOv8s Fine-Tuned\n0.9025\n0.5348\n0.2813\n\n\nYOLOv8s Heavy Aug\n0.8800\n0.5071\n0.3064\n\n\nYOLOv8n Baseline\n0.8468\n0.4839\n0.3347\n\n\n\n\nThe best results came from the ensemble, which fused predictions from three cleanly trained YOLOv8 variants.\nDespite slightly lower AP@0.5, the ensemble yielded a better final score — showing tighter localization and fewer false positives."
+  },
+  {
+    "objectID": "projects/pedestrian-detection.html#model-evolution",
+    "href": "projects/pedestrian-detection.html#model-evolution",
+    "title": "Low-Light Pedestrian Detection",
+    "section": "Model Evolution",
+    "text": "Model Evolution\n\n\n50 epochs, imgsz=640, batch=16\nServed as control; trained on random split\nResult: AP@0.5=0.8468, Score 0.3347\n\n\n\n\nAdded CLAHE preprocessing, high hsv_v, strong mosaic\n\nImproved recall, but noisy augmentations hurt stability\nResult: AP@0.5=0.8800, Score 0.3064\n\n\n\n\nFine-tuned from Model #2 on clean data\n\nTuned conf=0.10, iou=0.55\nResult: AP@0.5=0.9025, AP@0.75=0.5348, Score 0.2813"
+  },
+  {
+    "objectID": "projects/pedestrian-detection.html#ensemble-method-weighted-boxes-fusion",
+    "href": "projects/pedestrian-detection.html#ensemble-method-weighted-boxes-fusion",
+    "title": "Low-Light Pedestrian Detection",
+    "section": "Ensemble Method (Weighted Boxes Fusion)",
+    "text": "Ensemble Method (Weighted Boxes Fusion)\nA multi-model fusion pipeline combining predictions based on overlap consensus.\nSteps included: 1. Per-model JSON export\n2. Weighted Boxes Fusion\n3. Post-filtering & NMS\n4. Grid search over IoU / score / consensus thresholds\n5. Evaluation at IoU 0.5 and 0.75\nBest configuration: IOU_THR=0.65 SKIP_BOX_THR=0.005 FINAL_SCORE_THR=0.20 FINAL_NMS_IOU=0.55 MIN_MODELS=1 MAX_DETS=5"
+  },
+  {
+    "objectID": "projects/pedestrian-detection.html#qualitative-results",
+    "href": "projects/pedestrian-detection.html#qualitative-results",
+    "title": "Low-Light Pedestrian Detection",
+    "section": "Qualitative Results",
+    "text": "Qualitative Results\n\n\n\n\n\nGreen = ground truth, Red = predictions.\nCommon patterns: - Strong TPs: Clear, high-confidence boxes\n- FPs: Hallucinations on bright shadows or tree trunks\n- FNs: Tiny or occluded figures in dark corners"
+  },
+  {
+    "objectID": "projects/pedestrian-detection.html#lessons-learned",
+    "href": "projects/pedestrian-detection.html#lessons-learned",
+    "title": "Low-Light Pedestrian Detection",
+    "section": "Lessons Learned",
+    "text": "Lessons Learned\n\nData quality &gt; fancy models — leak-free splits alone gave &gt;10% mAP boost.\n\nInference tuning pays off — adjusting confidence/IoU thresholds improved Kaggle score by ~5%.\n\nWBF outperforms naive NMS — reduces duplicates, stabilizes localization.\n\nAugmentation isn’t magic — aggressive color jitter or CLAHE can make labels inconsistent."
+  },
+  {
+    "objectID": "projects/pedestrian-detection.html#next-steps",
+    "href": "projects/pedestrian-detection.html#next-steps",
+    "title": "Low-Light Pedestrian Detection",
+    "section": "Next Steps",
+    "text": "Next Steps\n\nTry YOLOv11-s/l and RT-DETR-Tiny for comparison.\n\nImplement soft-NMS and TTA fusion.\n\nExplore confidence calibration and tiling for high-res frames."
+  },
+  {
+    "objectID": "projects/pedestrian-detection.html#repository",
+    "href": "projects/pedestrian-detection.html#repository",
+    "title": "Low-Light Pedestrian Detection",
+    "section": "Repository",
+    "text": "Repository\nFull code, scripts, and analysis:\nGitHub – lowlight-yolov8-wbf"
+  },
+  {
+    "objectID": "posts/post2/index.html",
+    "href": "posts/post2/index.html",
+    "title": "Multiple Variable Linear Regression",
+    "section": "",
+    "text": "In this blog we will try to extend general regression model to support multiple features"
+  },
+  {
+    "objectID": "posts/post2/index.html#pre-requisites",
+    "href": "posts/post2/index.html#pre-requisites",
+    "title": "Multiple Variable Linear Regression",
+    "section": "Pre-requisites",
+    "text": "Pre-requisites\nimport copy, math\nimport numpy as np\nimport matplotlib.pyplot as plt\nHere is a summary of some of the notation you will encounter, updated for multiple features.  \n\n\n\n\n\n\n\n\nGeneral Notation\nDescription\nPython (if applicable)\n\n\n\n\n\\(a\\)\nscalar, non bold\n\n\n\n\\(\\mathbf{a}\\)\nvector, bold\n\n\n\n\\(\\mathbf{A}\\)\nmatrix, bold capital\n\n\n\nRegression\n\n\n\n\n\\(\\mathbf{X}\\)\ntraining example matrix\nX_train\n\n\n\\(\\mathbf{y}\\)\ntraining example targets\ny_train\n\n\n\\(\\mathbf{x}^{(i)}\\), \\(y^{(i)}\\)\n\\(i^{th}\\) Training Example\nX[i], y[i]\n\n\n\\(m\\)\nnumber of training examples\nm\n\n\n\\(n\\)\nnumber of features in each example\nn\n\n\n\\(\\mathbf{w}\\)\nparameter: weight\nw\n\n\n\\(b\\)\nparameter: bias\nb\n\n\n\\(f_{\\mathbf{w},b}(\\mathbf{x}^{(i)})\\)\nThe result of the model evaluation at \\(\\mathbf{x}^{(i)}\\) parameterized by \\(\\mathbf{w},b\\): \\(f_{\\mathbf{w},b}(\\mathbf{x}^{(i)}) = \\mathbf{w} \\cdot \\mathbf{x}^{(i)}+b\\)\nf_wb"
+  },
+  {
+    "objectID": "posts/post2/index.html#problem-statement",
+    "href": "posts/post2/index.html#problem-statement",
+    "title": "Multiple Variable Linear Regression",
+    "section": "2 Problem Statement",
+    "text": "2 Problem Statement\nYou will use the motivating example of housing price prediction. The training dataset contains three examples with four features (size, bedrooms, floors and, age) shown in the table below. Note that, unlike the earlier labs, size is in sqft rather than 1000 sqft. This causes an issue, which you will solve in the next lab!\n\n\n\n\n\n\n\n\n\n\nSize (sqft)\nNumber of Bedrooms\nNumber of floors\nAge of Home\nPrice (1000s dollars)\n\n\n\n\n2104\n5\n1\n45\n460\n\n\n1416\n3\n2\n40\n232\n\n\n852\n2\n1\n35\n178\n\n\n\nYou will build a linear regression model using these values so you can then predict the price for other houses. For example, a house with 1200 sqft, 3 bedrooms, 1 floor, 40 years old.\nPlease run the following code cell to create your X_train and y_train variables.\nX_train = np.array([[2104, 5, 1, 45], [1416, 3, 2, 40], [852, 2, 1, 35]])\ny_train = np.array([460, 232, 178])\n\n2.1 Matrix X containing our examples\nSimilar to the table above, examples are stored in a NumPy matrix X_train. Each row of the matrix represents one example. When you have \\(m\\) training examples ( \\(m\\) is three in our example), and there are \\(n\\) features (four in our example), \\(\\mathbf{X}\\) is a matrix with dimensions (\\(m\\), \\(n\\)) (m rows, n columns).\n\\[\\mathbf{X} =\n\\begin{pmatrix}\nx^{(0)}_0 & x^{(0)}_1 & \\cdots & x^{(0)}_{n-1} \\\\\nx^{(1)}_0 & x^{(1)}_1 & \\cdots & x^{(1)}_{n-1} \\\\\n\\cdots \\\\\nx^{(m-1)}_0 & x^{(m-1)}_1 & \\cdots & x^{(m-1)}_{n-1}\n\\end{pmatrix}\n\\] notation: - \\(\\mathbf{x}^{(i)}\\) is vector containing example i. \\(\\mathbf{x}^{(i)}\\) $ = (x^{(i)}_0, x^{(i)}1, ,x^{(i)}{n-1})$ - \\(x^{(i)}_j\\) is element j in example i. The superscript in parenthesis indicates the example number while the subscript represents an element.\n\n\n2.2 Parameter vector w, b\n\n\\(\\mathbf{w}\\) is a vector with \\(n\\) elements.\n\nEach element contains the parameter associated with one feature.\nin our dataset, n is 4.\nnotionally, we draw this as a column vector\n\n\n\\[\\mathbf{w} = \\begin{pmatrix}\nw_0 \\\\\nw_1 \\\\\n\\cdots\\\\\nw_{n-1}\n\\end{pmatrix}\n\\] * \\(b\\) is a scalar parameter."
+  },
+  {
+    "objectID": "posts/post2/index.html#model-prediction-with-multiple-variables",
+    "href": "posts/post2/index.html#model-prediction-with-multiple-variables",
+    "title": "Multiple Variable Linear Regression",
+    "section": "3 Model Prediction With Multiple Variables",
+    "text": "3 Model Prediction With Multiple Variables\nThe model’s prediction with multiple variables is given by the linear model:\n\\[ f_{\\mathbf{w},b}(\\mathbf{x}) =  w_0x_0 + w_1x_1 +... + w_{n-1}x_{n-1} + b \\tag{1}\\] or in vector notation: \\[f_{\\mathbf{w},b}(\\mathbf{x}) = \\mathbf{w} \\cdot \\mathbf{x} + b \\tag{2}\\] where \\(\\cdot\\) is a vector dot product.\nTo demonstrate the dot product, we will implement prediction using (1) and (2).\n\n3.1 Single Prediction element by element\nOur previous prediction multiplied one feature value by one parameter and added a bias parameter. A direct extension of our previous implementation of prediction to multiple features would be to implement (1) above using loop over each element, performing the multiply with its parameter and then adding the bias parameter at the end.\ndef predict_single_loop(x, w, b):\n\n    n = x.shape[0]\n    p = 0\n    for i in range(n):\n        p_i = x[i] * w[i]\n        p = p + p_i\n    p = p + b\n    return p\n\n\n3.2 Single Prediction, vector\nNoting that equation (1) above can be implemented using the dot product as in (2) above. We can make use of vector operations to speed up predictions.\nRecall from the Python/Numpy lab that NumPy np.dot()[link] can be used to perform a vector dot product.\ndef predict(x, w, b):\n    p = np.dot(x, w) + b\n    return p"
+  },
+  {
+    "objectID": "posts/post2/index.html#compute-cost-with-multiple-variables",
+    "href": "posts/post2/index.html#compute-cost-with-multiple-variables",
+    "title": "Multiple Variable Linear Regression",
+    "section": "4 Compute Cost With Multiple Variables",
+    "text": "4 Compute Cost With Multiple Variables\nThe equation for the cost function with multiple variables ( J(,b) ) is:\n\\[\nJ(\\mathbf{w},b) = \\frac{1}{2m} \\sum_{i = 0}^{m-1}\n\\left(f_{\\mathbf{w},b}(\\mathbf{x}^{(i)}) - y^{(i)}\\right)^2 \\tag{3}\n\\]\nwhere:\n\\[\nf_{\\mathbf{w},b}(\\mathbf{x}^{(i)}) = \\mathbf{w} \\cdot \\mathbf{x}^{(i)} + b \\tag{4}\n\\]\nBelow is an implementation of equations (3) and (4). Note that this uses a standard pattern for this course where a for loop over all m examples is used.\ndef compute_cost(X, y, w, b):\n    m = X.shape[0]\n    cost =0.0\n    for i in range(m):\n        f_wb_i = np.dot(X[i],w) + b\n        cost = cost + (f_wb_i - y[i])**2\n    cost = cost / (2 * m)\n    return cost"
+  },
+  {
+    "objectID": "posts/post2/index.html#gradient-descent-with-multiple-variables",
+    "href": "posts/post2/index.html#gradient-descent-with-multiple-variables",
+    "title": "Multiple Variable Linear Regression",
+    "section": "5 Gradient Descent With Multiple Variables",
+    "text": "5 Gradient Descent With Multiple Variables\nGradient descent for multiple variables:\n\\[\\begin{align*} \\text{repeat}&\\text{ until convergence:} \\; \\lbrace \\newline\\;\n& w_j = w_j -  \\alpha \\frac{\\partial J(\\mathbf{w},b)}{\\partial w_j} \\tag{5}  \\; & \\text{for j = 0..n-1}\\newline\n&b\\ \\ = b -  \\alpha \\frac{\\partial J(\\mathbf{w},b)}{\\partial b}  \\newline \\rbrace\n\\end{align*}\\]\nwhere, n is the number of features, parameters \\(w_j\\), \\(b\\), are updated simultaneously and where\n\\[\n\\begin{align}\n\\frac{\\partial J(\\mathbf{w},b)}{\\partial w_j}  &= \\frac{1}{m} \\sum\\limits_{i = 0}^{m-1} (f_{\\mathbf{w},b}(\\mathbf{x}^{(i)}) - y^{(i)})x_{j}^{(i)} \\tag{6}  \\\\\n\\frac{\\partial J(\\mathbf{w},b)}{\\partial b}  &= \\frac{1}{m} \\sum\\limits_{i = 0}^{m-1} (f_{\\mathbf{w},b}(\\mathbf{x}^{(i)}) - y^{(i)}) \\tag{7}\n\\end{align}\n\\] * m is the number of training examples in the data set\n\n\\(f_{\\mathbf{w},b}(\\mathbf{x}^{(i)})\\) is the model’s prediction, while \\(y^{(i)}\\) is the target value\n\n\n5.1 Compute Gradient with Multiple Variables\nAn implementation for calculating the equations (6) and (7) is below. There are many ways to implement this. In this version, there is an - outer loop over all m examples. - \\(\\frac{\\partial J(\\mathbf{w},b)}{\\partial b}\\) for the example can be computed directly and accumulated - in a second loop over all n features: - \\(\\frac{\\partial J(\\mathbf{w},b)}{\\partial w_j}\\) is computed for each \\(w_j\\).\ndef compute_gradient(X, y, w, b):\n\n    m,n = X.shape           #(number of examples, number of features)\n    dj_dw = np.zeros((n,))\n    dj_db = 0.\n\n    for i in range(m):\n        err = (np.dot(X[i], w) + b) - y[i]\n        for j in range(n):\n            dj_dw[j] = dj_dw[j] + err * X[i, j]\n        dj_db = dj_db + err\n    dj_dw = dj_dw / m\n    dj_db = dj_db / m\n\n    return dj_db, dj_dw\n\n\n5.2 Gradient Descent With Multiple Variables\nThe routine below implements equation (5) above.\ndef gradient_descent(X, y, w_in, b_in, cost_function, gradient_function, alpha, num_iters):\n\n    # An array to store cost J and w's at each iteration primarily for graphing later\n    J_history = []\n    w = copy.deepcopy(w_in)  #avoid modifying global w within function\n    b = b_in\n\n    for i in range(num_iters):\n\n        # Calculate the gradient and update the parameters\n        dj_db,dj_dw = gradient_function(X, y, w, b)   ##None\n\n        # Update Parameters using w, b, alpha and gradient\n        w = w - alpha * dj_dw               ##None\n        b = b - alpha * dj_db               ##None\n\n        # Save cost J at each iteration\n        if i&lt;100000:      # prevent resource exhaustion\n            J_history.append( cost_function(X, y, w, b))\n\n        # Print cost every at intervals 10 times or as many iterations if &lt; 10\n        if i% math.ceil(num_iters / 10) == 0:\n            print(f\"Iteration {i:4d}: Cost {J_history[-1]:8.2f}   \")\n\n    return w, b, J_history #return final w,b and J history for graphing"
+  },
+  {
+    "objectID": "posts/post2/index.html#training-code",
+    "href": "posts/post2/index.html#training-code",
+    "title": "Multiple Variable Linear Regression",
+    "section": "Training code",
+    "text": "Training code\n# initialize parameters\ninitial_w = np.zeros_like(w_init)\ninitial_b = 0.\n# some gradient descent settings\niterations = 1000\nalpha = 5.0e-7\n# run gradient descent\nw_final, b_final, J_hist = gradient_descent(X_train, y_train, initial_w, initial_b,\n                                                    compute_cost, compute_gradient,\n                                                    alpha, iterations)\nprint(f\"b,w found by gradient descent: {b_final:0.2f},{w_final} \")\nm,_ = X_train.shape\nfor i in range(m):\n    print(f\"prediction: {np.dot(X_train[i], w_final) + b_final:0.2f}, target value: {y_train[i]}\")"
   },
   {
     "objectID": "about.html",

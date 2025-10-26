@@ -2,14 +2,21 @@
   {
     "listing": "/projects.html",
     "items": [
-      "/projects/contrastive-learning.html"
+      "/projects/lung-cancer.html",
+      "/projects/pedestrian-detection.html"
     ]
   },
   {
     "listing": "/index.html",
     "items": [
+      "/posts/post3/index.html",
+      "/posts/post7/index.html",
+      "/posts/post5/index.html",
+      "/posts/post4/index.html",
+      "/posts/post6/index.html",
       "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html"
+      "/posts/welcome/index.html",
+      "/posts/post2/index.html"
     ]
   }
 ]

@@ -2,26 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://darkhanislam.github.io/ml-portfolio/projects.html</loc>
-    <lastmod>2025-10-26T09:39:44.174Z</lastmod>
+    <lastmod>2025-10-26T18:02:39.915Z</lastmod>
   </url>
   <url>
     <loc>https://darkhanislam.github.io/ml-portfolio/posts/welcome/index.html</loc>
-    <lastmod>2025-10-26T09:39:44.174Z</lastmod>
-  </url>
-  <url>
-    <loc>https://darkhanislam.github.io/ml-portfolio/index.html</loc>
-    <lastmod>2025-10-26T09:39:44.173Z</lastmod>
-  </url>
-  <url>
-    <loc>https://darkhanislam.github.io/ml-portfolio/projects/contrastive-learning.html</loc>
-    <lastmod>2025-10-26T09:39:44.174Z</lastmod>
+    <lastmod>2025-10-26T18:02:39.915Z</lastmod>
   </url>
   <url>
     <loc>https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/index.html</loc>
-    <lastmod>2025-10-26T09:39:44.174Z</lastmod>
+    <lastmod>2025-10-26T18:02:39.914Z</lastmod>
+  </url>
+  <url>
+    <loc>https://darkhanislam.github.io/ml-portfolio/index.html</loc>
+    <lastmod>2025-10-26T18:02:39.914Z</lastmod>
+  </url>
+  <url>
+    <loc>https://darkhanislam.github.io/ml-portfolio/projects/lung-cancer.html</loc>
+    <lastmod>2025-10-26T18:02:39.953Z</lastmod>
+  </url>
+  <url>
+    <loc>https://darkhanislam.github.io/ml-portfolio/projects/pedestrian-detection.html</loc>
+    <lastmod>2025-10-26T18:02:40.006Z</lastmod>
+  </url>
+  <url>
+    <loc>https://darkhanislam.github.io/ml-portfolio/posts/post2/index.html</loc>
+    <lastmod>2025-10-26T18:02:39.915Z</lastmod>
   </url>
   <url>
     <loc>https://darkhanislam.github.io/ml-portfolio/about.html</loc>
-    <lastmod>2025-10-26T09:39:44.169Z</lastmod>
+    <lastmod>2025-10-26T18:02:39.914Z</lastmod>
   </url>
 </urlset>
