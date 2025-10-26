@@ -14,11 +14,21 @@ h1, h2, h3 { letter-spacing: .3px; }
 .hero {
   padding: 3.5rem 1.25rem 2.25rem;
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(109,40,217,.12), rgba(109,40,217,.05));
   margin-bottom: 1.25rem;
+
+  /* 👇 Replace this line with your image */
+  background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+              url("images/header.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
-.hero h1 { margin-bottom: .25rem; }
-.hero p { margin: 0; opacity: .9; }
+
 
 /* project cards */
 .card-img-top { object-fit: cover; height: 160px; }
@@ -29,3 +39,18 @@ pre code { font-size: 0.95rem; }
 
 /* callouts */
 .callout { border-radius: 12px; }
+
+/* listing image rules */
+.listing-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.listing-title img {
+  width: 80px; /* Small size suggests a small thumbnail */
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}

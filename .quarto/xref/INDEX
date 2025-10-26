@@ -16,5 +16,29 @@
   },
   "projects.qmd": {
     "projects.html": "8836da69"
+  },
+  "posts/post2/index.qmd": {
+    "index.html": "ff3baff4"
+  },
+  "posts/post3/index.qmd": {
+    "index.html": "14b7174a"
+  },
+  "posts/post4/index.qmd": {
+    "index.html": "7f676c4f"
+  },
+  "posts/post5/index.qmd": {
+    "index.html": "a9645f48"
+  },
+  "posts/post6/index.qmd": {
+    "index.html": "db44e56a"
+  },
+  "posts/post7/index.qmd": {
+    "index.html": "78e94df5"
+  },
+  "projects/pedestrian-detection.qmd": {
+    "pedestrian-detection.html": "681beeb5"
+  },
+  "projects/lung-cancer.qmd": {
+    "lung-cancer.html": "60a48d93"
   }
 }

@@ -3,7 +3,7 @@ title: "Low-Light Pedestrian Detection"
 subtitle: "YOLOv8 + Leak-Free Data Split + WBF Ensemble"
 date: 2024-10-26
 categories: [Computer Vision, Object Detection, Deep Learning]
-image: images/good2.png
+image: good2.png
 format:
   html:
     toc: true

@@ -6,10 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-01">
-<meta name="description" content="Small SimCLR/InfoNCE experiments with augmentations, τ sweeps, and ablations.">
+<meta name="dcterms.date" content="2024-10-26">
 
-<title>Contrastive Learning Playground – Darkhan — Portfolio</title>
+<title>Low-Light Pedestrian Detection – Darkhan — Personal website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -45,9 +44,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-a14e345711173c227b21482e2eb4cc70.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a6dae140bfb87787c6167d50c0c0d255.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-80ab943ec921d1a91fb269f40942e010.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/bootstrap/bootstrap-dark-46001707f8bbf2ea1730d7c94a82d6e0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-a6dae140bfb87787c6167d50c0c0d255.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-80ab943ec921d1a91fb269f40942e010.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -261,7 +260,7 @@ ul.task-list li input[type="checkbox"] {
     <img src="../images/logo.svg" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Darkhan — Portfolio</span>
+    <span class="navbar-title">Darkhan — Personal website</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -306,8 +305,25 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#dataset-split-strategy" id="toc-dataset-split-strategy" class="nav-link" data-scroll-target="#dataset-split-strategy">Dataset &amp; Split Strategy</a>
+  <ul class="collapse">
+  <li><a href="#leak-free-split" id="toc-leak-free-split" class="nav-link" data-scroll-target="#leak-free-split">Leak-Free Split</a></li>
+  </ul></li>
+  <li><a href="#results-summary" id="toc-results-summary" class="nav-link" data-scroll-target="#results-summary">Results Summary</a></li>
+  <li><a href="#model-evolution" id="toc-model-evolution" class="nav-link" data-scroll-target="#model-evolution">Model Evolution</a></li>
+  <li><a href="#ensemble-method-weighted-boxes-fusion" id="toc-ensemble-method-weighted-boxes-fusion" class="nav-link" data-scroll-target="#ensemble-method-weighted-boxes-fusion">Ensemble Method (Weighted Boxes Fusion)</a></li>
+  <li><a href="#qualitative-results" id="toc-qualitative-results" class="nav-link" data-scroll-target="#qualitative-results">Qualitative Results</a></li>
+  <li><a href="#lessons-learned" id="toc-lessons-learned" class="nav-link" data-scroll-target="#lessons-learned">Lessons Learned</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  <li><a href="#repository" id="toc-repository" class="nav-link" data-scroll-target="#repository">Repository</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -315,14 +331,15 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Contrastive Learning Playground</h1>
-</div>
-
-<div>
-  <div class="description">
-    Small SimCLR/InfoNCE experiments with augmentations, τ sweeps, and ablations.
+<h1 class="title">Low-Light Pedestrian Detection</h1>
+<p class="subtitle lead">YOLOv8 + Leak-Free Data Split + WBF Ensemble</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Computer Vision</div>
+    <div class="quarto-category">Object Detection</div>
+    <div class="quarto-category">Deep Learning</div>
   </div>
-</div>
+  </div>
+
 
 
 <div class="quarto-title-meta">
@@ -331,7 +348,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 1, 2025</p>
+      <p class="date">October 26, 2024</p>
     </div>
   </div>
   
@@ -343,26 +360,154 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Pedestrian detection in <strong>low-light conditions</strong> is notoriously difficult — tiny, noisy, and poorly labeled targets often fool even modern detectors.<br>
+This project tackles that challenge using <strong>YOLOv8</strong> models trained on the <strong>Find Person in the Dark (LLVIP subset)</strong> Kaggle dataset, with an emphasis on <em>data hygiene and ensemble precision</em>.</p>
+<p>By designing a <strong>scene-aware, leak-free data split</strong>, optimizing inference parameters, and combining detectors via <strong>Weighted Box Fusion (WBF)</strong>, I achieved consistent improvements over baseline YOLOv8 models.</p>
+<blockquote class="blockquote">
+<p><strong>Key Insight:</strong> Clean validation splits and tuned inference parameters outperform brute-force augmentation and model scaling.</p>
+</blockquote>
+<hr>
+</section>
+<section id="dataset-split-strategy" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-split-strategy">Dataset &amp; Split Strategy</h2>
+<p>Dataset: <a href="https://www.kaggle.com/competitions/find-person-in-the-dark/overview">Find Person in the Dark – Kaggle</a><br>
+- 15,030 visible-light images (11,782 training, 3,248 testing)<br>
+- Subset of LLVIP: <em>A Visible-Infrared Paired Dataset for Low-Light Vision</em></p>
+<section id="leak-free-split" class="level3">
+<h3 class="anchored" data-anchor-id="leak-free-split">Leak-Free Split</h3>
+<p>To prevent near-duplicate leakage: - Grouped similar frames via <strong>perceptual hash (pHash)</strong> - Split by group to ensure scene disjointness - Verified with visual similarity inspection</p>
+<hr>
+</section>
+</section>
+<section id="results-summary" class="level2">
+<h2 class="anchored" data-anchor-id="results-summary">Results Summary</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: center;">AP@0.5</th>
+<th style="text-align: center;">AP@0.75</th>
+<th style="text-align: center;">Final Score (↓ better)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>WBF Ensemble (Best)</strong></td>
+<td style="text-align: center;">0.8772</td>
+<td style="text-align: center;">0.5634</td>
+<td style="text-align: center;"><strong>0.2797</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>YOLOv8s Fine-Tuned</strong></td>
+<td style="text-align: center;">0.9025</td>
+<td style="text-align: center;">0.5348</td>
+<td style="text-align: center;">0.2813</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">YOLOv8s Heavy Aug</td>
+<td style="text-align: center;">0.8800</td>
+<td style="text-align: center;">0.5071</td>
+<td style="text-align: center;">0.3064</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">YOLOv8n Baseline</td>
+<td style="text-align: center;">0.8468</td>
+<td style="text-align: center;">0.4839</td>
+<td style="text-align: center;">0.3347</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>The best results came from the <strong>ensemble</strong>, which fused predictions from three cleanly trained YOLOv8 variants.<br>
+Despite slightly lower AP@0.5, the ensemble yielded a better final score — showing tighter localization and fewer false positives.</p>
+</blockquote>
+<hr>
+</section>
+<section id="model-evolution" class="level2">
+<h2 class="anchored" data-anchor-id="model-evolution">Model Evolution</h2>
+<div class="details" title="Model #1 — YOLOv8n Baseline">
 <ul>
-<li><strong>Repo:</strong> https://github.com/<you>/contrastive-playground<br>
-</you></li>
-<li><strong>Demo:</strong> https://<your-demo>.streamlit.app</your-demo></li>
+<li>50 epochs, <code>imgsz=640</code>, <code>batch=16</code></li>
+<li>Served as control; trained on random split<br>
+Result: <code>AP@0.5=0.8468</code>, Score <code>0.3347</code></li>
 </ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Tip
+<div class="details" title="Model #2 — YOLOv8s + CLAHE + Heavy Augmentation">
+<ul>
+<li>Added <strong>CLAHE preprocessing</strong>, high <code>hsv_v</code>, strong mosaic<br>
+</li>
+<li>Improved recall, but noisy augmentations hurt stability<br>
+Result: <code>AP@0.5=0.8800</code>, Score <code>0.3064</code></li>
+</ul>
 </div>
+<div class="details" title="Model #5 — Fine-Tuned YOLOv8s + Leak-Free Split">
+<ul>
+<li>Fine-tuned from Model #2 on clean data<br>
+</li>
+<li>Tuned <code>conf=0.10</code>, <code>iou=0.55</code><br>
+Result: <code>AP@0.5=0.9025</code>, <code>AP@0.75=0.5348</code>, Score <code>0.2813</code></li>
+</ul>
 </div>
-<div class="callout-body-container callout-body">
-<p><strong>TL;DR</strong> — Linear eval improves as τ→0.1; projection width 256 was a sweet spot.</p>
+<hr>
+</section>
+<section id="ensemble-method-weighted-boxes-fusion" class="level2">
+<h2 class="anchored" data-anchor-id="ensemble-method-weighted-boxes-fusion">Ensemble Method (Weighted Boxes Fusion)</h2>
+<p>A multi-model <strong>fusion pipeline</strong> combining predictions based on overlap consensus.<br>
+Steps included: 1. Per-model JSON export<br>
+2. Weighted Boxes Fusion<br>
+3. Post-filtering &amp; NMS<br>
+4. Grid search over IoU / score / consensus thresholds<br>
+5. Evaluation at IoU 0.5 and 0.75</p>
+<p><strong>Best configuration:</strong> IOU_THR=0.65 SKIP_BOX_THR=0.005 FINAL_SCORE_THR=0.20 FINAL_NMS_IOU=0.55 MIN_MODELS=1 MAX_DETS=5</p>
+<hr>
+</section>
+<section id="qualitative-results" class="level2">
+<h2 class="anchored" data-anchor-id="qualitative-results">Qualitative Results</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="final_prediction_examples/good1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
 </div>
-</div>
+<p>Green = ground truth, Red = predictions.</p>
+<p>Common patterns: - <strong>Strong TPs:</strong> Clear, high-confidence boxes<br>
+- <strong>FPs:</strong> Hallucinations on bright shadows or tree trunks<br>
+- <strong>FNs:</strong> Tiny or occluded figures in dark corners</p>
+<hr>
+</section>
+<section id="lessons-learned" class="level2">
+<h2 class="anchored" data-anchor-id="lessons-learned">Lessons Learned</h2>
+<ol type="1">
+<li><strong>Data quality &gt; fancy models</strong> — leak-free splits alone gave &gt;10% mAP boost.<br>
+</li>
+<li><strong>Inference tuning pays off</strong> — adjusting confidence/IoU thresholds improved Kaggle score by ~5%.<br>
+</li>
+<li><strong>WBF outperforms naive NMS</strong> — reduces duplicates, stabilizes localization.<br>
+</li>
+<li><strong>Augmentation isn’t magic</strong> — aggressive color jitter or CLAHE can make labels inconsistent.</li>
+</ol>
+<hr>
+</section>
+<section id="next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps">Next Steps</h2>
+<ul>
+<li>Try <strong>YOLOv11-s/l</strong> and <strong>RT-DETR-Tiny</strong> for comparison.<br>
+</li>
+<li>Implement <strong>soft-NMS</strong> and <strong>TTA</strong> fusion.<br>
+</li>
+<li>Explore <strong>confidence calibration</strong> and <strong>tiling</strong> for high-res frames.</li>
+</ul>
+<hr>
+</section>
+<section id="repository" class="level2">
+<h2 class="anchored" data-anchor-id="repository">Repository</h2>
+<p>Full code, scripts, and analysis:<br>
+<a href="https://github.com/saint1st/pedestrian-detection/tree/main"><strong>GitHub – lowlight-yolov8-wbf</strong></a></p>
+<hr>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -793,8 +938,8 @@ Tip
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p>Built with Quarto</p>
-</div>
+      &nbsp;
+    </div>
   </div>
 </footer>
 

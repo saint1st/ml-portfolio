@@ -5,7 +5,7 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>Darkhan — Portfolio</title>
+<title>Darkhan — Personal website</title>
 <link>https://darkhanislam.github.io/ml-portfolio/</link>
 <atom:link href="https://darkhanislam.github.io/ml-portfolio/index.xml" rel="self" type="application/rss+xml"/>
 <description>Algorithms, experiments, and projects.</description>
@@ -22,17 +22,2232 @@
 
 
 
-<p>Gradient Descent is an algorithm used in optimization to reach the global minima of the function. It moves in the direction of</p>
+<p>Gradient Descent is a method for unconstrained math optimization. It is a <strong>first order</strong> iterative algorithm for minimizing differentiable multivariate function. The key idea is to take repeated steps in the opposite direction of the gradient of the function at the current point, because this is a direction of steepest descent. –&gt; Conversely, stepping in the direction of the gradient will lead to a trajectory that maximizes that function, the procedure is then know as <strong>gradient ascent</strong></p>
+<p><img src="https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/gd.jpeg" class="img-fluid" width="1200"></p>
+<p>In this tutorial we will automate the process of optimizing <img src="https://latex.codecogs.com/png.latex?w"> and <img src="https://latex.codecogs.com/png.latex?b"> usig gradient descent</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math, copy</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span></code></pre></div></div>
+<section id="problem-statement" class="level2">
+<h2 class="anchored" data-anchor-id="problem-statement">Problem Statement</h2>
+<p>Let’s use the same two data points as before - a house with 1000 square feet sold for \$300,000 and a house with 2000 square feet sold for \$500,000.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Size (1000 sqft)</th>
+<th>Price (1000s of dollars)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>300</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>500</td>
+</tr>
+</tbody>
+</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">x_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span>])</span>
+<span id="cb2-2">y_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500.0</span>])</span></code></pre></div></div>
+</section>
+<section id="define-cost-function" class="level2">
+<h2 class="anchored" data-anchor-id="define-cost-function">Define cost function</h2>
+<p>We consider a linear model that predicts <img src="https://latex.codecogs.com/png.latex?f_%7Bw,b%7D(x%5E%7B(i)%7D)">: <img src="https://latex.codecogs.com/png.latex?f_%7Bw,b%7D(x%5E%7B(i)%7D)%20=%20wx%5E%7B(i)%7D%20+%20b%20%5Ctag%7B1%7D"> In linear regression, we utilize input training data to fit the parameters <img src="https://latex.codecogs.com/png.latex?w">,<img src="https://latex.codecogs.com/png.latex?b"> by minimizing a measure of the error between our predictions <img src="https://latex.codecogs.com/png.latex?f_%7Bw,b%7D(x%5E%7B(i)%7D)"> and the actual data <img src="https://latex.codecogs.com/png.latex?y%5E%7B(i)%7D">. The measure is called the <img src="https://latex.codecogs.com/png.latex?cost">, <img src="https://latex.codecogs.com/png.latex?J(w,b)">. In training we measure the cost over all of our training samples <img src="https://latex.codecogs.com/png.latex?x%5E%7B(i)%7D,y%5E%7B(i)%7D"> <img src="https://latex.codecogs.com/png.latex?J(w,b)%20=%20%5Cfrac%7B1%7D%7B2m%7D%20%5Csum%5Climits_%7Bi%20=%200%7D%5E%7Bm-1%7D%20(f_%7Bw,b%7D(x%5E%7B(i)%7D)%20-%20y%5E%7B(i)%7D)%5E2%5Ctag%7B2%7D"></p>
+<p>Let’s define cost function described above.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> compute_cost(x, y, w, b):</span>
+<span id="cb3-2">    m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> x.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb3-3">    cost <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb3-4"></span>
+<span id="cb3-5">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(m):</span>
+<span id="cb3-6">        f_wb <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> x[i] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b</span>
+<span id="cb3-7">        cost <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> cost <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (f_wb <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y[i])<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-8">    total_cost <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> m) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> cost</span>
+<span id="cb3-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> total_cost</span></code></pre></div></div>
+</section>
+<section id="gradient-descent-code-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="gradient-descent-code-implementation">Gradient descent code implementation</h2>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Ctext%7Brepeat%7D&amp;%5Ctext%7B%20until%20convergence:%7D%20%5C;%20%5Clbrace%20%5Cnewline%0A%5C;%20%20w%20&amp;=%20w%20-%20%20%5Calpha%20%5Cfrac%7B%5Cpartial%20J(w,b)%7D%7B%5Cpartial%20w%7D%20%5Ctag%7B3%7D%20%20%5C;%20%5Cnewline%0Ab%20&amp;=%20b%20-%20%20%5Calpha%20%5Cfrac%7B%5Cpartial%20J(w,b)%7D%7B%5Cpartial%20b%7D%20%20%5Cnewline%20%5Crbrace%0A%5Cend%7Balign*%7D"> where, parameters <img src="https://latex.codecogs.com/png.latex?w">, <img src="https://latex.codecogs.com/png.latex?b"> are updated simultaneously. The gradient is defined as: <img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%5Cfrac%7B%5Cpartial%20J(w,b)%7D%7B%5Cpartial%20w%7D%20%20&amp;=%20%5Cfrac%7B1%7D%7Bm%7D%20%5Csum%5Climits_%7Bi%20=%200%7D%5E%7Bm-1%7D%20(f_%7Bw,b%7D(x%5E%7B(i)%7D)%20-%20y%5E%7B(i)%7D)x%5E%7B(i)%7D%20%5Ctag%7B4%7D%5C%5C%0A%20%20%5Cfrac%7B%5Cpartial%20J(w,b)%7D%7B%5Cpartial%20b%7D%20%20&amp;=%20%5Cfrac%7B1%7D%7Bm%7D%20%5Csum%5Climits_%7Bi%20=%200%7D%5E%7Bm-1%7D%20(f_%7Bw,b%7D(x%5E%7B(i)%7D)%20-%20y%5E%7B(i)%7D)%20%5Ctag%7B5%7D%5C%5C%0A%5Cend%7Balign%7D%0A"></p>
+<p>Here <em>simultaniously</em> means that you calculate the partial derivatives for all the parameters before updating any of the parameters.</p>
+<p>We will implement GD algorithm for <strong>one</strong> feature. We need three functions:</p>
+<ul>
+<li><code>compute_gradient</code> implementing equation (4) and (5) above</li>
+<li><code>compute_cost</code> implementing equation (2) above (code from previous lab)</li>
+<li><code>gradient_descent</code>, utilizing compute_gradient and compute_cost</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> compute_gradient(x, y, w, b):</span>
+<span id="cb4-2">   m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> x.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb4-3">   dj_dw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb4-4">   dj_db <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb4-5"></span>
+<span id="cb4-6">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(m):</span>
+<span id="cb4-7">       f_wb <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> x[i] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b</span>
+<span id="cb4-8">       dw_dw_i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (f_wb <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y[i]) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> x[i]</span>
+<span id="cb4-9">       dj_db_i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (f_wb <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y[i])</span>
+<span id="cb4-10"></span>
+<span id="cb4-11">       dj_db <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dj_db_i</span>
+<span id="cb4-12">       dj_dw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dj_dw_i</span>
+<span id="cb4-13">   dj_dw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dj_dw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> m</span>
+<span id="cb4-14">   dj_db <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dj_db <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> m</span>
+<span id="cb4-15"></span>
+<span id="cb4-16">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> dj_dw, dj_db</span></code></pre></div></div>
+<p><img src="https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/plot1.png" class="img-fluid"></p>
+<p>Above, the left plot shows <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20J(w,b)%7D%7B%5Cpartial%20w%7D"> or the slope of the cost curve relative to <img src="https://latex.codecogs.com/png.latex?w"> at three points. On the right side of the plot, the derivative is positive, while on the left it is negative. Due to the ‘bowl shape’, the derivatives will always lead gradient descent toward the bottom where the gradient is zero.</p>
+<p>The left plot has fixed <img src="https://latex.codecogs.com/png.latex?b=100">. Gradient descent will utilize both <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20J(w,b)%7D%7B%5Cpartial%20w%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20J(w,b)%7D%7B%5Cpartial%20b%7D"> to update parameters. The ‘quiver plot’ on the right provides a means of viewing the gradient of both parameters. The arrow sizes reflect the magnitude of the gradient at that point. The direction and slope of the arrow reflects the ratio of <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20J(w,b)%7D%7B%5Cpartial%20w%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20J(w,b)%7D%7B%5Cpartial%20b%7D"> at that point. Note that the gradient points <em>away</em> from the minimum. Review equation (3) above. The scaled gradient is <em>subtracted</em> from the current value of <img src="https://latex.codecogs.com/png.latex?w"> or <img src="https://latex.codecogs.com/png.latex?b">. This moves the parameter in a direction that will reduce cost.</p>
+<p>Now that gradients can be computed, gradient descent, described in equation (3) above can be implemented below in <code>gradient_descent</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> gradient_descent(x, y, w_in, b_in, alpha, num_iters, cost_function, gradient_function):</span>
+<span id="cb5-2">    J_history <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb5-3">    p_history <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb5-4">    b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> b_in</span>
+<span id="cb5-5">    w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> w_in</span>
+<span id="cb5-6"></span>
+<span id="cb5-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(num_iters):</span>
+<span id="cb5-8">        dj_dw, dj_db <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gradient_function(x, y, w, b)</span>
+<span id="cb5-9"></span>
+<span id="cb5-10">        b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> alpha <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dj_db</span>
+<span id="cb5-11">        w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> alpha <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dj_dw</span>
+<span id="cb5-12"></span>
+<span id="cb5-13">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100000</span>:</span>
+<span id="cb5-14">            J_history.append(cost_function(x, y, w, b))</span>
+<span id="cb5-15">            p.history_append([w,b])</span>
+<span id="cb5-16"></span>
+<span id="cb5-17">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span>math.ceil(num_iters<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb5-18">            <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Iteration </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>i<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:4}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">: Cost </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>J_history[<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:0.2e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> "</span>,</span>
+<span id="cb5-19">                  <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"dj_dw: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>dj_dw<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">: 0.3e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, dj_db: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>dj_db<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:0.3e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> "</span>,</span>
+<span id="cb5-20">                  <span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"w: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>w<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:0.3e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, b:</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>b<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:0.5e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb5-21"></span>
+<span id="cb5-22">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> w, b, J_history, p_history</span></code></pre></div></div>
+</section>
+<section id="training-with-gd" class="level2">
+<h2 class="anchored" data-anchor-id="training-with-gd">Training with GD</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># initialize parameters</span></span>
+<span id="cb6-2">w_init <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb6-3">b_init <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb6-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># some gradient descent settings</span></span>
+<span id="cb6-5">iterations <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10000</span></span>
+<span id="cb6-6">tmp_alpha <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0e-2</span></span>
+<span id="cb6-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># run gradient descent</span></span>
+<span id="cb6-8">w_final, b_final, J_hist, p_hist <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gradient_descent(x_train ,y_train, w_init, b_init, tmp_alpha,</span>
+<span id="cb6-9">                                                    iterations, compute_cost, compute_gradient)</span>
+<span id="cb6-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"(w,b) found by gradient descent: (</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>w_final<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:8.4f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">,</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>b_final<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:8.4f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">)"</span>)</span></code></pre></div></div>
+<p>Take a look at the training process by running this code. You will notice that <img src="https://latex.codecogs.com/png.latex?dj_dw"> and <img src="https://latex.codecogs.com/png.latex?dj_db"> get smaller, rapidly at first and then more slowly. As the process nears the ‘bottom of the bowl’ progress is slower due to the smaller value of the derivative at that point.</p>
+<p>Now that you have discovered the optimal values for the parameters <img src="https://latex.codecogs.com/png.latex?w"> and <img src="https://latex.codecogs.com/png.latex?b">, you can now use the model to predict housing values based on our learned parameters. As expected, the predicted values are nearly the same as the training values for the same housing. Further, the value not in the prediction is in line with the expected value.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"1000 sqft house prediction </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>w_final<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b_final<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:0.1f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> Thousand dollars"</span>)</span>
+<span id="cb7-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"1200 sqft house prediction </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>w_final<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b_final<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:0.1f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> Thousand dollars"</span>)</span>
+<span id="cb7-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"2000 sqft house prediction </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>w_final<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b_final<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:0.1f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> Thousand dollars"</span>)</span></code></pre></div></div>
+<p>I we take a look at the progress of gradient descent during its execution by plotting the cost over iterations on a contour plot of the cost(w,b), we will see:</p>
+<p><img src="https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/plot2.png" class="img-fluid"></p>
+<p>Above, the contour plot shows the <img src="https://latex.codecogs.com/png.latex?cost(w,b)"> over a range of <img src="https://latex.codecogs.com/png.latex?w"> and <img src="https://latex.codecogs.com/png.latex?b">. Cost levels are represented by the rings. Overlayed, using red arrows, is the path of gradient descent. Here are some things to note: - The path makes steady (monotonic) progress toward its goal. - initial steps are much larger than the steps near the goal</p>
 
 
 
- ]]></description>
-  <category>news</category>
+</section>
+
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list grid quarto-listing-cols-3">
+
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div> ]]></description>
+  <category>theory</category>
   <category>code</category>
-  <category>analysis</category>
   <guid>https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/</guid>
   <pubDate>Sat, 25 Oct 2025 19:00:00 GMT</pubDate>
-  <media:content url="https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/images/gd.jpeg" medium="image" type="image/jpeg"/>
+  <media:content url="https://darkhanislam.github.io/ml-portfolio/posts/post-with-code/gd.jpeg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Multiple Variable Linear Regression</title>
+  <dc:creator>Darkhan Islam</dc:creator>
+  <link>https://darkhanislam.github.io/ml-portfolio/posts/post2/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<p>In this blog we will try to extend general regression model to support multiple features</p>
+<section id="pre-requisites" class="level2">
+<h2 class="anchored" data-anchor-id="pre-requisites">Pre-requisites</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> copy, math</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span></code></pre></div></div>
+<p>Here is a summary of some of the notation you will encounter, updated for multiple features. &nbsp;</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">General Notation</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Python (if applicable)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?a"></td>
+<td style="text-align: left;">scalar, non bold</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Ba%7D"></td>
+<td style="text-align: left;">vector, bold</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BA%7D"></td>
+<td style="text-align: left;">matrix, bold capital</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Regression</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BX%7D"></td>
+<td style="text-align: left;">training example matrix</td>
+<td style="text-align: left;"><code>X_train</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7By%7D"></td>
+<td style="text-align: left;">training example targets</td>
+<td style="text-align: left;"><code>y_train</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bx%7D%5E%7B(i)%7D">, <img src="https://latex.codecogs.com/png.latex?y%5E%7B(i)%7D"></td>
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?i%5E%7Bth%7D"> Training Example</td>
+<td style="text-align: left;"><code>X[i]</code>, <code>y[i]</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?m"></td>
+<td style="text-align: left;">number of training examples</td>
+<td style="text-align: left;"><code>m</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?n"></td>
+<td style="text-align: left;">number of features in each example</td>
+<td style="text-align: left;"><code>n</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bw%7D"></td>
+<td style="text-align: left;">parameter: weight</td>
+<td style="text-align: left;"><code>w</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?b"></td>
+<td style="text-align: left;">parameter: bias</td>
+<td style="text-align: left;"><code>b</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><img src="https://latex.codecogs.com/png.latex?f_%7B%5Cmathbf%7Bw%7D,b%7D(%5Cmathbf%7Bx%7D%5E%7B(i)%7D)"></td>
+<td style="text-align: left;">The result of the model evaluation at <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bx%7D%5E%7B(i)%7D"> parameterized by <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bw%7D,b">: <img src="https://latex.codecogs.com/png.latex?f_%7B%5Cmathbf%7Bw%7D,b%7D(%5Cmathbf%7Bx%7D%5E%7B(i)%7D)%20=%20%5Cmathbf%7Bw%7D%20%5Ccdot%20%5Cmathbf%7Bx%7D%5E%7B(i)%7D+b"></td>
+<td style="text-align: left;"><code>f_wb</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="problem-statement" class="level2">
+<h2 class="anchored" data-anchor-id="problem-statement">2 Problem Statement</h2>
+<p>You will use the motivating example of housing price prediction. The training dataset contains three examples with four features (size, bedrooms, floors and, age) shown in the table below. Note that, unlike the earlier labs, size is in sqft rather than 1000 sqft. This causes an issue, which you will solve in the next lab!</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 23%">
+<col style="width: 21%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Size (sqft)</th>
+<th>Number of Bedrooms</th>
+<th>Number of floors</th>
+<th>Age of Home</th>
+<th>Price (1000s dollars)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2104</td>
+<td>5</td>
+<td>1</td>
+<td>45</td>
+<td>460</td>
+</tr>
+<tr class="even">
+<td>1416</td>
+<td>3</td>
+<td>2</td>
+<td>40</td>
+<td>232</td>
+</tr>
+<tr class="odd">
+<td>852</td>
+<td>2</td>
+<td>1</td>
+<td>35</td>
+<td>178</td>
+</tr>
+</tbody>
+</table>
+<p>You will build a linear regression model using these values so you can then predict the price for other houses. For example, a house with 1200 sqft, 3 bedrooms, 1 floor, 40 years old.</p>
+<p>Please run the following code cell to create your <code>X_train</code> and <code>y_train</code> variables.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">X_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2104</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>], [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1416</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>], [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">852</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">35</span>]])</span>
+<span id="cb2-2">y_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">460</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">232</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">178</span>])</span></code></pre></div></div>
+<section id="matrix-x-containing-our-examples" class="level3">
+<h3 class="anchored" data-anchor-id="matrix-x-containing-our-examples">2.1 Matrix X containing our examples</h3>
+<p>Similar to the table above, examples are stored in a NumPy matrix <code>X_train</code>. Each row of the matrix represents one example. When you have <img src="https://latex.codecogs.com/png.latex?m"> training examples ( <img src="https://latex.codecogs.com/png.latex?m"> is three in our example), and there are <img src="https://latex.codecogs.com/png.latex?n"> features (four in our example), <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BX%7D"> is a matrix with dimensions (<img src="https://latex.codecogs.com/png.latex?m">, <img src="https://latex.codecogs.com/png.latex?n">) (m rows, n columns).</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BX%7D%20=%0A%5Cbegin%7Bpmatrix%7D%0Ax%5E%7B(0)%7D_0%20&amp;%20x%5E%7B(0)%7D_1%20&amp;%20%5Ccdots%20&amp;%20x%5E%7B(0)%7D_%7Bn-1%7D%20%5C%5C%0Ax%5E%7B(1)%7D_0%20&amp;%20x%5E%7B(1)%7D_1%20&amp;%20%5Ccdots%20&amp;%20x%5E%7B(1)%7D_%7Bn-1%7D%20%5C%5C%0A%5Ccdots%20%5C%5C%0Ax%5E%7B(m-1)%7D_0%20&amp;%20x%5E%7B(m-1)%7D_1%20&amp;%20%5Ccdots%20&amp;%20x%5E%7B(m-1)%7D_%7Bn-1%7D%0A%5Cend%7Bpmatrix%7D%0A"> notation: - <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bx%7D%5E%7B(i)%7D"> is vector containing example i. <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bx%7D%5E%7B(i)%7D"> $ = (x^{(i)}_0, x^{(i)}<em>1, ,x^{(i)}</em>{n-1})$ - <img src="https://latex.codecogs.com/png.latex?x%5E%7B(i)%7D_j"> is element j in example i. The superscript in parenthesis indicates the example number while the subscript represents an element.</p>
+</section>
+<section id="parameter-vector-w-b" class="level3">
+<h3 class="anchored" data-anchor-id="parameter-vector-w-b">2.2 Parameter vector w, b</h3>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bw%7D"> is a vector with <img src="https://latex.codecogs.com/png.latex?n"> elements.
+<ul>
+<li>Each element contains the parameter associated with one feature.</li>
+<li>in our dataset, n is 4.</li>
+<li>notionally, we draw this as a column vector</li>
+</ul></li>
+</ul>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7Bw%7D%20=%20%5Cbegin%7Bpmatrix%7D%0Aw_0%20%5C%5C%0Aw_1%20%5C%5C%0A%5Ccdots%5C%5C%0Aw_%7Bn-1%7D%0A%5Cend%7Bpmatrix%7D%0A"> * <img src="https://latex.codecogs.com/png.latex?b"> is a scalar parameter.</p>
+</section>
+</section>
+<section id="model-prediction-with-multiple-variables" class="level2">
+<h2 class="anchored" data-anchor-id="model-prediction-with-multiple-variables">3 Model Prediction With Multiple Variables</h2>
+<p>The model’s prediction with multiple variables is given by the linear model:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%20f_%7B%5Cmathbf%7Bw%7D,b%7D(%5Cmathbf%7Bx%7D)%20=%20%20w_0x_0%20+%20w_1x_1%20+...%20+%20w_%7Bn-1%7Dx_%7Bn-1%7D%20+%20b%20%5Ctag%7B1%7D"> or in vector notation: <img src="https://latex.codecogs.com/png.latex?f_%7B%5Cmathbf%7Bw%7D,b%7D(%5Cmathbf%7Bx%7D)%20=%20%5Cmathbf%7Bw%7D%20%5Ccdot%20%5Cmathbf%7Bx%7D%20+%20b%20%5Ctag%7B2%7D"> where <img src="https://latex.codecogs.com/png.latex?%5Ccdot"> is a vector <strong>dot product</strong>.</p>
+<p>To demonstrate the dot product, we will implement prediction using (1) and (2).</p>
+<section id="single-prediction-element-by-element" class="level3">
+<h3 class="anchored" data-anchor-id="single-prediction-element-by-element">3.1 Single Prediction element by element</h3>
+<p>Our previous prediction multiplied one feature value by one parameter and added a bias parameter. A direct extension of our previous implementation of prediction to multiple features would be to implement (1) above using loop over each element, performing the multiply with its parameter and then adding the bias parameter at the end.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> predict_single_loop(x, w, b):</span>
+<span id="cb3-2"></span>
+<span id="cb3-3">    n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> x.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb3-4">    p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb3-5">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(n):</span>
+<span id="cb3-6">        p_i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> x[i] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> w[i]</span>
+<span id="cb3-7">        p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> p_i</span>
+<span id="cb3-8">    p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b</span>
+<span id="cb3-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> p</span></code></pre></div></div>
+</section>
+<section id="single-prediction-vector" class="level3">
+<h3 class="anchored" data-anchor-id="single-prediction-vector">3.2 Single Prediction, vector</h3>
+<p>Noting that equation (1) above can be implemented using the dot product as in (2) above. We can make use of vector operations to speed up predictions.</p>
+<p>Recall from the Python/Numpy lab that NumPy <code>np.dot()</code>[<a href="https://numpy.org/doc/stable/reference/generated/numpy.dot.html">link</a>] can be used to perform a vector dot product.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> predict(x, w, b):</span>
+<span id="cb4-2">    p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.dot(x, w) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b</span>
+<span id="cb4-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> p</span></code></pre></div></div>
+</section>
+</section>
+<section id="compute-cost-with-multiple-variables" class="level2">
+<h2 class="anchored" data-anchor-id="compute-cost-with-multiple-variables">4 Compute Cost With Multiple Variables</h2>
+<p>The equation for the cost function with multiple variables ( J(,b) ) is:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AJ(%5Cmathbf%7Bw%7D,b)%20=%20%5Cfrac%7B1%7D%7B2m%7D%20%5Csum_%7Bi%20=%200%7D%5E%7Bm-1%7D%0A%5Cleft(f_%7B%5Cmathbf%7Bw%7D,b%7D(%5Cmathbf%7Bx%7D%5E%7B(i)%7D)%20-%20y%5E%7B(i)%7D%5Cright)%5E2%20%5Ctag%7B3%7D%0A"></p>
+<p>where:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Af_%7B%5Cmathbf%7Bw%7D,b%7D(%5Cmathbf%7Bx%7D%5E%7B(i)%7D)%20=%20%5Cmathbf%7Bw%7D%20%5Ccdot%20%5Cmathbf%7Bx%7D%5E%7B(i)%7D%20+%20b%20%5Ctag%7B4%7D%0A"></p>
+<p>Below is an implementation of equations (3) and (4). Note that this uses a <em>standard pattern for this course</em> where a for loop over all <code>m</code> examples is used.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> compute_cost(X, y, w, b):</span>
+<span id="cb5-2">    m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb5-3">    cost <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb5-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(m):</span>
+<span id="cb5-5">        f_wb_i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.dot(X[i],w) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b</span>
+<span id="cb5-6">        cost <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> cost <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (f_wb_i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y[i])<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb5-7">    cost <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> cost <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> m)</span>
+<span id="cb5-8">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> cost</span></code></pre></div></div>
+</section>
+<section id="gradient-descent-with-multiple-variables" class="level2">
+<h2 class="anchored" data-anchor-id="gradient-descent-with-multiple-variables">5 Gradient Descent With Multiple Variables</h2>
+<p>Gradient descent for multiple variables:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%20%5Ctext%7Brepeat%7D&amp;%5Ctext%7B%20until%20convergence:%7D%20%5C;%20%5Clbrace%20%5Cnewline%5C;%0A&amp;%20w_j%20=%20w_j%20-%20%20%5Calpha%20%5Cfrac%7B%5Cpartial%20J(%5Cmathbf%7Bw%7D,b)%7D%7B%5Cpartial%20w_j%7D%20%5Ctag%7B5%7D%20%20%5C;%20&amp;%20%5Ctext%7Bfor%20j%20=%200..n-1%7D%5Cnewline%0A&amp;b%5C%20%5C%20=%20b%20-%20%20%5Calpha%20%5Cfrac%7B%5Cpartial%20J(%5Cmathbf%7Bw%7D,b)%7D%7B%5Cpartial%20b%7D%20%20%5Cnewline%20%5Crbrace%0A%5Cend%7Balign*%7D"></p>
+<p>where, n is the number of features, parameters <img src="https://latex.codecogs.com/png.latex?w_j">, <img src="https://latex.codecogs.com/png.latex?b">, are updated simultaneously and where</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%5Cfrac%7B%5Cpartial%20J(%5Cmathbf%7Bw%7D,b)%7D%7B%5Cpartial%20w_j%7D%20%20&amp;=%20%5Cfrac%7B1%7D%7Bm%7D%20%5Csum%5Climits_%7Bi%20=%200%7D%5E%7Bm-1%7D%20(f_%7B%5Cmathbf%7Bw%7D,b%7D(%5Cmathbf%7Bx%7D%5E%7B(i)%7D)%20-%20y%5E%7B(i)%7D)x_%7Bj%7D%5E%7B(i)%7D%20%5Ctag%7B6%7D%20%20%5C%5C%0A%5Cfrac%7B%5Cpartial%20J(%5Cmathbf%7Bw%7D,b)%7D%7B%5Cpartial%20b%7D%20%20&amp;=%20%5Cfrac%7B1%7D%7Bm%7D%20%5Csum%5Climits_%7Bi%20=%200%7D%5E%7Bm-1%7D%20(f_%7B%5Cmathbf%7Bw%7D,b%7D(%5Cmathbf%7Bx%7D%5E%7B(i)%7D)%20-%20y%5E%7B(i)%7D)%20%5Ctag%7B7%7D%0A%5Cend%7Balign%7D%0A"> * m is the number of training examples in the data set</p>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?f_%7B%5Cmathbf%7Bw%7D,b%7D(%5Cmathbf%7Bx%7D%5E%7B(i)%7D)"> is the model’s prediction, while <img src="https://latex.codecogs.com/png.latex?y%5E%7B(i)%7D"> is the target value</li>
+</ul>
+<section id="compute-gradient-with-multiple-variables" class="level3">
+<h3 class="anchored" data-anchor-id="compute-gradient-with-multiple-variables">5.1 Compute Gradient with Multiple Variables</h3>
+<p>An implementation for calculating the equations (6) and (7) is below. There are many ways to implement this. In this version, there is an - outer loop over all m examples. - <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20J(%5Cmathbf%7Bw%7D,b)%7D%7B%5Cpartial%20b%7D"> for the example can be computed directly and accumulated - in a second loop over all n features: - <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20J(%5Cmathbf%7Bw%7D,b)%7D%7B%5Cpartial%20w_j%7D"> is computed for each <img src="https://latex.codecogs.com/png.latex?w_j">.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> compute_gradient(X, y, w, b):</span>
+<span id="cb6-2"></span>
+<span id="cb6-3">    m,n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X.shape           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#(number of examples, number of features)</span></span>
+<span id="cb6-4">    dj_dw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros((n,))</span>
+<span id="cb6-5">    dj_db <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.</span></span>
+<span id="cb6-6"></span>
+<span id="cb6-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(m):</span>
+<span id="cb6-8">        err <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (np.dot(X[i], w) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y[i]</span>
+<span id="cb6-9">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(n):</span>
+<span id="cb6-10">            dj_dw[j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dj_dw[j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> err <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> X[i, j]</span>
+<span id="cb6-11">        dj_db <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dj_db <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> err</span>
+<span id="cb6-12">    dj_dw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dj_dw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> m</span>
+<span id="cb6-13">    dj_db <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dj_db <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> m</span>
+<span id="cb6-14"></span>
+<span id="cb6-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> dj_db, dj_dw</span></code></pre></div></div>
+</section>
+<section id="gradient-descent-with-multiple-variables-1" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-descent-with-multiple-variables-1">5.2 Gradient Descent With Multiple Variables</h3>
+<p>The routine below implements equation (5) above.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> gradient_descent(X, y, w_in, b_in, cost_function, gradient_function, alpha, num_iters):</span>
+<span id="cb7-2"></span>
+<span id="cb7-3">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># An array to store cost J and w's at each iteration primarily for graphing later</span></span>
+<span id="cb7-4">    J_history <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb7-5">    w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> copy.deepcopy(w_in)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#avoid modifying global w within function</span></span>
+<span id="cb7-6">    b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> b_in</span>
+<span id="cb7-7"></span>
+<span id="cb7-8">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(num_iters):</span>
+<span id="cb7-9"></span>
+<span id="cb7-10">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Calculate the gradient and update the parameters</span></span>
+<span id="cb7-11">        dj_db,dj_dw <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gradient_function(X, y, w, b)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">##None</span></span>
+<span id="cb7-12"></span>
+<span id="cb7-13">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Update Parameters using w, b, alpha and gradient</span></span>
+<span id="cb7-14">        w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> alpha <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dj_dw               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">##None</span></span>
+<span id="cb7-15">        b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> alpha <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dj_db               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">##None</span></span>
+<span id="cb7-16"></span>
+<span id="cb7-17">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Save cost J at each iteration</span></span>
+<span id="cb7-18">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100000</span>:      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># prevent resource exhaustion</span></span>
+<span id="cb7-19">            J_history.append( cost_function(X, y, w, b))</span>
+<span id="cb7-20"></span>
+<span id="cb7-21">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Print cost every at intervals 10 times or as many iterations if &lt; 10</span></span>
+<span id="cb7-22">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> math.ceil(num_iters <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb7-23">            <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Iteration </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>i<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:4d}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">: Cost </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>J_history[<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:8.2f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">   "</span>)</span>
+<span id="cb7-24"></span>
+<span id="cb7-25">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> w, b, J_history <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#return final w,b and J history for graphing</span></span></code></pre></div></div>
+</section>
+</section>
+<section id="training-code" class="level2">
+<h2 class="anchored" data-anchor-id="training-code">Training code</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># initialize parameters</span></span>
+<span id="cb8-2">initial_w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros_like(w_init)</span>
+<span id="cb8-3">initial_b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.</span></span>
+<span id="cb8-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># some gradient descent settings</span></span>
+<span id="cb8-5">iterations <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span></span>
+<span id="cb8-6">alpha <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5.0e-7</span></span>
+<span id="cb8-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># run gradient descent</span></span>
+<span id="cb8-8">w_final, b_final, J_hist <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gradient_descent(X_train, y_train, initial_w, initial_b,</span>
+<span id="cb8-9">                                                    compute_cost, compute_gradient,</span>
+<span id="cb8-10">                                                    alpha, iterations)</span>
+<span id="cb8-11"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"b,w found by gradient descent: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>b_final<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:0.2f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">,</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>w_final<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> "</span>)</span>
+<span id="cb8-12">m,_ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X_train.shape</span>
+<span id="cb8-13"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(m):</span>
+<span id="cb8-14">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"prediction: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>dot(X_train[i], w_final) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b_final<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:0.2f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, target value: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>y_train[i]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+
+
+</section>
+
+ ]]></description>
+  <category>theory</category>
+  <category>code</category>
+  <guid>https://darkhanislam.github.io/ml-portfolio/posts/post2/</guid>
+  <pubDate>Sat, 25 Oct 2025 19:00:00 GMT</pubDate>
+  <media:content url="https://darkhanislam.github.io/ml-portfolio/posts/post2/main.jpeg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Neural Networks for Handwritten Digit Recognition with Binary and Multiple outputs</title>
+  <dc:creator>Darkhan Islam</dc:creator>
+  <link>https://darkhanislam.github.io/ml-portfolio/posts/post3/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<p>In this exercise, you will use a neural network to recognize the hand-written digits zero and one.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> tensorflow <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> tf</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> tensorflow.keras.models <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Sequential</span>
+<span id="cb1-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> tensorflow.keras.layers <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Dense</span>
+<span id="cb1-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb1-6"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> autils <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-7"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span>matplotlib inline</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> logging</span>
+<span id="cb1-10">logging.getLogger(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"tensorflow"</span>).setLevel(logging.ERROR)</span>
+<span id="cb1-11">tf.autograph.set_verbosity(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span></code></pre></div></div>
+<section id="problem-statement" class="level3">
+<h3 class="anchored" data-anchor-id="problem-statement">Problem Statement</h3>
+<p>In this exercise, you will use a neural network to recognize two handwritten digits, zero and one. This is a binary classification task. Automated handwritten digit recognition is widely used today - from recognizing zip codes (postal codes) on mail envelopes to recognizing amounts written on bank checks. You will extend this network to recognize all 10 digits (0-9) in a future assignment.</p>
+<p>This exercise will show you how the methods you have learned can be used for this classification task.</p>
+</section>
+<section id="dataset" class="level3">
+<h3 class="anchored" data-anchor-id="dataset">Dataset</h3>
+<p>You will start by loading the dataset for this task. - The <code>load_data()</code> function shown below loads the data into variables <code>X</code> and <code>y</code></p>
+<ul>
+<li><p>The data set contains 1000 training examples of handwritten digits <img src="https://latex.codecogs.com/png.latex?%5E1">, here limited to zero and one.</p>
+<ul>
+<li>Each training example is a 20-pixel x 20-pixel grayscale image of the digit.
+<ul>
+<li>Each pixel is represented by a floating-point number indicating the grayscale intensity at that location.</li>
+<li>The 20 by 20 grid of pixels is “unrolled” into a 400-dimensional vector.</li>
+<li>Each training example becomes a single row in our data matrix <code>X</code>.</li>
+<li>This gives us a 1000 x 400 matrix <code>X</code> where every row is a training example of a handwritten digit image.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><img src="https://latex.codecogs.com/png.latex?X%20=%0A%5Cleft(%5Cbegin%7Barray%7D%7Bcc%7D%0A---%20(x%5E%7B(1)%7D)%20---%20%5C%5C%0A---%20(x%5E%7B(2)%7D)%20---%20%5C%5C%0A%5Cvdots%20%5C%5C%0A---%20(x%5E%7B(m)%7D)%20---%0A%5Cend%7Barray%7D%5Cright)"></p>
+<ul>
+<li>The second part of the training set is a 1000 x 1 dimensional vector <code>y</code> that contains labels for the training set
+<ul>
+<li><code>y = 0</code> if the image is of the digit <code>0</code>, <code>y = 1</code> if the image is of the digit <code>1</code>.</li>
+</ul></li>
+</ul>
+<p><img src="https://latex.codecogs.com/png.latex?%5E1"><sub> This is a subset of the MNIST handwritten digit dataset (http://yann.lecun.com/exdb/mnist/)</sub></p>
+<p>You will begin by visualizing a subset of the training set. - In the cell below, the code randomly selects 64 rows from <code>X</code>, maps each row back to a 20 pixel by 20 pixel grayscale image and displays the images together. - The label for each image is displayed above the image</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> warnings</span>
+<span id="cb2-2">warnings.simplefilter(action<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ignore'</span>, category<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">FutureWarning</span>)</span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># You do not need to modify anything in this cell</span></span>
+<span id="cb2-4"></span>
+<span id="cb2-5">m, n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X.shape</span>
+<span id="cb2-6"></span>
+<span id="cb2-7">fig, axes <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> plt.subplots(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>))</span>
+<span id="cb2-8">fig.tight_layout(pad<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>)</span>
+<span id="cb2-9"></span>
+<span id="cb2-10"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i,ax <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(axes.flat):</span>
+<span id="cb2-11">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Select random indices</span></span>
+<span id="cb2-12">    random_index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.random.randint(m)</span>
+<span id="cb2-13"></span>
+<span id="cb2-14">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Select rows corresponding to the random indices and</span></span>
+<span id="cb2-15">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># reshape the image</span></span>
+<span id="cb2-16">    X_random_reshaped <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X[random_index].reshape((<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)).T</span>
+<span id="cb2-17"></span>
+<span id="cb2-18">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Display the image</span></span>
+<span id="cb2-19">    ax.imshow(X_random_reshaped, cmap<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'gray'</span>)</span>
+<span id="cb2-20"></span>
+<span id="cb2-21">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Display the label above the image</span></span>
+<span id="cb2-22">    ax.set_title(y[random_index,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>])</span>
+<span id="cb2-23">    ax.set_axis_off()</span></code></pre></div></div>
+<ul>
+<li><p>The parameters have dimensions that are sized for a neural network with <img src="https://latex.codecogs.com/png.latex?25"> units in layer 1, <img src="https://latex.codecogs.com/png.latex?15"> units in layer 2 and <img src="https://latex.codecogs.com/png.latex?1"> output unit in layer 3.</p>
+<ul>
+<li>Recall that the dimensions of these parameters are determined as follows:
+<ul>
+<li>If network has <img src="https://latex.codecogs.com/png.latex?s_%7Bin%7D"> units in a layer and <img src="https://latex.codecogs.com/png.latex?s_%7Bout%7D"> units in the next layer, then
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?W"> will be of dimension <img src="https://latex.codecogs.com/png.latex?s_%7Bin%7D%20%5Ctimes%20s_%7Bout%7D">.</li>
+<li><img src="https://latex.codecogs.com/png.latex?b"> will a vector with <img src="https://latex.codecogs.com/png.latex?s_%7Bout%7D"> elements</li>
+</ul></li>
+</ul></li>
+<li>Therefore, the shapes of <code>W</code>, and <code>b</code>, are
+<ul>
+<li>layer1: The shape of <code>W1</code> is (400, 25) and the shape of <code>b1</code> is (25,)</li>
+<li>layer2: The shape of <code>W2</code> is (25, 15) and the shape of <code>b2</code> is: (15,)</li>
+<li>layer3: The shape of <code>W3</code> is (15, 1) and the shape of <code>b3</code> is: (1,) &gt;<strong>Note:</strong> The bias vector <code>b</code> could be represented as a 1-D (n,) or 2-D (1,n) array. Tensorflow utilizes a 1-D representation and this lab will maintain that convention.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="binary-output" class="level1">
+<h1>Binary output</h1>
+<pre><code>model = Sequential(
+    [
+        tf.keras.Input(shape=(400,)),
+        Dense(25, activation = 'sigmoid')
+        Dense(15, activation = 'sigmoid')
+        Dense(1, activation = 'sigmoid')
+    ], name = "my_model"
+)</code></pre>
+<p>The following code will define a loss function and run gradient descent to fit the weights of the model to the training data.</p>
+<pre><code>model.compile(
+    loss=tf.keras.losses.BinaryCrossentropy(),
+    optimizer=tf.keras.optimizers.Adam(0.001),
+)
+
+model.fit(
+    X,y,
+    epochs=20
+)</code></pre>
+<p>Let’s compare the predictions vs the labels for a random sample of 64 digits. This takes a moment to run.</p>
+<pre><code>import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+# You do not need to modify anything in this cell
+
+m, n = X.shape
+
+fig, axes = plt.subplots(8,8, figsize=(8,8))
+fig.tight_layout(pad=0.1,rect=[0, 0.03, 1, 0.92]) #[left, bottom, right, top]
+
+for i,ax in enumerate(axes.flat):
+    # Select random indices
+    random_index = np.random.randint(m)
+
+    # Select rows corresponding to the random indices and
+    # reshape the image
+    X_random_reshaped = X[random_index].reshape((20,20)).T
+
+    # Display the image
+    ax.imshow(X_random_reshaped, cmap='gray')
+
+    # Predict using the Neural Network
+    prediction = model.predict(X[random_index].reshape(1,400))
+    if prediction &gt;= 0.5:
+        yhat = 1
+    else:
+        yhat = 0
+
+    # Display the label above the image
+    ax.set_title(f"{y[random_index,0]},{yhat}")
+    ax.set_axis_off()
+fig.suptitle("Label, yhat", fontsize=16)
+plt.show()</code></pre>
+</section>
+<section id="multiple-output" class="level1">
+<h1>Multiple output</h1>
+<p>Now we will extend that to multiclass classification. This will utilize the softmax activation.</p>
+<p>Numerical stability is improved if the softmax is grouped with the loss function rather than the output layer during training. This has implications when <em>building</em> the model and <em>using</em> the model. Building: * The final Dense layer should use a ‘linear’ activation. This is effectively no activation. * The <code>model.compile</code> statement will indicate this by including <code>from_logits=True</code>. <code>loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)</code> * This does not impact the form of the target. In the case of SparseCategorialCrossentropy, the target is the expected digit, 0-9.</p>
+<p>Using the model: * The outputs are not probabilities. If output probabilities are desired, apply a softmax function.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">tf.random.set_seed(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1234</span>)</span>
+<span id="cb6-2">model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Sequential(</span>
+<span id="cb6-3">    [</span>
+<span id="cb6-4">        tf.keras.Input(shape<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span>,)),     <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># @REPLACE</span></span>
+<span id="cb6-5">        Dense(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>, activation<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'relu'</span>, name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"L1"</span>), <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># @REPLACE</span></span>
+<span id="cb6-6">        Dense(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, activation<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'relu'</span>,  name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"L2"</span>), <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># @REPLACE</span></span>
+<span id="cb6-7">        Dense(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, activation<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'linear'</span>, name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"L3"</span>),  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># @REPLACE</span></span>
+<span id="cb6-8">    ], name <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"my_model"</span></span>
+<span id="cb6-9">)</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">model.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">compile</span>(</span>
+<span id="cb7-2">    loss<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>tf.keras.losses.SparseCategoricalCrossentropy(from_logits<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>),</span>
+<span id="cb7-3">    optimizer<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>tf.keras.optimizers.Adam(learning_rate<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.001</span>),</span>
+<span id="cb7-4">)</span>
+<span id="cb7-5"></span>
+<span id="cb7-6">history <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> model.fit(</span>
+<span id="cb7-7">    X,y,</span>
+<span id="cb7-8">    epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span></span>
+<span id="cb7-9">)</span>
+<span id="cb7-10"></span>
+<span id="cb7-11">prediction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> model.predict(image_of_two.reshape(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span>))  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># prediction</span></span>
+<span id="cb7-12"></span>
+<span id="cb7-13"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f" predicting a Two: </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>prediction<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb7-14"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f" Largest Prediction index: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>argmax(prediction)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<p>To return an integer representing the predicted target, you want the index of the largest probability. This is accomplished with the Numpy <a href="https://numpy.org/doc/stable/reference/generated/numpy.argmax.html">argmax</a> function.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">yhat <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.argmax(prediction_p)</span>
+<span id="cb8-2"></span>
+<span id="cb8-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"np.argmax(prediction_p): </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>yhat<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+
+
+</section>
+
+ ]]></description>
+  <category>theory</category>
+  <category>code</category>
+  <guid>https://darkhanislam.github.io/ml-portfolio/posts/post3/</guid>
+  <pubDate>Sat, 25 Oct 2025 19:00:00 GMT</pubDate>
+  <media:content url="https://darkhanislam.github.io/ml-portfolio/posts/post3/main.jpeg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Building a Decision Tree from scratch</title>
+  <dc:creator>Darkhan Islam</dc:creator>
+  <link>https://darkhanislam.github.io/ml-portfolio/posts/post4/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<section id="problem-statement" class="level3">
+<h3 class="anchored" data-anchor-id="problem-statement">Problem Statement</h3>
+<p>Suppose you are starting a company that grows and sells wild mushrooms. - Since not all mushrooms are edible, you’d like to be able to tell whether a given mushroom is edible or poisonous based on it’s physical attributes - You have some existing data that you can use for this task.</p>
+<p>Can you use the data to help you identify which mushrooms can be sold safely?</p>
+<p>Note: The dataset used is for illustrative purposes only. It is not meant to be a guide on identifying edible mushrooms.</p>
+</section>
+<section id="dataset" class="level3">
+<h3 class="anchored" data-anchor-id="dataset">Dataset</h3>
+<p>You will start by loading the dataset for this task. The dataset you have collected is as follows:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Cap Color</th>
+<th style="text-align: center;">Stalk Shape</th>
+<th style="text-align: center;">Solitary</th>
+<th style="text-align: center;">Edible</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Brown</td>
+<td style="text-align: center;">Tapering</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Brown</td>
+<td style="text-align: center;">Enlarging</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Brown</td>
+<td style="text-align: center;">Enlarging</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Brown</td>
+<td style="text-align: center;">Enlarging</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Brown</td>
+<td style="text-align: center;">Tapering</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Red</td>
+<td style="text-align: center;">Tapering</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Red</td>
+<td style="text-align: center;">Enlarging</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Brown</td>
+<td style="text-align: center;">Enlarging</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Red</td>
+<td style="text-align: center;">Tapering</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Brown</td>
+<td style="text-align: center;">Enlarging</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>You have 10 examples of mushrooms. For each example, you have
+<ul>
+<li>Three features
+<ul>
+<li>Cap Color (<code>Brown</code> or <code>Red</code>),</li>
+<li>Stalk Shape (<code>Tapering (as in \/)</code> or <code>Enlarging (as in /\)</code>), and</li>
+<li>Solitary (<code>Yes</code> or <code>No</code>)</li>
+</ul></li>
+<li>Label
+<ul>
+<li>Edible (<code>1</code> indicating yes or <code>0</code> indicating poisonous)</li>
+</ul></li>
+</ul></li>
+</ul>
+<section id="one-hot-encoded-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="one-hot-encoded-dataset">One hot encoded dataset</h4>
+<p>For ease of implementation, we have one-hot encoded the features (turned them into 0 or 1 valued features)</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Brown Cap</th>
+<th style="text-align: center;">Tapering Stalk Shape</th>
+<th style="text-align: center;">Solitary</th>
+<th style="text-align: center;">Edible</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Therefore, - <code>X_train</code> contains three features for each example - Brown Color (A value of <code>1</code> indicates “Brown” cap color and <code>0</code> indicates “Red” cap color) - Tapering Shape (A value of <code>1</code> indicates “Tapering Stalk Shape” and <code>0</code> indicates “Enlarging” stalk shape) - Solitary (A value of <code>1</code> indicates “Yes” and <code>0</code> indicates “No”)</p>
+<ul>
+<li><code>y_train</code> is whether the mushroom is edible
+<ul>
+<li><code>y = 1</code> indicates edible</li>
+<li><code>y = 0</code> indicates poisonous</li>
+</ul></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">X_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>],[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>],[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>],[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>],[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>],[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>],[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>],[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>],[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>],[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]])</span>
+<span id="cb1-2">y_train <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>])</span></code></pre></div></div>
+</section>
+</section>
+<section id="decision-tree" class="level2">
+<h2 class="anchored" data-anchor-id="decision-tree">Decision Tree</h2>
+<ul>
+<li>Steps for building a decision tree are as follows:
+<ul>
+<li>Start with all examples at the root node</li>
+<li>Calculate information gain for splitting on all possible features, and pick the one with the highest information gain</li>
+<li>Split dataset according to the selected feature, and create left and right branches of the tree</li>
+<li>Keep repeating splitting process until stopping criteria is met</li>
+</ul></li>
+<li>In this tutorial, we’ll implement the following functions, which will let you split a node into left and right branches using the feature with the highest information gain
+<ul>
+<li>Calculate the entropy at a node</li>
+<li>Split the dataset at a node into left and right branches based on a given feature</li>
+<li>Calculate the information gain from splitting on a given feature</li>
+<li>Choose the feature that maximizes information gain</li>
+</ul></li>
+</ul>
+</section>
+<section id="calculate-entropy" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-entropy">Calculate entropy</h2>
+<p>First, we’ll write a helper function called <code>compute_entropy</code> that computes the entropy (measure of impurity) at a node. - The function takes in a numpy array (<code>y</code>) that indicates whether the examples in that node are edible (<code>1</code>) or poisonous(<code>0</code>)</p>
+<p>Complete the <code>compute_entropy()</code> function below to: * Compute <img src="https://latex.codecogs.com/png.latex?p_1">, which is the fraction of examples that are edible (i.e.&nbsp;have value = <code>1</code> in <code>y</code>) * The entropy is then calculated as</p>
+<p><img src="https://latex.codecogs.com/png.latex?H(p_1)%20=%20-p_1%20%5Ctext%7Blog%7D_2(p_1)%20-%20(1-%20p_1)%20%5Ctext%7Blog%7D_2(1-%20p_1)"> * Note * The log is calculated with base <img src="https://latex.codecogs.com/png.latex?2"> * For implementation purposes, <img src="https://latex.codecogs.com/png.latex?0%5Ctext%7Blog%7D_2(0)%20=%200">. That is, if <code>p_1 = 0</code> or <code>p_1 = 1</code>, set the entropy to <code>0</code> * Make sure to check that the data at a node is not empty (i.e.&nbsp;<code>len(y) != 0</code>). Return <code>0</code> if it is</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> compute_entropy(y):</span>
+<span id="cb2-2">    entropy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.</span></span>
+<span id="cb2-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(y) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb2-4">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Fraction of positive examples (label = 1)</span></span>
+<span id="cb2-5">        p1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(y[y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(y)</span>
+<span id="cb2-6"></span>
+<span id="cb2-7">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Handle edge cases where p1 = 0 or 1 (avoid log(0))</span></span>
+<span id="cb2-8">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> p1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> p1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:</span>
+<span id="cb2-9">            entropy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> np.log2(p1) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> p1) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> np.log2(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> p1)</span>
+<span id="cb2-10">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb2-11">            entropy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.</span></span>
+<span id="cb2-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> entropy</span></code></pre></div></div>
+<section id="split-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="split-dataset">Split dataset</h3>
+<p>Next, we’ll write a helper function called <code>split_dataset</code> that takes in the data at a node and a feature to split on and splits it into left and right branches. Later in the lab, you’ll implement code to calculate how good the split is.</p>
+<ul>
+<li>The function takes in the training data, the list of indices of data points at that node, along with the feature to split on.</li>
+<li>It splits the data and returns the subset of indices at the left and the right branch.</li>
+<li>For example, say we’re starting at the root node (so <code>node_indices = [0,1,2,3,4,5,6,7,8,9]</code>), and we chose to split on feature <code>0</code>, which is whether or not the example has a brown cap.
+<ul>
+<li>The output of the function is then, <code>left_indices = [0,1,2,3,4,7,9]</code> (data points with brown cap) and <code>right_indices = [5,6,8]</code> (data points without a brown cap)</li>
+</ul></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> split_dataset(X, node_indices, feature):</span>
+<span id="cb3-2">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># You need to return the following variables correctly</span></span>
+<span id="cb3-3">        left_indices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb3-4">        right_indices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb3-5">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Go through the indices of examples at that node</span></span>
+<span id="cb3-6">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> node_indices:</span>
+<span id="cb3-7">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Your code here to check if the value of X at that index for the feature is 1</span></span>
+<span id="cb3-8">                left_indices.append(i)</span>
+<span id="cb3-9">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb3-10">                right_indices.append(i)</span>
+<span id="cb3-11">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> left_indices, right_indices</span></code></pre></div></div>
+</section>
+<section id="calculate-information-gain" class="level3">
+<h3 class="anchored" data-anchor-id="calculate-information-gain">Calculate information gain</h3>
+<p>Next, we’ll write a function called <code>information_gain</code> that takes in the training data, the indices at a node and a feature to split on and returns the information gain from the split.</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Ctext%7BInformation%20Gain%7D%20=%20H(p_1%5E%5Ctext%7Bnode%7D)-%20(w%5E%7B%5Ctext%7Bleft%7D%7DH(p_1%5E%5Ctext%7Bleft%7D)%20+%20w%5E%7B%5Ctext%7Bright%7D%7DH(p_1%5E%5Ctext%7Bright%7D))"></p>
+<p>where - <img src="https://latex.codecogs.com/png.latex?H(p_1%5E%5Ctext%7Bnode%7D)"> is entropy at the node - <img src="https://latex.codecogs.com/png.latex?H(p_1%5E%5Ctext%7Bleft%7D)"> and <img src="https://latex.codecogs.com/png.latex?H(p_1%5E%5Ctext%7Bright%7D)"> are the entropies at the left and the right branches resulting from the split - <img src="https://latex.codecogs.com/png.latex?w%5E%7B%5Ctext%7Bleft%7D%7D"> and <img src="https://latex.codecogs.com/png.latex?w%5E%7B%5Ctext%7Bright%7D%7D"> are the proportion of examples at the left and right branch, respectively</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> compute_information_gain(X, y, node_indices, feature):</span>
+<span id="cb4-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Split dataset</span></span>
+<span id="cb4-3">    left_indices, right_indices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> split_dataset(X, node_indices, feature)</span>
+<span id="cb4-4"></span>
+<span id="cb4-5">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Extract data for node and its branches</span></span>
+<span id="cb4-6">    y_node <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> y[node_indices]</span>
+<span id="cb4-7">    y_left <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> y[left_indices]</span>
+<span id="cb4-8">    y_right <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> y[right_indices]</span>
+<span id="cb4-9">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Entropy at the current node</span></span>
+<span id="cb4-10">    H_node <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> compute_entropy(y_node)</span>
+<span id="cb4-11"></span>
+<span id="cb4-12">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Entropy at left and right branches</span></span>
+<span id="cb4-13">    H_left <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> compute_entropy(y_left)</span>
+<span id="cb4-14">    H_right <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> compute_entropy(y_right)</span>
+<span id="cb4-15"></span>
+<span id="cb4-16">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Compute proportions of samples on each side</span></span>
+<span id="cb4-17">    w_left <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(y_left) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(y_node)</span>
+<span id="cb4-18">    w_right <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(y_right) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(y_node)</span>
+<span id="cb4-19"></span>
+<span id="cb4-20">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Compute information gain</span></span>
+<span id="cb4-21">    information_gain <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> H_node <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (w_left <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> H_left <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> w_right <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> H_right)</span>
+<span id="cb4-22">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> information_gain</span></code></pre></div></div>
+</section>
+<section id="get-best-split" class="level3">
+<h3 class="anchored" data-anchor-id="get-best-split">Get best split</h3>
+<p>Now let’s write a function to get the best feature to split on by computing the information gain from each feature as we did above and returning the feature that gives the maximum information gain</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> get_best_split(X, y, node_indices):</span>
+<span id="cb5-2">    num_features <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> X.shape[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]</span>
+<span id="cb5-3">    best_feature <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb5-4">    max_info_gain <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># keep track of best score</span></span>
+<span id="cb5-5"></span>
+<span id="cb5-6">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> feature <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(num_features):</span>
+<span id="cb5-7">        info_gain <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> compute_information_gain(X, y, node_indices, feature)</span>
+<span id="cb5-8"></span>
+<span id="cb5-9">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> info_gain <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> max_info_gain:</span>
+<span id="cb5-10">            max_info_gain <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> info_gain</span>
+<span id="cb5-11">            best_feature <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> feature</span>
+<span id="cb5-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> best_feature</span></code></pre></div></div>
+</section>
+<section id="building-the-tree" class="level3">
+<h3 class="anchored" data-anchor-id="building-the-tree">Building the tree</h3>
+<p>In this section, we use the functions we implemented above to generate a decision tree by successively picking the best feature to split on until we reach the stopping criteria (maximum depth is 2).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Not graded</span></span>
+<span id="cb6-2">tree <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb6-3"></span>
+<span id="cb6-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> build_tree_recursive(X, y, node_indices, branch_name, max_depth, current_depth):</span>
+<span id="cb6-5">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Maximum depth reached - stop splitting</span></span>
+<span id="cb6-6">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> current_depth <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> max_depth:</span>
+<span id="cb6-7">        formatting <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>current_depth <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>current_depth</span>
+<span id="cb6-8">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(formatting, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%s</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> leaf node with indices"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> branch_name, node_indices)</span>
+<span id="cb6-9">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span></span>
+<span id="cb6-10"></span>
+<span id="cb6-11">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Otherwise, get best split and split the data</span></span>
+<span id="cb6-12">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get the best feature and threshold at this node</span></span>
+<span id="cb6-13">    best_feature <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> get_best_split(X, y, node_indices)</span>
+<span id="cb6-14"></span>
+<span id="cb6-15">    formatting <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>current_depth</span>
+<span id="cb6-16">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%s</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> Depth </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%d</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%s</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">: Split on feature: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%d</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> (formatting, current_depth, branch_name, best_feature))</span>
+<span id="cb6-17"></span>
+<span id="cb6-18">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Split the dataset at the best feature</span></span>
+<span id="cb6-19">    left_indices, right_indices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> split_dataset(X, node_indices, best_feature)</span>
+<span id="cb6-20">    tree.append((left_indices, right_indices, best_feature))</span>
+<span id="cb6-21"></span>
+<span id="cb6-22">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># continue splitting the left and the right child. Increment current depth</span></span>
+<span id="cb6-23">    build_tree_recursive(X, y, left_indices, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Left"</span>, max_depth, current_depth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb6-24">    build_tree_recursive(X, y, right_indices, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Right"</span>, max_depth, current_depth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span></code></pre></div></div>
+<p>Usage example:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">build_tree_recursive(X_train, y_train, root_indices, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Root"</span>, max_depth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, current_depth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span></code></pre></div></div>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>theory</category>
+  <category>code</category>
+  <guid>https://darkhanislam.github.io/ml-portfolio/posts/post4/</guid>
+  <pubDate>Sat, 25 Oct 2025 19:00:00 GMT</pubDate>
+  <media:content url="https://darkhanislam.github.io/ml-portfolio/posts/post4/main.jpeg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Welcome To My Blog</title>
@@ -45,14 +2260,11 @@
 
 
 
-<p>This is the first post in a Quarto blog. Welcome!</p>
-<p><img src="https://darkhanislam.github.io/ml-portfolio/posts/welcome/thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+<p>My name is Darkhan Islam. I am first-year master at Politecnico di Milano studying Computer Science &amp; Engineering. I’m Machine Learning Engineer.</p>
 
 
 
  ]]></description>
-  <category>tips</category>
   <guid>https://darkhanislam.github.io/ml-portfolio/posts/welcome/</guid>
   <pubDate>Thu, 02 Oct 2025 19:00:00 GMT</pubDate>
 </item>

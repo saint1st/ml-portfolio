@@ -3,7 +3,7 @@ project:
   output-dir: _site
 
 website:
-  title: "Darkhan — Portfolio"
+  title: "Darkhan — Personal website"
   site-url: https://darkhanislam.github.io/ml-portfolio
   description: "Algorithms, experiments, and projects."
   favicon: images/favicon.png
@@ -23,13 +23,13 @@ website:
         href: https://www.linkedin.com/in/dmazhi/
   page-footer:
     left: "© saint1st"
-    right: "Built with Quarto"
+    right: ""
   search: true
 
 format:
   html:
     theme:
-      light: flatly
+      light: cosmo
       dark: darkly
     highlight-style: atom-one
     toc: true

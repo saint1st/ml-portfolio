@@ -5,6 +5,9 @@
     ],
     "projects.qmd": [
       "projects"
+    ],
+    "posts\\post-with-code\\index.qmd": [
+      "posts"
     ]
   }
 }

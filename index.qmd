@@ -4,9 +4,9 @@ listing:
   contents: posts
   type: default
   sort: "date desc"
-  fields: [date, title, categories, description, reading-time]
-  filter-ui: true     # quick filters by tag/category
-  feed: true
+  fields: [image, date, title, categories, description, reading-time]
+  filter-ui: false     # quick filters by tag/category
+  sort-ui: false
 page-layout: article
 ---
 

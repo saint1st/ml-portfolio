@@ -1,0 +1,144 @@
+---
+title: "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy"
+subtitle: "Statistical Modeling and Spatial Clustering in Stage III NSCLC"
+date: 2025-07-23
+categories: [Medical Imaging, Radiotherapy, Survival Analysis, Statistics]
+image: cancer.jpeg
+title-block-banner: true
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+---
+
+## 🩻 Overview
+
+Lung cancer remains among the most lethal malignancies — only about **one in four patients** survive five years.
+For those with **locally advanced Stage III NSCLC**, radiotherapy (RT) is a primary treatment, yet cardiac exposure during RT may silently shape survival outcomes.
+
+This project analyzes how **spatial dose distribution** to the heart correlates with **2-year overall survival (OS)**.
+Using **voxel-wise statistical modeling**, **unsupervised clustering**, and **advanced visualization**, we identify cardiac regions whose radiation dose patterns most strongly associate with patient outcomes.
+
+---
+
+## ⚠️ Research Challenge
+
+Radiotherapy aims to
+– **maximize dose** to tumor tissue,
+– **minimize dose** to healthy organs.
+
+However, even small incidental doses to the **heart and major vessels** can increase mortality risk.
+Our working hypothesis: *specific cardiac subregions receiving higher dose may correlate with lower OS.*
+
+---
+
+## 🧬 Dataset
+
+- **Institution:** IRCCS Istituto Nazionale dei Tumori di Milano
+- **Patients:** 321 across 5 centers
+- **Modalities:** DICOM CT scans + RT dose maps
+- **Outcome:** 2-year overall survival
+- **Features:** 54 clinical and treatment variables
+
+::: {.details title="Feature Groups"}
+- **Anatomic / Metabolic:** age, BMI, hypertension, KPS, smoking
+- **Cancer-Related:** stage, tumor size, site, mutations
+- **Therapy:** chemotherapy cycles, immunotherapy, machine type, EQD2 dose
+- **Outcomes:** cardiac and pulmonary events, 2-year OS
+:::
+
+---
+
+## ⚙️ Feature Engineering & Preprocessing
+
+- **Medication count:** grouped as 0 / 1 / 2 / >3 classes
+- **Therapy types:** combined target + immunotherapy into one variable
+- **Smoking:** binary encoded
+- **Performance status (KPS):** binned (≤80, 90, 100)
+- **Chemotherapy schedule:** rescaled so 0 = no therapy
+
+---
+
+## 🧪 Statistical Methods
+
+- Welch’s t-test (voxel-wise analysis)
+- Benjamini–Hochberg FDR correction
+- PCA + DBSCAN for outlier detection
+- Mean-dose voxel mapping
+
+---
+
+## 🧠 Methodology
+
+1. **Preprocess CT + dose data** into voxel grids.
+2. **Spatial registration** → map each patient onto a shared template.
+3. **Voxel-Based Analysis (VBA)** → compare dose voxels between survivors vs non-survivors.
+4. **Unsupervised clustering** → detect spatial patterns of significance.
+5. **Visualization** → render p-value and dose maps for interpretation.
+
+---
+
+## 📈 Analysis Workflow
+
+![](pipeline.jpg){fig-align="center" width="90%"}
+
+Each patient’s dose map is warped to a common template. Voxel-wise comparisons produce p-value maps that highlight regions where dose differences predict 2-year OS.
+
+---
+
+## 📊 Key Visualizations
+
+| Concept | Visualization |
+|----------|----------------|
+| **Raw Data** | ![](output.gif){width="300"} |
+| **Dose Distribution Comparison** | ![](clideo_editor_4eb173ba0818435a8c0e81e1763eefac.gif){width="300"} Shows inter-patient dose variation. |
+| **Group Dose Characteristics** | ![](charts.jpg){width="400"} Survivors show more zero-dose voxels and focused dosing. |
+| **Axial Dose Heatmap** | ![](heat.jpg){width="400"} Spatial asymmetry visible between left and right lung regions. |
+| **ROI Cropping & EQD₂ Normalization** | ![](res.jpg){width="400"} Uses α/β = 2 and 5 to adjust dose biologically. |
+| **Spatial Clustering of Significant Voxels** | ![](3d.jpg){width="450"} Clusters #39-47 align with heart substructures. |
+| **Dose & Outlier Summary** | ![](imgonline-com-ua-2to1-iJFJSxPrRf8Ad.jpg){width="400"} Histograms compare mean dose and zero-dose fraction by outcome group. |
+
+---
+
+## 🔍 Findings
+
+- Survivors → more **focused, precise dose distributions** in cardiac voxels.
+- Non-survivors → **broader exposure** and less localized energy deposition.
+- No single heart substructure fully explains the effect; patterns are spatially distributed.
+- Proper template alignment and EQD₂ correction are critical for reliable statistics.
+
+---
+
+## 🚀 Goals & Implications
+
+- Clarify mechanisms of **radiation-induced cardiac toxicity**.
+- Identify **spatial biomarkers** linked to survival.
+- Support more **personalized radiotherapy planning** by mapping risk regions within the heart.
+
+---
+
+## 🎓 Academic Collaboration
+
+![](polimi.png){width="200" align="right"}
+
+Developed within the **Applied Statistics** course at *Politecnico di Milano* (*PoliMi*, Italy).
+**Instructor:** Prof. Piercesare Secchi
+**Supervisor:** Ing. Guillaume Koechlin
+
+### Team
+- Stefano Beraldo
+- Darkhan Islam
+- Amine Ould Hocine
+- Samuel Povoa
+
+**Research Partners:** Fondazione IRCCS Istituto Nazionale dei Tumori (Milan) ![](logo.jpeg){width="100" align="right"}
+
+---
+
+## 📚 References
+
+- [McWilliam et al., *Novel Methodology to Investigate the Effect of Radiation Dose to Heart Substructures on Overall Survival* (2020)](https://pubmed.ncbi.nlm.nih.gov/32585334/)
+- Rancati et al., *SLiC Algorithm for Spatial Dose Analysis*, *Journal of the European Society for Radiotherapy and Oncology*
+
+---
