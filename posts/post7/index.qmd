@@ -1,0 +1,9 @@
+---
+title: "Image compression with K-Means"
+author: "Darkhan Islam"
+date: "2024-10-26"
+categories: [theory, code]
+image: tree.jpeg
+---
+
+

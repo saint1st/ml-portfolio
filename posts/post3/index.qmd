@@ -1,0 +1,220 @@
+---
+title: "Neural Networks for Handwritten Digit Recognition with Binary and Multiple outputs"
+author: "Darkhan Islam"
+date: "2024-10-26"
+categories: [theory, code]
+image: digit.jpeg
+---
+
+
+In this exercise, you will use a neural network to recognize the hand-written digits zero and one.
+
+```python
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+import matplotlib.pyplot as plt
+from autils import *
+%matplotlib inline
+
+import logging
+logging.getLogger("tensorflow").setLevel(logging.ERROR)
+tf.autograph.set_verbosity(0)
+```
+
+### Problem Statement
+
+In this exercise, you will use a neural network to recognize two handwritten digits, zero and one. This is a binary classification task. Automated handwritten digit recognition is widely used today - from recognizing zip codes (postal codes) on mail envelopes to recognizing amounts written on bank checks. You will extend this network to recognize all 10 digits (0-9) in a future assignment.
+
+This exercise will show you how the methods you have learned can be used for this classification task.
+
+### Dataset
+
+You will start by loading the dataset for this task.
+- The `load_data()` function shown below loads the data into variables `X` and `y`
+
+
+- The data set contains 1000 training examples of handwritten digits $^1$, here limited to zero and one.
+
+    - Each training example is a 20-pixel x 20-pixel grayscale image of the digit.
+        - Each pixel is represented by a floating-point number indicating the grayscale intensity at that location.
+        - The 20 by 20 grid of pixels is “unrolled” into a 400-dimensional vector.
+        - Each training example becomes a single row in our data matrix `X`.
+        - This gives us a 1000 x 400 matrix `X` where every row is a training example of a handwritten digit image.
+
+$$X =
+\left(\begin{array}{cc}
+--- (x^{(1)}) --- \\
+--- (x^{(2)}) --- \\
+\vdots \\
+--- (x^{(m)}) ---
+\end{array}\right)$$
+
+- The second part of the training set is a 1000 x 1 dimensional vector `y` that contains labels for the training set
+    - `y = 0` if the image is of the digit `0`, `y = 1` if the image is of the digit `1`.
+
+$^1$<sub> This is a subset of the MNIST handwritten digit dataset (http://yann.lecun.com/exdb/mnist/)</sub>
+
+
+You will begin by visualizing a subset of the training set.
+- In the cell below, the code randomly selects 64 rows from `X`, maps each row back to a 20 pixel by 20 pixel grayscale image and displays the images together.
+- The label for each image is displayed above the image
+
+```python
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+# You do not need to modify anything in this cell
+
+m, n = X.shape
+
+fig, axes = plt.subplots(8,8, figsize=(8,8))
+fig.tight_layout(pad=0.1)
+
+for i,ax in enumerate(axes.flat):
+    # Select random indices
+    random_index = np.random.randint(m)
+
+    # Select rows corresponding to the random indices and
+    # reshape the image
+    X_random_reshaped = X[random_index].reshape((20,20)).T
+
+    # Display the image
+    ax.imshow(X_random_reshaped, cmap='gray')
+
+    # Display the label above the image
+    ax.set_title(y[random_index,0])
+    ax.set_axis_off()
+```
+
+- The parameters have dimensions that are sized for a neural network with $25$ units in layer 1, $15$ units in layer 2 and $1$ output unit in layer 3.
+
+    - Recall that the dimensions of these parameters are determined as follows:
+        - If network has $s_{in}$ units in a layer and $s_{out}$ units in the next layer, then
+            - $W$ will be of dimension $s_{in} \times s_{out}$.
+            - $b$ will a vector with $s_{out}$ elements
+
+    - Therefore, the shapes of `W`, and `b`,  are
+        - layer1: The shape of `W1` is (400, 25) and the shape of `b1` is (25,)
+        - layer2: The shape of `W2` is (25, 15) and the shape of `b2` is: (15,)
+        - layer3: The shape of `W3` is (15, 1) and the shape of `b3` is: (1,)
+>**Note:** The bias vector `b` could be represented as a 1-D (n,) or 2-D (1,n) array. Tensorflow utilizes a 1-D representation and this lab will maintain that convention.
+
+# Binary output
+
+```
+model = Sequential(
+    [
+        tf.keras.Input(shape=(400,)),
+        Dense(25, activation = 'sigmoid')
+        Dense(15, activation = 'sigmoid')
+        Dense(1, activation = 'sigmoid')
+    ], name = "my_model"
+)
+```
+
+The following code will define a loss function and run gradient descent to fit the weights of the model to the training data.
+
+```
+model.compile(
+    loss=tf.keras.losses.BinaryCrossentropy(),
+    optimizer=tf.keras.optimizers.Adam(0.001),
+)
+
+model.fit(
+    X,y,
+    epochs=20
+)
+```
+Let's compare the predictions vs the labels for a random sample of 64 digits. This takes a moment to run.
+
+```
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+# You do not need to modify anything in this cell
+
+m, n = X.shape
+
+fig, axes = plt.subplots(8,8, figsize=(8,8))
+fig.tight_layout(pad=0.1,rect=[0, 0.03, 1, 0.92]) #[left, bottom, right, top]
+
+for i,ax in enumerate(axes.flat):
+    # Select random indices
+    random_index = np.random.randint(m)
+
+    # Select rows corresponding to the random indices and
+    # reshape the image
+    X_random_reshaped = X[random_index].reshape((20,20)).T
+
+    # Display the image
+    ax.imshow(X_random_reshaped, cmap='gray')
+
+    # Predict using the Neural Network
+    prediction = model.predict(X[random_index].reshape(1,400))
+    if prediction >= 0.5:
+        yhat = 1
+    else:
+        yhat = 0
+
+    # Display the label above the image
+    ax.set_title(f"{y[random_index,0]},{yhat}")
+    ax.set_axis_off()
+fig.suptitle("Label, yhat", fontsize=16)
+plt.show()
+```
+
+# Multiple output
+
+Now we will extend that to multiclass classification. This will utilize the softmax activation.
+
+Numerical stability is improved if the softmax is grouped with the loss function rather than the output layer during training. This has implications when *building* the model and *using* the model.
+Building:
+* The final Dense layer should use a 'linear' activation. This is effectively no activation.
+* The `model.compile` statement will indicate this by including `from_logits=True`.
+`loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True) `
+* This does not impact the form of the target. In the case of SparseCategorialCrossentropy, the target is the expected digit, 0-9.
+
+Using the model:
+* The outputs are not probabilities. If output probabilities are desired, apply a softmax function.
+
+
+```python
+tf.random.set_seed(1234)
+model = Sequential(
+    [
+        tf.keras.Input(shape=(400,)),     # @REPLACE
+        Dense(25, activation='relu', name = "L1"), # @REPLACE
+        Dense(15, activation='relu',  name = "L2"), # @REPLACE
+        Dense(10, activation='linear', name = "L3"),  # @REPLACE
+    ], name = "my_model"
+)
+```
+
+```python
+model.compile(
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+)
+
+history = model.fit(
+    X,y,
+    epochs=40
+)
+
+prediction = model.predict(image_of_two.reshape(1,400))  # prediction
+
+print(f" predicting a Two: \n{prediction}")
+print(f" Largest Prediction index: {np.argmax(prediction)}")
+```
+
+To return an integer representing the predicted target, you want the index of the largest probability. This is accomplished with the Numpy [argmax](https://numpy.org/doc/stable/reference/generated/numpy.argmax.html) function.
+
+```python
+yhat = np.argmax(prediction_p)
+
+print(f"np.argmax(prediction_p): {yhat}")
+```
+
+
+
+

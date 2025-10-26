@@ -1,0 +1,235 @@
+---
+title: "Building a Decision Tree from scratch"
+author: "Darkhan Islam"
+date: "2024-10-26"
+categories: [theory, code]
+image: tree.jpeg
+---
+
+
+### Problem Statement
+
+Suppose you are starting a company that grows and sells wild mushrooms.
+- Since not all mushrooms are edible, you'd like to be able to tell whether a given mushroom is edible or poisonous based on it's physical attributes
+- You have some existing data that you can use for this task.
+
+Can you use the data to help you identify which mushrooms can be sold safely?
+
+Note: The dataset used is for illustrative purposes only. It is not meant to be a guide on identifying edible mushrooms.
+
+
+### Dataset
+
+You will start by loading the dataset for this task. The dataset you have collected is as follows:
+
+| Cap Color | Stalk Shape | Solitary | Edible |
+|:---------:|:-----------:|:--------:|:------:|
+|   Brown   |   Tapering  |    Yes   |    1   |
+|   Brown   |  Enlarging  |    Yes   |    1   |
+|   Brown   |  Enlarging  |    No    |    0   |
+|   Brown   |  Enlarging  |    No    |    0   |
+|   Brown   |   Tapering  |    Yes   |    1   |
+|    Red    |   Tapering  |    Yes   |    0   |
+|    Red    |  Enlarging  |    No    |    0   |
+|   Brown   |  Enlarging  |    Yes   |    1   |
+|    Red    |   Tapering  |    No    |    1   |
+|   Brown   |  Enlarging  |    No    |    0   |
+
+
+-  You have 10 examples of mushrooms. For each example, you have
+    - Three features
+        - Cap Color (`Brown` or `Red`),
+        - Stalk Shape (`Tapering (as in \/)` or `Enlarging (as in /\)`), and
+        - Solitary (`Yes` or `No`)
+    - Label
+        - Edible (`1` indicating yes or `0` indicating poisonous)
+
+#### One hot encoded dataset
+For ease of implementation, we have one-hot encoded the features (turned them into 0 or 1 valued features)
+
+| Brown Cap | Tapering Stalk Shape | Solitary | Edible |
+|:---------:|:--------------------:|:--------:|:------:|
+|     1     |           1          |     1    |    1   |
+|     1     |           0          |     1    |    1   |
+|     1     |           0          |     0    |    0   |
+|     1     |           0          |     0    |    0   |
+|     1     |           1          |     1    |    1   |
+|     0     |           1          |     1    |    0   |
+|     0     |           0          |     0    |    0   |
+|     1     |           0          |     1    |    1   |
+|     0     |           1          |     0    |    1   |
+|     1     |           0          |     0    |    0   |
+
+
+Therefore,
+- `X_train` contains three features for each example
+    - Brown Color (A value of `1` indicates "Brown" cap color and `0` indicates "Red" cap color)
+    - Tapering Shape (A value of `1` indicates "Tapering Stalk Shape" and `0` indicates "Enlarging" stalk shape)
+    - Solitary  (A value of `1` indicates "Yes" and `0` indicates "No")
+
+- `y_train` is whether the mushroom is edible
+    - `y = 1` indicates edible
+    - `y = 0` indicates poisonous
+
+```python
+X_train = np.array([[1,1,1],[1,0,1],[1,0,0],[1,0,0],[1,1,1],[0,1,1],[0,0,0],[1,0,1],[0,1,0],[1,0,0]])
+y_train = np.array([1,1,0,0,1,0,0,1,1,0])
+```
+
+## Decision Tree
+
+- Steps for building a decision tree are as follows:
+    - Start with all examples at the root node
+    - Calculate information gain for splitting on all possible features, and pick the one with the highest information gain
+    - Split dataset according to the selected feature, and create left and right branches of the tree
+    - Keep repeating splitting process until stopping criteria is met
+
+
+- In this tutorial, we'll implement the following functions, which will let you split a node into left and right branches using the feature with the highest information gain
+    - Calculate the entropy at a node
+    - Split the dataset at a node into left and right branches based on a given feature
+    - Calculate the information gain from splitting on a given feature
+    - Choose the feature that maximizes information gain
+
+## Calculate entropy
+
+First, we'll write a helper function called `compute_entropy` that computes the entropy (measure of impurity) at a node.
+- The function takes in a numpy array (`y`) that indicates whether the examples in that node are edible (`1`) or poisonous(`0`)
+
+Complete the `compute_entropy()` function below to:
+* Compute $p_1$, which is the fraction of examples that are edible (i.e. have value = `1` in `y`)
+* The entropy is then calculated as
+
+$$H(p_1) = -p_1 \text{log}_2(p_1) - (1- p_1) \text{log}_2(1- p_1)$$
+* Note
+    * The log is calculated with base $2$
+    * For implementation purposes, $0\text{log}_2(0) = 0$. That is, if `p_1 = 0` or `p_1 = 1`, set the entropy to `0`
+    * Make sure to check that the data at a node is not empty (i.e. `len(y) != 0`). Return `0` if it is
+
+```python
+def compute_entropy(y):
+    entropy = 0.
+    if len(y) != 0:
+        # Fraction of positive examples (label = 1)
+        p1 = len(y[y == 1]) / len(y)
+
+        # Handle edge cases where p1 = 0 or 1 (avoid log(0))
+        if p1 != 0 and p1 != 1:
+            entropy = -p1 * np.log2(p1) - (1 - p1) * np.log2(1 - p1)
+        else:
+            entropy = 0.
+    return entropy
+```
+
+### Split dataset
+
+Next, we'll write a helper function called `split_dataset` that takes in the data at a node and a feature to split on and splits it into left and right branches. Later in the lab, you'll implement code to calculate how good the split is.
+
+- The function takes in the training data, the list of indices of data points at that node, along with the feature to split on.
+- It splits the data and returns the subset of indices at the left and the right branch.
+- For example, say we're starting at the root node (so `node_indices = [0,1,2,3,4,5,6,7,8,9]`), and we chose to split on feature `0`, which is whether or not the example has a brown cap.
+    - The output of the function is then, `left_indices = [0,1,2,3,4,7,9]` (data points with brown cap) and `right_indices = [5,6,8]` (data points without a brown cap)
+
+```python
+def split_dataset(X, node_indices, feature):
+        # You need to return the following variables correctly
+        left_indices = []
+        right_indices = []
+        # Go through the indices of examples at that node
+        for i in node_indices:
+            if # Your code here to check if the value of X at that index for the feature is 1
+                left_indices.append(i)
+            else:
+                right_indices.append(i)
+    return left_indices, right_indices
+```
+
+### Calculate information gain
+
+Next, we'll write a function called `information_gain` that takes in the training data, the indices at a node and a feature to split on and returns the information gain from the split.
+
+$$\text{Information Gain} = H(p_1^\text{node})- (w^{\text{left}}H(p_1^\text{left}) + w^{\text{right}}H(p_1^\text{right}))$$
+
+where
+- $H(p_1^\text{node})$ is entropy at the node
+- $H(p_1^\text{left})$ and $H(p_1^\text{right})$ are the entropies at the left and the right branches resulting from the split
+- $w^{\text{left}}$ and $w^{\text{right}}$ are the proportion of examples at the left and right branch, respectively
+
+```python
+def compute_information_gain(X, y, node_indices, feature):
+    # Split dataset
+    left_indices, right_indices = split_dataset(X, node_indices, feature)
+
+    # Extract data for node and its branches
+    y_node = y[node_indices]
+    y_left = y[left_indices]
+    y_right = y[right_indices]
+    # Entropy at the current node
+    H_node = compute_entropy(y_node)
+
+    # Entropy at left and right branches
+    H_left = compute_entropy(y_left)
+    H_right = compute_entropy(y_right)
+
+    # Compute proportions of samples on each side
+    w_left = len(y_left) / len(y_node)
+    w_right = len(y_right) / len(y_node)
+
+    # Compute information gain
+    information_gain = H_node - (w_left * H_left + w_right * H_right)
+    return information_gain
+```
+
+### Get best split
+Now let's write a function to get the best feature to split on by computing the information gain from each feature as we did above and returning the feature that gives the maximum information gain
+
+```python
+def get_best_split(X, y, node_indices):
+    num_features = X.shape[1]
+    best_feature = -1
+    max_info_gain = -1  # keep track of best score
+
+    for feature in range(num_features):
+        info_gain = compute_information_gain(X, y, node_indices, feature)
+
+        if info_gain > max_info_gain:
+            max_info_gain = info_gain
+            best_feature = feature
+    return best_feature
+```
+
+### Building the tree
+
+In this section, we use the functions we implemented above to generate a decision tree by successively picking the best feature to split on until we reach the stopping criteria (maximum depth is 2).
+
+```python
+# Not graded
+tree = []
+
+def build_tree_recursive(X, y, node_indices, branch_name, max_depth, current_depth):
+    # Maximum depth reached - stop splitting
+    if current_depth == max_depth:
+        formatting = " "*current_depth + "-"*current_depth
+        print(formatting, "%s leaf node with indices" % branch_name, node_indices)
+        return
+
+    # Otherwise, get best split and split the data
+    # Get the best feature and threshold at this node
+    best_feature = get_best_split(X, y, node_indices)
+
+    formatting = "-"*current_depth
+    print("%s Depth %d, %s: Split on feature: %d" % (formatting, current_depth, branch_name, best_feature))
+
+    # Split the dataset at the best feature
+    left_indices, right_indices = split_dataset(X, node_indices, best_feature)
+    tree.append((left_indices, right_indices, best_feature))
+
+    # continue splitting the left and the right child. Increment current depth
+    build_tree_recursive(X, y, left_indices, "Left", max_depth, current_depth+1)
+    build_tree_recursive(X, y, right_indices, "Right", max_depth, current_depth+1)
+```
+
+Usage example:
+```python
+build_tree_recursive(X_train, y_train, root_indices, "Root", max_depth=2, current_depth=0)
+```
