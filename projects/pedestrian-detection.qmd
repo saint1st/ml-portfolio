@@ -1,0 +1,130 @@
+---
+title: "Low-Light Pedestrian Detection"
+subtitle: "YOLOv8 + Leak-Free Data Split + WBF Ensemble"
+date: 2024-10-26
+categories: [Computer Vision, Object Detection, Deep Learning]
+image: images/good2.png
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+---
+
+## Overview
+
+Pedestrian detection in **low-light conditions** is notoriously difficult — tiny, noisy, and poorly labeled targets often fool even modern detectors.  
+This project tackles that challenge using **YOLOv8** models trained on the **Find Person in the Dark (LLVIP subset)** Kaggle dataset, with an emphasis on *data hygiene and ensemble precision*.
+
+By designing a **scene-aware, leak-free data split**, optimizing inference parameters, and combining detectors via **Weighted Box Fusion (WBF)**, I achieved consistent improvements over baseline YOLOv8 models.
+
+> **Key Insight:** Clean validation splits and tuned inference parameters outperform brute-force augmentation and model scaling.
+
+---
+
+## Dataset & Split Strategy
+
+Dataset: [Find Person in the Dark – Kaggle](https://www.kaggle.com/competitions/find-person-in-the-dark/overview)  
+- 15,030 visible-light images (11,782 training, 3,248 testing)  
+- Subset of LLVIP: *A Visible-Infrared Paired Dataset for Low-Light Vision*
+
+### Leak-Free Split
+To prevent near-duplicate leakage:
+- Grouped similar frames via **perceptual hash (pHash)**
+- Split by group to ensure scene disjointness
+- Verified with visual similarity inspection
+
+---
+
+## Results Summary
+
+| Model | AP@0.5 | AP@0.75 | Final Score (↓ better) |
+| :--- | :---: | :---: | :---: |
+| **WBF Ensemble (Best)** | 0.8772 | 0.5634 | **0.2797** |
+| **YOLOv8s Fine-Tuned** | 0.9025 | 0.5348 | 0.2813 |
+| YOLOv8s Heavy Aug | 0.8800 | 0.5071 | 0.3064 |
+| YOLOv8n Baseline | 0.8468 | 0.4839 | 0.3347 |
+
+> The best results came from the **ensemble**, which fused predictions from three cleanly trained YOLOv8 variants.  
+> Despite slightly lower AP@0.5, the ensemble yielded a better final score — showing tighter localization and fewer false positives.
+
+---
+
+## Model Evolution
+
+::: {.details title="Model #1 — YOLOv8n Baseline"}
+- 50 epochs, `imgsz=640`, `batch=16`
+- Served as control; trained on random split  
+Result: `AP@0.5=0.8468`, Score `0.3347`
+:::
+
+::: {.details title="Model #2 — YOLOv8s + CLAHE + Heavy Augmentation"}
+- Added **CLAHE preprocessing**, high `hsv_v`, strong mosaic  
+- Improved recall, but noisy augmentations hurt stability  
+Result: `AP@0.5=0.8800`, Score `0.3064`
+:::
+
+::: {.details title="Model #5 — Fine-Tuned YOLOv8s + Leak-Free Split"}
+- Fine-tuned from Model #2 on clean data  
+- Tuned `conf=0.10`, `iou=0.55`  
+Result: `AP@0.5=0.9025`, `AP@0.75=0.5348`, Score `0.2813`
+:::
+
+---
+
+## Ensemble Method (Weighted Boxes Fusion)
+
+A multi-model **fusion pipeline** combining predictions based on overlap consensus.  
+Steps included:
+1. Per-model JSON export  
+2. Weighted Boxes Fusion  
+3. Post-filtering & NMS  
+4. Grid search over IoU / score / consensus thresholds  
+5. Evaluation at IoU 0.5 and 0.75  
+
+**Best configuration:**
+IOU_THR=0.65
+SKIP_BOX_THR=0.005
+FINAL_SCORE_THR=0.20
+FINAL_NMS_IOU=0.55
+MIN_MODELS=1
+MAX_DETS=5
+
+---
+
+## Qualitative Results
+
+![](good1.png){fig-align="center" width="70%"}
+
+Green = ground truth, Red = predictions.
+
+Common patterns:
+- **Strong TPs:** Clear, high-confidence boxes  
+- **FPs:** Hallucinations on bright shadows or tree trunks  
+- **FNs:** Tiny or occluded figures in dark corners  
+
+---
+
+## Lessons Learned
+
+1. **Data quality > fancy models** — leak-free splits alone gave >10% mAP boost.  
+2. **Inference tuning pays off** — adjusting confidence/IoU thresholds improved Kaggle score by ~5%.  
+3. **WBF outperforms naive NMS** — reduces duplicates, stabilizes localization.  
+4. **Augmentation isn’t magic** — aggressive color jitter or CLAHE can make labels inconsistent.  
+
+---
+
+## Next Steps
+
+- Try **YOLOv11-s/l** and **RT-DETR-Tiny** for comparison.  
+- Implement **soft-NMS** and **TTA** fusion.  
+- Explore **confidence calibration** and **tiling** for high-res frames.
+
+---
+
+## Repository
+
+Full code, scripts, and analysis:  
+[**GitHub – lowlight-yolov8-wbf**](https://github.com/saint1st/pedestrian-detection/tree/main)
+
+---
