@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-07-23">
 
-<title>lung-cancer – Darkhan — Portfolio</title>
+<title>Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy – Darkhan — Personal website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -43,9 +44,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-a14e345711173c227b21482e2eb4cc70.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-121593df2a75119923bedf1cd8a03e8e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9590fed6635d6ee62f9d6d89d7146614.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/bootstrap/bootstrap-dark-6fa8e29006c77475f08b454ece139f94.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-121593df2a75119923bedf1cd8a03e8e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9590fed6635d6ee62f9d6d89d7146614.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -247,7 +248,7 @@ ul.task-list li input[type="checkbox"] {
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -256,7 +257,7 @@ ul.task-list li input[type="checkbox"] {
     <img src="../images/logo.svg" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Darkhan — Portfolio</span>
+    <span class="navbar-title">Darkhan — Personal website</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -298,21 +299,233 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy</h1>
+            <p class="subtitle lead">Statistical Modeling and Spatial Clustering in Stage III NSCLC</p>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Medical Imaging</div>
+                <div class="quarto-category">Radiotherapy</div>
+                <div class="quarto-category">Survival Analysis</div>
+                <div class="quarto-category">Statistics</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 23, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">🩻 Overview</a></li>
+  <li><a href="#research-challenge" id="toc-research-challenge" class="nav-link" data-scroll-target="#research-challenge">⚠️ Research Challenge</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">🧬 Dataset</a></li>
+  <li><a href="#feature-engineering-preprocessing" id="toc-feature-engineering-preprocessing" class="nav-link" data-scroll-target="#feature-engineering-preprocessing">⚙️ Feature Engineering &amp; Preprocessing</a></li>
+  <li><a href="#statistical-methods" id="toc-statistical-methods" class="nav-link" data-scroll-target="#statistical-methods">🧪 Statistical Methods</a></li>
+  <li><a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology">🧠 Methodology</a></li>
+  <li><a href="#analysis-workflow" id="toc-analysis-workflow" class="nav-link" data-scroll-target="#analysis-workflow">📈 Analysis Workflow</a></li>
+  <li><a href="#key-visualizations" id="toc-key-visualizations" class="nav-link" data-scroll-target="#key-visualizations">📊 Key Visualizations</a></li>
+  <li><a href="#findings" id="toc-findings" class="nav-link" data-scroll-target="#findings">🔍 Findings</a></li>
+  <li><a href="#goals-implications" id="toc-goals-implications" class="nav-link" data-scroll-target="#goals-implications">🚀 Goals &amp; Implications</a></li>
+  <li><a href="#academic-collaboration" id="toc-academic-collaboration" class="nav-link" data-scroll-target="#academic-collaboration">🎓 Academic Collaboration</a>
+  <ul class="collapse">
+  <li><a href="#team" id="toc-team" class="nav-link" data-scroll-target="#team">Team</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">📚 References</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
 
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">🩻 Overview</h2>
+<p>Lung cancer remains among the most lethal malignancies — only about <strong>one in four patients</strong> survive five years. For those with <strong>locally advanced Stage III NSCLC</strong>, radiotherapy (RT) is a primary treatment, yet cardiac exposure during RT may silently shape survival outcomes.</p>
+<p>This project analyzes how <strong>spatial dose distribution</strong> to the heart correlates with <strong>2-year overall survival (OS)</strong>. Using <strong>voxel-wise statistical modeling</strong>, <strong>unsupervised clustering</strong>, and <strong>advanced visualization</strong>, we identify cardiac regions whose radiation dose patterns most strongly associate with patient outcomes.</p>
+<hr>
+</section>
+<section id="research-challenge" class="level2">
+<h2 class="anchored" data-anchor-id="research-challenge">⚠️ Research Challenge</h2>
+<p>Radiotherapy aims to – <strong>maximize dose</strong> to tumor tissue, – <strong>minimize dose</strong> to healthy organs.</p>
+<p>However, even small incidental doses to the <strong>heart and major vessels</strong> can increase mortality risk. Our working hypothesis: <em>specific cardiac subregions receiving higher dose may correlate with lower OS.</em></p>
+<hr>
+</section>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">🧬 Dataset</h2>
+<ul>
+<li><strong>Institution:</strong> IRCCS Istituto Nazionale dei Tumori di Milano</li>
+<li><strong>Patients:</strong> 321 across 5 centers</li>
+<li><strong>Modalities:</strong> DICOM CT scans + RT dose maps</li>
+<li><strong>Outcome:</strong> 2-year overall survival</li>
+<li><strong>Features:</strong> 54 clinical and treatment variables</li>
+</ul>
+<div class="details" title="Feature Groups">
+<ul>
+<li><strong>Anatomic / Metabolic:</strong> age, BMI, hypertension, KPS, smoking</li>
+<li><strong>Cancer-Related:</strong> stage, tumor size, site, mutations</li>
+<li><strong>Therapy:</strong> chemotherapy cycles, immunotherapy, machine type, EQD2 dose</li>
+<li><strong>Outcomes:</strong> cardiac and pulmonary events, 2-year OS</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="feature-engineering-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="feature-engineering-preprocessing">⚙️ Feature Engineering &amp; Preprocessing</h2>
+<ul>
+<li><strong>Medication count:</strong> grouped as 0 / 1 / 2 / &gt;3 classes</li>
+<li><strong>Therapy types:</strong> combined target + immunotherapy into one variable</li>
+<li><strong>Smoking:</strong> binary encoded</li>
+<li><strong>Performance status (KPS):</strong> binned (≤80, 90, 100)</li>
+<li><strong>Chemotherapy schedule:</strong> rescaled so 0 = no therapy</li>
+</ul>
+<hr>
+</section>
+<section id="statistical-methods" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-methods">🧪 Statistical Methods</h2>
+<ul>
+<li>Welch’s t-test (voxel-wise analysis)</li>
+<li>Benjamini–Hochberg FDR correction</li>
+<li>PCA + DBSCAN for outlier detection</li>
+<li>Mean-dose voxel mapping</li>
+</ul>
+<hr>
+</section>
+<section id="methodology" class="level2">
+<h2 class="anchored" data-anchor-id="methodology">🧠 Methodology</h2>
+<ol type="1">
+<li><strong>Preprocess CT + dose data</strong> into voxel grids.</li>
+<li><strong>Spatial registration</strong> → map each patient onto a shared template.</li>
+<li><strong>Voxel-Based Analysis (VBA)</strong> → compare dose voxels between survivors vs non-survivors.</li>
+<li><strong>Unsupervised clustering</strong> → detect spatial patterns of significance.</li>
+<li><strong>Visualization</strong> → render p-value and dose maps for interpretation.</li>
+</ol>
+<hr>
+</section>
+<section id="analysis-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-workflow">📈 Analysis Workflow</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pipeline.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
+</figure>
+</div>
+<p>Each patient’s dose map is warped to a common template. Voxel-wise comparisons produce p-value maps that highlight regions where dose differences predict 2-year OS.</p>
+<hr>
+</section>
+<section id="key-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="key-visualizations">📊 Key Visualizations</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 38%">
+<col style="width: 61%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Visualization</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Raw Data</strong></td>
+<td><img src="output.gif" class="img-fluid" width="300"></td>
+</tr>
+<tr class="even">
+<td><strong>Dose Distribution Comparison</strong></td>
+<td><img src="clideo_editor_4eb173ba0818435a8c0e81e1763eefac.gif" class="img-fluid" width="300"> Shows inter-patient dose variation.</td>
+</tr>
+<tr class="odd">
+<td><strong>Group Dose Characteristics</strong></td>
+<td><img src="charts.jpg" class="img-fluid" width="400"> Survivors show more zero-dose voxels and focused dosing.</td>
+</tr>
+<tr class="even">
+<td><strong>Axial Dose Heatmap</strong></td>
+<td><img src="heat.jpg" class="img-fluid" width="400"> Spatial asymmetry visible between left and right lung regions.</td>
+</tr>
+<tr class="odd">
+<td><strong>ROI Cropping &amp; EQD₂ Normalization</strong></td>
+<td><img src="res.jpg" class="img-fluid" width="400"> Uses α/β = 2 and 5 to adjust dose biologically.</td>
+</tr>
+<tr class="even">
+<td><strong>Spatial Clustering of Significant Voxels</strong></td>
+<td><img src="3d.jpg" class="img-fluid" width="450"> Clusters #39-47 align with heart substructures.</td>
+</tr>
+<tr class="odd">
+<td><strong>Dose &amp; Outlier Summary</strong></td>
+<td><img src="imgonline-com-ua-2to1-iJFJSxPrRf8Ad.jpg" class="img-fluid" width="400"> Histograms compare mean dose and zero-dose fraction by outcome group.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="findings" class="level2">
+<h2 class="anchored" data-anchor-id="findings">🔍 Findings</h2>
+<ul>
+<li>Survivors → more <strong>focused, precise dose distributions</strong> in cardiac voxels.</li>
+<li>Non-survivors → <strong>broader exposure</strong> and less localized energy deposition.</li>
+<li>No single heart substructure fully explains the effect; patterns are spatially distributed.</li>
+<li>Proper template alignment and EQD₂ correction are critical for reliable statistics.</li>
+</ul>
+<hr>
+</section>
+<section id="goals-implications" class="level2">
+<h2 class="anchored" data-anchor-id="goals-implications">🚀 Goals &amp; Implications</h2>
+<ul>
+<li>Clarify mechanisms of <strong>radiation-induced cardiac toxicity</strong>.</li>
+<li>Identify <strong>spatial biomarkers</strong> linked to survival.</li>
+<li>Support more <strong>personalized radiotherapy planning</strong> by mapping risk regions within the heart.</li>
+</ul>
+<hr>
+</section>
+<section id="academic-collaboration" class="level2">
+<h2 class="anchored" data-anchor-id="academic-collaboration">🎓 Academic Collaboration</h2>
+<p><img src="polimi.png" class="img-fluid" data-align="right" width="200"></p>
+<p>Developed within the <strong>Applied Statistics</strong> course at <em>Politecnico di Milano</em> (<em>PoliMi</em>, Italy). <strong>Instructor:</strong> Prof.&nbsp;Piercesare Secchi <strong>Supervisor:</strong> Ing. Guillaume Koechlin</p>
+<section id="team" class="level3">
+<h3 class="anchored" data-anchor-id="team">Team</h3>
+<ul>
+<li>Stefano Beraldo</li>
+<li>Darkhan Islam</li>
+<li>Amine Ould Hocine</li>
+<li>Samuel Povoa</li>
+</ul>
+<p><strong>Research Partners:</strong> Fondazione IRCCS Istituto Nazionale dei Tumori (Milan) <img src="logo.jpeg" class="img-fluid" data-align="right" width="100"></p>
+<hr>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">📚 References</h2>
+<ul>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/32585334/">McWilliam et al., <em>Novel Methodology to Investigate the Effect of Radiation Dose to Heart Substructures on Overall Survival</em> (2020)</a></li>
+<li>Rancati et al., <em>SLiC Algorithm for Spatial Dose Analysis</em>, <em>Journal of the European Society for Radiotherapy and Oncology</em></li>
+</ul>
+<hr>
 
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -743,8 +956,8 @@ ul.task-list li input[type="checkbox"] {
       &nbsp;
     </div>
     <div class="nav-footer-right">
-<p>Built with Quarto</p>
-</div>
+      &nbsp;
+    </div>
   </div>
 </footer>
 

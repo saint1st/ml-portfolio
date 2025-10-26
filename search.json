@@ -4,7 +4,7 @@
     "href": "projects.html",
     "title": "Projects",
     "section": "",
-    "text": "Here are selected projects. Each entry is a Markdown file in projects/.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLow-Light Pedestrian Detection\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Here are selected projects. Each entry is a Markdown file in projects/.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVoxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLow-Light Pedestrian Detection\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/post6/index.html",
@@ -74,7 +74,98 @@
     "href": "index.html",
     "title": "Blog",
     "section": "",
-    "text": "ML Notes & Projects\n\n\nAlgorithms explained, experiments reproduced, and tiny demos.\n\n\nWelcome! I write about the math behind algorithms, minimal PyTorch/NumPy reference implementations, and reproducible experiments. Below are the latest posts.\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n\nMultiple Variable Linear Regression\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n10 min\n\n\n\n\n\n\nGradient Descent, how does it work?\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n7 min\n\n\n\n\n\n\nNeural Networks for Handwritten Digit Recognition with Binary and Multiple outputs\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n6 min\n\n\n\n\n\n\nImage compression with K-Means\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n1 min\n\n\n\n\n\n\nAnomaly detection\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n5 min\n\n\n\n\n\n\nBuilding a Decision Tree from scratch\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n12 min\n\n\n\n\n\n\nImage compression with K-Means\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n7 min\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n1 min\n\n\n\n\nNo matching items"
+    "text": "ML Notes & Projects\n\n\nAlgorithms explained, experiments reproduced, and tiny demos.\n\n\nWelcome! I write about the math behind algorithms, minimal PyTorch/NumPy reference implementations, and reproducible experiments. Below are the latest posts.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMultiple Variable Linear Regression\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n10 min\n\n\n\n\n\n\n\n\n\n\n\nGradient Descent, how does it work?\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n7 min\n\n\n\n\n\n\n\n\n\n\n\nNeural Networks for Handwritten Digit Recognition with Binary and Multiple outputs\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n6 min\n\n\n\n\n\n\n\n\n\n\n\nImage compression with K-Means\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n1 min\n\n\n\n\n\n\n\n\n\n\n\nAnomaly detection\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n5 min\n\n\n\n\n\n\n\n\n\n\n\nBuilding a Decision Tree from scratch\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n12 min\n\n\n\n\n\n\n\n\n\n\n\nImage compression with K-Means\n\n\n\ntheory\n\ncode\n\n\n\n\n\n\n\n\n\nOct 26, 2024\n\n7 min\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\n\n\n\n\nOct 3, 2024\n\n1 min\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/lung-cancer.html",
+    "href": "projects/lung-cancer.html",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "",
+    "text": "Lung cancer remains among the most lethal malignancies — only about one in four patients survive five years. For those with locally advanced Stage III NSCLC, radiotherapy (RT) is a primary treatment, yet cardiac exposure during RT may silently shape survival outcomes.\nThis project analyzes how spatial dose distribution to the heart correlates with 2-year overall survival (OS). Using voxel-wise statistical modeling, unsupervised clustering, and advanced visualization, we identify cardiac regions whose radiation dose patterns most strongly associate with patient outcomes."
+  },
+  {
+    "objectID": "projects/lung-cancer.html#overview",
+    "href": "projects/lung-cancer.html#overview",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "",
+    "text": "Lung cancer remains among the most lethal malignancies — only about one in four patients survive five years. For those with locally advanced Stage III NSCLC, radiotherapy (RT) is a primary treatment, yet cardiac exposure during RT may silently shape survival outcomes.\nThis project analyzes how spatial dose distribution to the heart correlates with 2-year overall survival (OS). Using voxel-wise statistical modeling, unsupervised clustering, and advanced visualization, we identify cardiac regions whose radiation dose patterns most strongly associate with patient outcomes."
+  },
+  {
+    "objectID": "projects/lung-cancer.html#research-challenge",
+    "href": "projects/lung-cancer.html#research-challenge",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "⚠️ Research Challenge",
+    "text": "⚠️ Research Challenge\nRadiotherapy aims to – maximize dose to tumor tissue, – minimize dose to healthy organs.\nHowever, even small incidental doses to the heart and major vessels can increase mortality risk. Our working hypothesis: specific cardiac subregions receiving higher dose may correlate with lower OS."
+  },
+  {
+    "objectID": "projects/lung-cancer.html#dataset",
+    "href": "projects/lung-cancer.html#dataset",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "🧬 Dataset",
+    "text": "🧬 Dataset\n\nInstitution: IRCCS Istituto Nazionale dei Tumori di Milano\nPatients: 321 across 5 centers\nModalities: DICOM CT scans + RT dose maps\nOutcome: 2-year overall survival\nFeatures: 54 clinical and treatment variables\n\n\n\nAnatomic / Metabolic: age, BMI, hypertension, KPS, smoking\nCancer-Related: stage, tumor size, site, mutations\nTherapy: chemotherapy cycles, immunotherapy, machine type, EQD2 dose\nOutcomes: cardiac and pulmonary events, 2-year OS"
+  },
+  {
+    "objectID": "projects/lung-cancer.html#feature-engineering-preprocessing",
+    "href": "projects/lung-cancer.html#feature-engineering-preprocessing",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "⚙️ Feature Engineering & Preprocessing",
+    "text": "⚙️ Feature Engineering & Preprocessing\n\nMedication count: grouped as 0 / 1 / 2 / &gt;3 classes\nTherapy types: combined target + immunotherapy into one variable\nSmoking: binary encoded\nPerformance status (KPS): binned (≤80, 90, 100)\nChemotherapy schedule: rescaled so 0 = no therapy"
+  },
+  {
+    "objectID": "projects/lung-cancer.html#statistical-methods",
+    "href": "projects/lung-cancer.html#statistical-methods",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "🧪 Statistical Methods",
+    "text": "🧪 Statistical Methods\n\nWelch’s t-test (voxel-wise analysis)\nBenjamini–Hochberg FDR correction\nPCA + DBSCAN for outlier detection\nMean-dose voxel mapping"
+  },
+  {
+    "objectID": "projects/lung-cancer.html#methodology",
+    "href": "projects/lung-cancer.html#methodology",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "🧠 Methodology",
+    "text": "🧠 Methodology\n\nPreprocess CT + dose data into voxel grids.\nSpatial registration → map each patient onto a shared template.\nVoxel-Based Analysis (VBA) → compare dose voxels between survivors vs non-survivors.\nUnsupervised clustering → detect spatial patterns of significance.\nVisualization → render p-value and dose maps for interpretation."
+  },
+  {
+    "objectID": "projects/lung-cancer.html#analysis-workflow",
+    "href": "projects/lung-cancer.html#analysis-workflow",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "📈 Analysis Workflow",
+    "text": "📈 Analysis Workflow\n\n\n\n\n\nEach patient’s dose map is warped to a common template. Voxel-wise comparisons produce p-value maps that highlight regions where dose differences predict 2-year OS."
+  },
+  {
+    "objectID": "projects/lung-cancer.html#key-visualizations",
+    "href": "projects/lung-cancer.html#key-visualizations",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "📊 Key Visualizations",
+    "text": "📊 Key Visualizations\n\n\n\n\n\n\n\nConcept\nVisualization\n\n\n\n\nRaw Data\n\n\n\nDose Distribution Comparison\n Shows inter-patient dose variation.\n\n\nGroup Dose Characteristics\n Survivors show more zero-dose voxels and focused dosing.\n\n\nAxial Dose Heatmap\n Spatial asymmetry visible between left and right lung regions.\n\n\nROI Cropping & EQD₂ Normalization\n Uses α/β = 2 and 5 to adjust dose biologically.\n\n\nSpatial Clustering of Significant Voxels\n Clusters #39-47 align with heart substructures.\n\n\nDose & Outlier Summary\n Histograms compare mean dose and zero-dose fraction by outcome group."
+  },
+  {
+    "objectID": "projects/lung-cancer.html#findings",
+    "href": "projects/lung-cancer.html#findings",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "🔍 Findings",
+    "text": "🔍 Findings\n\nSurvivors → more focused, precise dose distributions in cardiac voxels.\nNon-survivors → broader exposure and less localized energy deposition.\nNo single heart substructure fully explains the effect; patterns are spatially distributed.\nProper template alignment and EQD₂ correction are critical for reliable statistics."
+  },
+  {
+    "objectID": "projects/lung-cancer.html#goals-implications",
+    "href": "projects/lung-cancer.html#goals-implications",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "🚀 Goals & Implications",
+    "text": "🚀 Goals & Implications\n\nClarify mechanisms of radiation-induced cardiac toxicity.\nIdentify spatial biomarkers linked to survival.\nSupport more personalized radiotherapy planning by mapping risk regions within the heart."
+  },
+  {
+    "objectID": "projects/lung-cancer.html#academic-collaboration",
+    "href": "projects/lung-cancer.html#academic-collaboration",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "🎓 Academic Collaboration",
+    "text": "🎓 Academic Collaboration\n\nDeveloped within the Applied Statistics course at Politecnico di Milano (PoliMi, Italy). Instructor: Prof. Piercesare Secchi Supervisor: Ing. Guillaume Koechlin\n\nTeam\n\nStefano Beraldo\nDarkhan Islam\nAmine Ould Hocine\nSamuel Povoa\n\nResearch Partners: Fondazione IRCCS Istituto Nazionale dei Tumori (Milan)"
+  },
+  {
+    "objectID": "projects/lung-cancer.html#references",
+    "href": "projects/lung-cancer.html#references",
+    "title": "Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy",
+    "section": "📚 References",
+    "text": "📚 References\n\nMcWilliam et al., Novel Methodology to Investigate the Effect of Radiation Dose to Heart Substructures on Overall Survival (2020)\nRancati et al., SLiC Algorithm for Spatial Dose Analysis, Journal of the European Society for Radiotherapy and Oncology"
   },
   {
     "objectID": "projects/pedestrian-detection.html",
@@ -235,6 +326,20 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "I’m an ML engineer focused on representation learning and efficient training. This site is a notebook of algorithm notes and small demos.\n\nInterests: contrastive/self-supervised learning, distillation, retrieval\nLinkedIn: LinkedIn\nCode: GitHub · Contact: bolatovichhh@gmail.com"
+    "text": "Finley Malloc is the Chief Data Scientist at Wengo Analytics. When not innovating on data platforms, Finley enjoys spending time unicycling and playing with her pet iguana.\n\n\nUniversity of California, San Diego | San Diego, CA PhD in Mathematics | Sept 2011 - June 2015\nMacalester College | St. Paul, MN B.A in Economics | Sept 2007 - June 2011\n\n\n\nWengo Analytics | Head Data Scientist | April 2018 - present\nGeoScynce | Chief Analyst | Sept 2012 - April 2018"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About",
+    "section": "",
+    "text": "University of California, San Diego | San Diego, CA PhD in Mathematics | Sept 2011 - June 2015\nMacalester College | St. Paul, MN B.A in Economics | Sept 2007 - June 2011"
+  },
+  {
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
+    "title": "About",
+    "section": "",
+    "text": "Wengo Analytics | Head Data Scientist | April 2018 - present\nGeoScynce | Chief Analyst | Sept 2012 - April 2018"
   }
 ]
