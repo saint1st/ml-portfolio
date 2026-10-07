@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-10-01">
+<meta name="description" content="A deep learning pipeline for solar filament instance segmentation using YOLO11M, U-Net, and a five-fold ensemble.">
 
-<title>Projects – Darkhan — Personal website</title>
+<title>Solar Filament Detection – Darkhan — Personal website</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -29,30 +31,28 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./images/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-9bbf5fa004a0676d7f26111dc3fdfdb2.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-a80805fb9204df0454a85aec670eb5fe.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-9bbf5fa004a0676d7f26111dc3fdfdb2.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-f2dbd4e30f83560dd74fdcca1dca105d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-d194223258e255579cb80bb9f1a3a5b4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-f2dbd4e30f83560dd74fdcca1dca105d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9bbf5fa004a0676d7f26111dc3fdfdb2.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-a80805fb9204df0454a85aec670eb5fe.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9bbf5fa004a0676d7f26111dc3fdfdb2.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-f2dbd4e30f83560dd74fdcca1dca105d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-d194223258e255579cb80bb9f1a3a5b4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-f2dbd4e30f83560dd74fdcca1dca105d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -80,71 +80,13 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-image','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Source+Serif+Pro:wght@600&amp;display=swap" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -316,11 +258,11 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/logo.svg" alt="" class="navbar-logo light-content">
-    <img src="./images/logo.svg" alt="" class="navbar-logo dark-content">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../images/logo.svg" alt="" class="navbar-logo light-content">
+    <img src="../images/logo.svg" alt="" class="navbar-logo dark-content">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Darkhan — Personal website</span>
     </a>
   </div>
@@ -331,15 +273,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./projects.html" aria-current="page"> 
+    <a class="nav-link" href="../projects.html"> 
 <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -366,8 +308,34 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#dataset-and-exploratory-data-analysis" id="toc-dataset-and-exploratory-data-analysis" class="nav-link" data-scroll-target="#dataset-and-exploratory-data-analysis">Dataset and Exploratory Data Analysis</a></li>
+  <li><a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology">Methodology</a>
+  <ul class="collapse">
+  <li><a href="#image-preprocessing" id="toc-image-preprocessing" class="nav-link" data-scroll-target="#image-preprocessing">1. Image Preprocessing</a></li>
+  <li><a href="#instance-detection" id="toc-instance-detection" class="nav-link" data-scroll-target="#instance-detection">2. Instance Detection</a></li>
+  <li><a href="#roi-segmentation" id="toc-roi-segmentation" class="nav-link" data-scroll-target="#roi-segmentation">3. ROI Segmentation</a></li>
+  <li><a href="#model-ensembling" id="toc-model-ensembling" class="nav-link" data-scroll-target="#model-ensembling">4. Model Ensembling</a></li>
+  <li><a href="#post-processing" id="toc-post-processing" class="nav-link" data-scroll-target="#post-processing">5. Post-processing</a></li>
+  </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#key-challenges" id="toc-key-challenges" class="nav-link" data-scroll-target="#key-challenges">Key Challenges</a>
+  <ul class="collapse">
+  <li><a href="#thin-structures" id="toc-thin-structures" class="nav-link" data-scroll-target="#thin-structures">Thin Structures</a></li>
+  <li><a href="#instance-separation" id="toc-instance-separation" class="nav-link" data-scroll-target="#instance-separation">Instance Separation</a></li>
+  <li><a href="#data-leakage" id="toc-data-leakage" class="nav-link" data-scroll-target="#data-leakage">Data Leakage</a></li>
+  <li><a href="#detection-recall" id="toc-detection-recall" class="nav-link" data-scroll-target="#detection-recall">Detection Recall</a></li>
+  </ul></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways</a></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work">Future Work</a></li>
+  <li><a href="#links" id="toc-links" class="nav-link" data-scroll-target="#links">Links</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -375,14 +343,31 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Projects</h1>
-</div>
+<h1 class="title">Solar Filament Detection</h1>
+<p class="subtitle lead">Two-Stage YOLO11M + U-Net Instance Segmentation</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Computer Vision</div>
+    <div class="quarto-category">Image Segmentation</div>
+    <div class="quarto-category">Deep Learning</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    A deep learning pipeline for solar filament instance segmentation using YOLO11M, U-Net, and a five-fold ensemble.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 1, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -392,65 +377,131 @@ window.Quarto = {
 </header>
 
 
-<p>Here are selected projects. Each entry is a Markdown file in <code>projects/</code>.</p>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Solar filaments are elongated structures observed in the solar atmosphere. Their thin shapes, irregular boundaries, and low contrast make accurate instance segmentation challenging.</p>
+<p>This project explores a two-stage deep learning pipeline for detecting and segmenting individual solar filaments in high-resolution H-alpha solar observations.</p>
+<p>The project was developed for a Kaggle solar filament segmentation challenge using the MAGFiLO dataset.</p>
+</section>
+<section id="dataset-and-exploratory-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-and-exploratory-data-analysis">Dataset and Exploratory Data Analysis</h2>
+<p>The dataset contains <strong>1,154 images and 8,199 annotations</strong>.</p>
+<p>Exploratory data analysis focused on annotation geometry, filament area distributions, skeleton length, class imbalance, and duplicate observations.</p>
+<p>Key observations:</p>
+<ul>
+<li>Filaments can be extremely thin, making them difficult to segment accurately.</li>
+<li>Foreground pixels occupy only a small proportion of each image.</li>
+<li>Duplicate and correlated observations can cause data leakage between training and validation sets.</li>
+<li>Duplicate annotation records require careful handling to avoid inconsistent labels.</li>
+</ul>
+</section>
+<section id="methodology" class="level2">
+<h2 class="anchored" data-anchor-id="methodology">Methodology</h2>
+<p>The final approach combines object detection with instance segmentation.</p>
+<section id="image-preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="image-preprocessing">1. Image Preprocessing</h3>
+<p>Images are converted to grayscale, the solar disk is isolated, and local contrast is enhanced using Contrast Limited Adaptive Histogram Equalization (CLAHE).</p>
+</section>
+<section id="instance-detection" class="level3">
+<h3 class="anchored" data-anchor-id="instance-detection">2. Instance Detection</h3>
+<p>YOLO11M is used to localize individual filament instances in the input image.</p>
+<p>The detected bounding boxes define regions of interest (ROIs) for the segmentation stage.</p>
+</section>
+<section id="roi-segmentation" class="level3">
+<h3 class="anchored" data-anchor-id="roi-segmentation">3. ROI Segmentation</h3>
+<p>Each detected region is cropped with additional padding and processed by a U-Net architecture with a ResNet34 encoder.</p>
+<p>This allows the segmentation model to focus on local filament structures instead of predicting all instances directly from the full image.</p>
+</section>
+<section id="model-ensembling" class="level3">
+<h3 class="anchored" data-anchor-id="model-ensembling">4. Model Ensembling</h3>
+<p>Predictions from five fold-specific U-Net models are combined by averaging their probability maps.</p>
+</section>
+<section id="post-processing" class="level3">
+<h3 class="anchored" data-anchor-id="post-processing">5. Post-processing</h3>
+<p>The resulting probability maps are thresholded and processed to separate overlapping instances and generate the required Run-Length Encoding (RLE) predictions.</p>
+<p>Group-based splitting and duplicate-aware preprocessing are used to reduce validation leakage.</p>
+</section>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>The experiments investigated different segmentation architectures and two-stage detection-segmentation pipelines.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Approach</th>
+<th style="text-align: right;">Kaggle PQ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Baseline U-Net</td>
+<td style="text-align: right;">0.01</td>
+</tr>
+<tr class="even">
+<td>YOLO + U-Net</td>
+<td style="text-align: right;">~0.30</td>
+</tr>
+<tr class="odd">
+<td>YOLO + U-Net with EfficientNet-B4</td>
+<td style="text-align: right;">0.26</td>
+</tr>
+<tr class="even">
+<td>YOLO11M + U-Net, 5-fold ensemble</td>
+<td style="text-align: right;">~0.29</td>
+</tr>
+<tr class="odd">
+<td>YOLO11L experiments</td>
+<td style="text-align: right;">0.28</td>
+</tr>
+</tbody>
+</table>
+<p>The best reported score was approximately <strong>0.30 Panoptic Quality (PQ)</strong>.</p>
+<p>The experiments demonstrated the importance of accurate instance localization and ROI-based segmentation. The two-stage approach substantially improved upon the initial full-image segmentation baseline.</p>
+<p><em>Note: These values are approximate experiment results and should be checked against the final competition submissions before publication.</em></p>
+</section>
+<section id="key-challenges" class="level2">
+<h2 class="anchored" data-anchor-id="key-challenges">Key Challenges</h2>
+<section id="thin-structures" class="level3">
+<h3 class="anchored" data-anchor-id="thin-structures">Thin Structures</h3>
+<p>Very thin filaments contain only a few pixels in width. Downscaling and aggressive preprocessing can remove important structural details.</p>
+</section>
+<section id="instance-separation" class="level3">
+<h3 class="anchored" data-anchor-id="instance-separation">Instance Separation</h3>
+<p>Neighboring filaments may overlap or appear connected, making it difficult to assign pixels to the correct instance.</p>
+</section>
+<section id="data-leakage" class="level3">
+<h3 class="anchored" data-anchor-id="data-leakage">Data Leakage</h3>
+<p>Repeated or correlated solar observations can make validation scores overly optimistic. Duplicate-aware grouping is important for more reliable evaluation.</p>
+</section>
+<section id="detection-recall" class="level3">
+<h3 class="anchored" data-anchor-id="detection-recall">Detection Recall</h3>
+<p>The segmentation stage depends on the detected bounding boxes. Filaments missed by the detector cannot be recovered by the subsequent ROI segmentation stage.</p>
+</section>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li>High-resolution inputs help preserve fine filament structures.</li>
+<li>Duplicate-aware validation is important for reliable model evaluation.</li>
+<li>A two-stage detection and segmentation pipeline can outperform a full-image segmentation baseline.</li>
+<li>Detector recall and instance separation remain important directions for further improvement.</li>
+</ul>
+</section>
+<section id="future-work" class="level2">
+<h2 class="anchored" data-anchor-id="future-work">Future Work</h2>
+<p>Potential improvements include increasing detector recall for faint filaments, hard-negative mining, more effective instance separation, and architectures specifically designed for elongated structures.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://github.com/saint1st/cv-solar-filament-detection">GitHub Repository</a></li>
+<li><a href="https://www.kaggle.com/competitions/filament-segmentation-2026">Kaggle</a></li>
+</ul>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Q29tcHV0ZXIlMjBWaXNpb24lMkNJbWFnZSUyMFNlZ21lbnRhdGlvbiUyQ0RlZXAlMjBMZWFybmluZw==" data-listing-date-sort="1790812800000" data-listing-file-modified-sort="1791407053890" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="520">
-<a href="./projects/solar-filaments.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./projects/images/example.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Solar Filament Detection
-</h5>
-<div class="card-text listing-description delink">
-<p>A deep learning pipeline for solar filament instance segmentation using YOLO11M, U-Net, and a five-fold ensemble.</p>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="TWVkaWNhbCUyMEltYWdpbmclMkNSYWRpb3RoZXJhcHklMkNTdXJ2aXZhbCUyMEFuYWx5c2lzJTJDU3RhdGlzdGljcw==" data-listing-date-sort="1753228800000" data-listing-file-modified-sort="1791407053837" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="575">
-<a href="./projects/lung-cancer.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./projects/cancer.jpeg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Voxel-Wise Analysis of Cardiac Dose in Lung Cancer Radiotherapy
-</h5>
-<div class="card-text listing-description delink">
-Lung cancer remains among the most lethal malignancies — only about <strong>one in four patients</strong> survive five years. For those with <strong>locally advanced Stage III NSCLC</strong>, radiotherapy…
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="Q29tcHV0ZXIlMjBWaXNpb24lMkNPYmplY3QlMjBEZXRlY3Rpb24lMkNEZWVwJTIwTGVhcm5pbmc=" data-listing-date-sort="1729900800000" data-listing-file-modified-sort="1791407053889" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="505">
-<a href="./projects/pedestrian-detection.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./projects/good2.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Low-Light Pedestrian Detection
-</h5>
-<div class="card-text listing-description delink">
-Pedestrian detection in <strong>low-light conditions</strong> is notoriously difficult — tiny, noisy, and poorly labeled targets often fool even modern detectors.<br>
-This project tackles that…<strong></strong><strong></strong><em></em>
-</div>
-</div>
-</div></a>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -887,5 +938,5 @@ This project tackles that…<strong></strong><strong></strong><em></em>
 
 
 
-<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>
