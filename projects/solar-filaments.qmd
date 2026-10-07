@@ -1,0 +1,115 @@
+
+---
+title: "Solar Filament Detection"
+subtitle: "Two-Stage YOLO11M + U-Net Instance Segmentation"
+description: "A deep learning pipeline for solar filament instance segmentation using YOLO11M, U-Net, and a five-fold ensemble."
+date: "2026-10-01"
+image: "images/example.png"
+categories:
+  - Computer Vision
+  - Image Segmentation
+  - Deep Learning
+---
+
+## Overview
+
+Solar filaments are elongated structures observed in the solar atmosphere. Their thin shapes, irregular boundaries, and low contrast make accurate instance segmentation challenging.
+
+This project explores a two-stage deep learning pipeline for detecting and segmenting individual solar filaments in high-resolution H-alpha solar observations.
+
+The project was developed for a Kaggle solar filament segmentation challenge using the MAGFiLO dataset.
+
+## Dataset and Exploratory Data Analysis
+
+The dataset contains **1,154 images and 8,199 annotations**.
+
+Exploratory data analysis focused on annotation geometry, filament area distributions, skeleton length, class imbalance, and duplicate observations.
+
+Key observations:
+
+- Filaments can be extremely thin, making them difficult to segment accurately.
+- Foreground pixels occupy only a small proportion of each image.
+- Duplicate and correlated observations can cause data leakage between training and validation sets.
+- Duplicate annotation records require careful handling to avoid inconsistent labels.
+
+## Methodology
+
+The final approach combines object detection with instance segmentation.
+
+### 1. Image Preprocessing
+
+Images are converted to grayscale, the solar disk is isolated, and local contrast is enhanced using Contrast Limited Adaptive Histogram Equalization (CLAHE).
+
+### 2. Instance Detection
+
+YOLO11M is used to localize individual filament instances in the input image.
+
+The detected bounding boxes define regions of interest (ROIs) for the segmentation stage.
+
+### 3. ROI Segmentation
+
+Each detected region is cropped with additional padding and processed by a U-Net architecture with a ResNet34 encoder.
+
+This allows the segmentation model to focus on local filament structures instead of predicting all instances directly from the full image.
+
+### 4. Model Ensembling
+
+Predictions from five fold-specific U-Net models are combined by averaging their probability maps.
+
+### 5. Post-processing
+
+The resulting probability maps are thresholded and processed to separate overlapping instances and generate the required Run-Length Encoding (RLE) predictions.
+
+Group-based splitting and duplicate-aware preprocessing are used to reduce validation leakage.
+
+## Results
+
+The experiments investigated different segmentation architectures and two-stage detection-segmentation pipelines.
+
+| Approach | Kaggle PQ |
+|---|---:|
+| Baseline U-Net | 0.01 |
+| YOLO + U-Net | ~0.30 |
+| YOLO + U-Net with EfficientNet-B4 | 0.26 |
+| YOLO11M + U-Net, 5-fold ensemble | ~0.29 |
+| YOLO11L experiments | 0.28 |
+
+The best reported score was approximately **0.30 Panoptic Quality (PQ)**.
+
+The experiments demonstrated the importance of accurate instance localization and ROI-based segmentation. The two-stage approach substantially improved upon the initial full-image segmentation baseline.
+
+*Note: These values are approximate experiment results and should be checked against the final competition submissions before publication.*
+
+## Key Challenges
+
+### Thin Structures
+
+Very thin filaments contain only a few pixels in width. Downscaling and aggressive preprocessing can remove important structural details.
+
+### Instance Separation
+
+Neighboring filaments may overlap or appear connected, making it difficult to assign pixels to the correct instance.
+
+### Data Leakage
+
+Repeated or correlated solar observations can make validation scores overly optimistic. Duplicate-aware grouping is important for more reliable evaluation.
+
+### Detection Recall
+
+The segmentation stage depends on the detected bounding boxes. Filaments missed by the detector cannot be recovered by the subsequent ROI segmentation stage.
+
+## Key Takeaways
+
+- High-resolution inputs help preserve fine filament structures.
+- Duplicate-aware validation is important for reliable model evaluation.
+- A two-stage detection and segmentation pipeline can outperform a full-image segmentation baseline.
+- Detector recall and instance separation remain important directions for further improvement.
+
+## Future Work
+
+Potential improvements include increasing detector recall for faint filaments, hard-negative mining, more effective instance separation, and architectures specifically designed for elongated structures.
+
+## Links
+
+- [GitHub Repository](https://github.com/saint1st/cv-solar-filament-detection)
+- [Kaggle](https://www.kaggle.com/competitions/filament-segmentation-2026)
