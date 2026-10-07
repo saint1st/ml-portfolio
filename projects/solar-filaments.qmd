@@ -4,7 +4,7 @@ title: "Solar Filament Detection"
 subtitle: "Two-Stage YOLO11M + U-Net Instance Segmentation"
 description: "A deep learning pipeline for solar filament instance segmentation using YOLO11M, U-Net, and a five-fold ensemble."
 date: "2026-10-01"
-image: "images/example.png"
+image: "example.png"
 categories:
   - Computer Vision
   - Image Segmentation
