@@ -4,7 +4,7 @@ title: "Solar Filament Detection"
 subtitle: "YOLO11M + U-Net Instance Segmentation"
 description: "A high-resolution solar filament segmentation pipeline featuring MAGFiLO dataset analysis, duplicate-aware validation, YOLO11M detection, and a five-fold U-Net ensemble."
 date: "2026-10-08"
-image: "../images/solar-filament/1.png"
+image: "example.png"
 categories:
   - Computer Vision
   - Image Segmentation
@@ -65,9 +65,10 @@ For example, `20260901165702Bh.jpeg` encodes the capture date, time, and observa
 
 ### Training image examples
 
-![MAGFiLO training image example 1](images/solar-filament/1.png){fig-align="center" width="75%"}
+![](1.png){fig-align="center" width="75%"}
 
-![MAGFiLO training image example 2](images/solar-filament/2.png){fig-align="center" width="75%"}
+
+![](2.png){fig-align="center" width="75%"}
 
 ### Annotation format
 
@@ -99,7 +100,7 @@ Filament areas vary substantially, from small, thin structures to large and comp
 
 The observed area distribution extends from 9 to 37,739 pixels.
 
-![Filament count distribution](images/solar-filament/filaments_number_distribution.png){fig-align="center" width="85%"}
+![](filaments_number_distribution.png){fig-align="center" width="85%"}
 
 This analysis informed two important design choices:
 
@@ -112,11 +113,11 @@ To characterize individual filaments, the analysis examined area, aspect ratio, 
 
 Solidity measures the ratio between a mask's area and the area of its convex hull. Skeletonization extracts a filament's central spine and helps reveal its branching structure.
 
-![Filament geometry analysis 1](images/solar-filament/geometry1.png){fig-align="center" width="85%"}
+![](geometry1.png){fig-align="center" width="85%"}
 
-![Filament geometry analysis 2](images/solar-filament/geometry2.png){fig-align="center" width="85%"}
+![](geometry2.png){fig-align="center" width="85%"}
 
-![Filament geometry analysis 3](images/solar-filament/geometry3.png){fig-align="center" width="85%"}
+![](geometry3.png){fig-align="center" width="85%"}
 
 The analysis revealed several important characteristics:
 
@@ -143,7 +144,7 @@ These characteristics make pixel-level segmentation more suitable than bounding 
 
 ### 3. Area, aspect ratio, and skeleton length
 
-![Bivariate geometry analysis](images/solar-filament/output.png){fig-align="center" width="90%"}
+![](output.png){fig-align="center" width="90%"}
 
 The bivariate analysis provides additional insights:
 
@@ -169,7 +170,7 @@ Even when overlap is uncommon, correctly separating instances remains important 
 
 Each image contains 4,194,304 pixels, but the filament foreground occupies only a small proportion of the image.
 
-![Pixel occupancy distribution](images/solar-filament/pixel_occupancy.png){fig-align="center" width="85%"}
+![](pixel_occupancy.png){fig-align="center" width="85%"}
 
 The estimated mean foreground occupancy is approximately **0.30%**.
 
@@ -185,7 +186,7 @@ These objectives combine pixel-level classification with measures of overlap.
 
 ### 6. Image intensity distributions
 
-![Image intensity analysis](images/solar-filament/intencity.png){fig-align="center" width="85%"}
+![](intencity.png){fig-align="center" width="85%"}
 
 Sampling intensity distributions across 100 images revealed substantial overlap between background pixels and filament pixels.
 
@@ -214,7 +215,7 @@ An adversarial validation experiment was used to investigate potential differenc
 
 The experiment extracted image intensity statistics, including mean, standard deviation, and selected percentiles, then trained a Random Forest classifier to distinguish training samples from test samples using five-fold cross-validation.
 
-![Intensity standard deviation distribution](images/solar-filament/std.png){fig-align="center" width="85%"}
+![](std.png){fig-align="center" width="85%"}
 
 | Metric | Result |
 |---|---|
@@ -238,11 +239,11 @@ Duplicate analysis used byte-level MD5 hashing and timestamp-prefix matching to 
 
 By fusing annotations across duplicate records and selecting a primary frame for each hash group, the dataset was reduced from **1,154 records to 707 clean, unique frames**, while preserving the annotations.
 
-![Duplicate analysis example 1](images/solar-filament/duplicate1.png){fig-align="center" width="85%"}
+![](duplicate1.png){fig-align="center" width="85%"}
 
-![Duplicate analysis example 2](images/solar-filament/duplicate2.png){fig-align="center" width="85%"}
+![](duplicate2.png){fig-align="center" width="85%"}
 
-![Annotation fusion result](images/solar-filament/fusion_result1.png){fig-align="center" width="85%"}
+![](fusion_result1.png){fig-align="center" width="85%"}
 
 The resulting annotations were serialized into:
 
@@ -260,7 +261,7 @@ The final approach is a two-stage detection and segmentation pipeline designed t
 
 ### Pipeline architecture
 
-![Solar filament detection pipeline](/images/solar-filament/pipeline.png){fig-align="center" width="100%"}
+![](pipeline.png){fig-align="center" width="100%"}
 
 ### Stage 1: Image preprocessing
 
@@ -339,7 +340,7 @@ The two-stage approach substantially improved upon the initial full-image U-Net 
 
 ## Results on Test Images
 
-![Solar filament segmentation predictions on test images](images/solar-filament/test_set.png){fig-align="center" width="100%"}
+![](test_set.png){fig-align="center" width="100%"}
 
 The test-set visualizations help assess how the final pipeline handles filament localization, mask boundaries, thin structures, and separation between instances.
 
