@@ -469,14 +469,12 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="training-image-examples">Training image examples</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/1.png" class="img-fluid figure-img" style="width:75.0%"></p>
-<figcaption>MAGFiLO training image example 1</figcaption>
+<p><img src="1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/2.png" class="img-fluid figure-img" style="width:75.0%"></p>
-<figcaption>MAGFiLO training image example 2</figcaption>
+<p><img src="2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></p>
 </figure>
 </div>
 </section>
@@ -552,8 +550,7 @@ ul.task-list li input[type="checkbox"] {
 <p>The observed area distribution extends from 9 to 37,739 pixels.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/filaments_number_distribution.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption>Filament count distribution</figcaption>
+<p><img src="filaments_number_distribution.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
 </figure>
 </div>
 <p>This analysis informed two important design choices:</p>
@@ -568,20 +565,17 @@ ul.task-list li input[type="checkbox"] {
 <p>Solidity measures the ratio between a mask’s area and the area of its convex hull. Skeletonization extracts a filament’s central spine and helps reveal its branching structure.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/geometry1.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption>Filament geometry analysis 1</figcaption>
+<p><img src="geometry1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/geometry2.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption>Filament geometry analysis 2</figcaption>
+<p><img src="geometry2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/geometry3.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption>Filament geometry analysis 3</figcaption>
+<p><img src="geometry3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
 </figure>
 </div>
 <p>The analysis revealed several important characteristics:</p>
@@ -701,8 +695,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="area-aspect-ratio-and-skeleton-length">3. Area, aspect ratio, and skeleton length</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/output.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<figcaption>Bivariate geometry analysis</figcaption>
+<p><img src="output.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
 </figure>
 </div>
 <p>The bivariate analysis provides additional insights:</p>
@@ -758,8 +751,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Each image contains 4,194,304 pixels, but the filament foreground occupies only a small proportion of the image.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/pixel_occupancy.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption>Pixel occupancy distribution</figcaption>
+<p><img src="pixel_occupancy.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
 </figure>
 </div>
 <p>The estimated mean foreground occupancy is approximately <strong>0.30%</strong>.</p>
@@ -776,8 +768,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="image-intensity-distributions">6. Image intensity distributions</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/intencity.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption>Image intensity analysis</figcaption>
+<p><img src="intencity.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
 </figure>
 </div>
 <p>Sampling intensity distributions across 100 images revealed substantial overlap between background pixels and filament pixels.</p>
@@ -806,8 +797,7 @@ ul.task-list li input[type="checkbox"] {
 <p>The experiment extracted image intensity statistics, including mean, standard deviation, and selected percentiles, then trained a Random Forest classifier to distinguish training samples from test samples using five-fold cross-validation.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/std.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption>Intensity standard deviation distribution</figcaption>
+<p><img src="std.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
 </figure>
 </div>
 <table class="caption-top table">
@@ -874,20 +864,17 @@ ul.task-list li input[type="checkbox"] {
 <p>By fusing annotations across duplicate records and selecting a primary frame for each hash group, the dataset was reduced from <strong>1,154 records to 707 clean, unique frames</strong>, while preserving the annotations.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/duplicate1.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption>Duplicate analysis example 1</figcaption>
+<p><img src="duplicate1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/duplicate2.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption>Duplicate analysis example 2</figcaption>
+<p><img src="duplicate2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/fusion_result1.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption>Annotation fusion result</figcaption>
+<p><img src="fusion_result1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%"></p>
 </figure>
 </div>
 <p>The resulting annotations were serialized into:</p>
@@ -906,8 +893,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="pipeline-architecture">Pipeline architecture</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../images/solar-filament/pipeline.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption>Solar filament detection pipeline</figcaption>
+<p><img src="pipeline.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </section>
@@ -1062,8 +1048,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="results-on-test-images">Results on Test Images</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/solar-filament/test_set.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption>Solar filament segmentation predictions on test images</figcaption>
+<p><img src="test_set.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 <p>The test-set visualizations help assess how the final pipeline handles filament localization, mask boundaries, thin structures, and separation between instances.</p>
