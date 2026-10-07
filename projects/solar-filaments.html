@@ -6,8 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-10-01">
-<meta name="description" content="A deep learning pipeline for solar filament instance segmentation using YOLO11M, U-Net, and a five-fold ensemble.">
+<meta name="dcterms.date" content="2026-10-08">
+<meta name="description" content="A high-resolution solar filament segmentation pipeline featuring MAGFiLO dataset analysis, duplicate-aware validation, YOLO11M detection, and a five-fold U-Net ensemble.">
 
 <title>Solar Filament Detection – Darkhan — Personal website</title>
 <style>
@@ -313,27 +313,49 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#dataset-and-exploratory-data-analysis" id="toc-dataset-and-exploratory-data-analysis" class="nav-link" data-scroll-target="#dataset-and-exploratory-data-analysis">Dataset and Exploratory Data Analysis</a></li>
+  <li><a href="#solar-filament-detection" id="toc-solar-filament-detection" class="nav-link active" data-scroll-target="#solar-filament-detection">Solar Filament Detection</a>
+  <ul class="collapse">
+  <li><a href="#the-visual-appearance" id="toc-the-visual-appearance" class="nav-link" data-scroll-target="#the-visual-appearance">1. The Visual Appearance</a></li>
+  <li><a href="#why-solar-filaments-matter" id="toc-why-solar-filaments-matter" class="nav-link" data-scroll-target="#why-solar-filaments-matter">2. Why Solar Filaments Matter</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#dataset-magfilo" id="toc-dataset-magfilo" class="nav-link" data-scroll-target="#dataset-magfilo">Dataset: MAGFiLO</a>
+  <ul class="collapse">
+  <li><a href="#image-specifications" id="toc-image-specifications" class="nav-link" data-scroll-target="#image-specifications">Image specifications</a></li>
+  <li><a href="#training-image-examples" id="toc-training-image-examples" class="nav-link" data-scroll-target="#training-image-examples">Training image examples</a></li>
+  <li><a href="#annotation-format" id="toc-annotation-format" class="nav-link" data-scroll-target="#annotation-format">Annotation format</a></li>
+  </ul></li>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">Exploratory Data Analysis</a>
+  <ul class="collapse">
+  <li><a href="#filament-area-distribution" id="toc-filament-area-distribution" class="nav-link" data-scroll-target="#filament-area-distribution">1. Filament area distribution</a></li>
+  <li><a href="#instance-geometry-and-skeleton-analysis" id="toc-instance-geometry-and-skeleton-analysis" class="nav-link" data-scroll-target="#instance-geometry-and-skeleton-analysis">2. Instance geometry and skeleton analysis</a></li>
+  <li><a href="#area-aspect-ratio-and-skeleton-length" id="toc-area-aspect-ratio-and-skeleton-length" class="nav-link" data-scroll-target="#area-aspect-ratio-and-skeleton-length">3. Area, aspect ratio, and skeleton length</a></li>
+  <li><a href="#instance-overlap" id="toc-instance-overlap" class="nav-link" data-scroll-target="#instance-overlap">4. Instance overlap</a></li>
+  <li><a href="#pixel-level-class-imbalance" id="toc-pixel-level-class-imbalance" class="nav-link" data-scroll-target="#pixel-level-class-imbalance">5. Pixel-level class imbalance</a></li>
+  <li><a href="#image-intensity-distributions" id="toc-image-intensity-distributions" class="nav-link" data-scroll-target="#image-intensity-distributions">6. Image intensity distributions</a></li>
+  <li><a href="#temporal-sampling-and-validation-leakage" id="toc-temporal-sampling-and-validation-leakage" class="nav-link" data-scroll-target="#temporal-sampling-and-validation-leakage">7. Temporal sampling and validation leakage</a></li>
+  <li><a href="#adversarial-validation" id="toc-adversarial-validation" class="nav-link" data-scroll-target="#adversarial-validation">8. Adversarial validation</a></li>
+  <li><a href="#duplicate-analysis-and-annotation-fusion" id="toc-duplicate-analysis-and-annotation-fusion" class="nav-link" data-scroll-target="#duplicate-analysis-and-annotation-fusion">9. Duplicate analysis and annotation fusion</a></li>
+  </ul></li>
   <li><a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology">Methodology</a>
   <ul class="collapse">
-  <li><a href="#image-preprocessing" id="toc-image-preprocessing" class="nav-link" data-scroll-target="#image-preprocessing">1. Image Preprocessing</a></li>
-  <li><a href="#instance-detection" id="toc-instance-detection" class="nav-link" data-scroll-target="#instance-detection">2. Instance Detection</a></li>
-  <li><a href="#roi-segmentation" id="toc-roi-segmentation" class="nav-link" data-scroll-target="#roi-segmentation">3. ROI Segmentation</a></li>
-  <li><a href="#model-ensembling" id="toc-model-ensembling" class="nav-link" data-scroll-target="#model-ensembling">4. Model Ensembling</a></li>
-  <li><a href="#post-processing" id="toc-post-processing" class="nav-link" data-scroll-target="#post-processing">5. Post-processing</a></li>
+  <li><a href="#pipeline-architecture" id="toc-pipeline-architecture" class="nav-link" data-scroll-target="#pipeline-architecture">Pipeline architecture</a></li>
+  <li><a href="#stage-1-image-preprocessing" id="toc-stage-1-image-preprocessing" class="nav-link" data-scroll-target="#stage-1-image-preprocessing">Stage 1: Image preprocessing</a></li>
+  <li><a href="#stage-2-yolo11m-instance-detection" id="toc-stage-2-yolo11m-instance-detection" class="nav-link" data-scroll-target="#stage-2-yolo11m-instance-detection">Stage 2: YOLO11M instance detection</a></li>
+  <li><a href="#stage-3-roi-segmentation" id="toc-stage-3-roi-segmentation" class="nav-link" data-scroll-target="#stage-3-roi-segmentation">Stage 3: ROI segmentation</a></li>
+  <li><a href="#stage-4-five-fold-ensemble" id="toc-stage-4-five-fold-ensemble" class="nav-link" data-scroll-target="#stage-4-five-fold-ensemble">Stage 4: Five-fold ensemble</a></li>
+  <li><a href="#stage-5-post-processing" id="toc-stage-5-post-processing" class="nav-link" data-scroll-target="#stage-5-post-processing">Stage 5: Post-processing</a></li>
   </ul></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
-  <li><a href="#key-challenges" id="toc-key-challenges" class="nav-link" data-scroll-target="#key-challenges">Key Challenges</a>
+  <li><a href="#model-and-experiment-summary" id="toc-model-and-experiment-summary" class="nav-link" data-scroll-target="#model-and-experiment-summary">Model and Experiment Summary</a>
   <ul class="collapse">
-  <li><a href="#thin-structures" id="toc-thin-structures" class="nav-link" data-scroll-target="#thin-structures">Thin Structures</a></li>
-  <li><a href="#instance-separation" id="toc-instance-separation" class="nav-link" data-scroll-target="#instance-separation">Instance Separation</a></li>
-  <li><a href="#data-leakage" id="toc-data-leakage" class="nav-link" data-scroll-target="#data-leakage">Data Leakage</a></li>
-  <li><a href="#detection-recall" id="toc-detection-recall" class="nav-link" data-scroll-target="#detection-recall">Detection Recall</a></li>
+  <li><a href="#kaggle-results" id="toc-kaggle-results" class="nav-link" data-scroll-target="#kaggle-results">Kaggle results</a></li>
+  <li><a href="#final-pipeline" id="toc-final-pipeline" class="nav-link" data-scroll-target="#final-pipeline">Final pipeline</a></li>
+  <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings">Key findings</a></li>
   </ul></li>
-  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways</a></li>
+  <li><a href="#results-on-test-images" id="toc-results-on-test-images" class="nav-link" data-scroll-target="#results-on-test-images">Results on Test Images</a></li>
   <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work">Future Work</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#links" id="toc-links" class="nav-link" data-scroll-target="#links">Links</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -344,7 +366,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Solar Filament Detection</h1>
-<p class="subtitle lead">Two-Stage YOLO11M + U-Net Instance Segmentation</p>
+<p class="subtitle lead">YOLO11M + U-Net Instance Segmentation</p>
   <div class="quarto-categories">
     <div class="quarto-category">Computer Vision</div>
     <div class="quarto-category">Image Segmentation</div>
@@ -354,7 +376,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    A deep learning pipeline for solar filament instance segmentation using YOLO11M, U-Net, and a five-fold ensemble.
+    A high-resolution solar filament segmentation pipeline featuring MAGFiLO dataset analysis, duplicate-aware validation, YOLO11M detection, and a five-fold U-Net ensemble.
   </div>
 </div>
 
@@ -365,7 +387,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 1, 2026</p>
+      <p class="date">October 8, 2026</p>
     </div>
   </div>
   
@@ -377,128 +399,709 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="solar-filament-detection" class="level1">
+<h1>Solar Filament Detection</h1>
+<p>A machine learning pipeline for solar filament detection and instance segmentation, developed as part of a Kaggle competition.</p>
+<p>Solar filaments are dense, relatively cool clouds of solar material (plasma) suspended above the Sun’s surface by powerful magnetic field lines.</p>
+<section id="the-visual-appearance" class="level2">
+<h2 class="anchored" data-anchor-id="the-visual-appearance">1. The Visual Appearance</h2>
+<p>Although solar filaments are extremely hot, they are cooler than the photosphere below them. In H-alpha observations, they absorb light from the solar disk and appear as dark, thread-like streaks or ribbons across the bright Sun.</p>
+<p>When viewed against the blackness of space at the edge of the Sun, the same structures appear bright and are called solar prominences.</p>
+</section>
+<section id="why-solar-filaments-matter" class="level2">
+<h2 class="anchored" data-anchor-id="why-solar-filaments-matter">2. Why Solar Filaments Matter</h2>
+<p>Solar filaments can become unstable when the magnetic fields that hold them in place change. Their eruptions can be associated with coronal mass ejections (CMEs), which may affect:</p>
+<ul>
+<li>Electric power grids</li>
+<li>GPS navigation and satellite communications</li>
+<li>Astronauts and high-altitude polar flights exposed to increased radiation</li>
+</ul>
+<p>Accurate segmentation of solar filaments can support the analysis of their structure and evolution.</p>
+</section>
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>Solar filaments are elongated structures observed in the solar atmosphere. Their thin shapes, irregular boundaries, and low contrast make accurate instance segmentation challenging.</p>
-<p>This project explores a two-stage deep learning pipeline for detecting and segmenting individual solar filaments in high-resolution H-alpha solar observations.</p>
-<p>The project was developed for a Kaggle solar filament segmentation challenge using the MAGFiLO dataset.</p>
-</section>
-<section id="dataset-and-exploratory-data-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="dataset-and-exploratory-data-analysis">Dataset and Exploratory Data Analysis</h2>
-<p>The dataset contains <strong>1,154 images and 8,199 annotations</strong>.</p>
-<p>Exploratory data analysis focused on annotation geometry, filament area distributions, skeleton length, class imbalance, and duplicate observations.</p>
-<p>Key observations:</p>
+<p>The objective of this project is to generate accurate, pixel-level instance segmentation masks from H-alpha solar observations.</p>
+<p>The project investigates a two-stage pipeline that combines object detection and segmentation to preserve fine filament structures while separating individual instances.</p>
 <ul>
-<li>Filaments can be extremely thin, making them difficult to segment accurately.</li>
-<li>Foreground pixels occupy only a small proportion of each image.</li>
-<li>Duplicate and correlated observations can cause data leakage between training and validation sets.</li>
-<li>Duplicate annotation records require careful handling to avoid inconsistent labels.</li>
+<li><strong>Dataset:</strong> MAGFiLO</li>
+<li><strong>Input resolution:</strong> 2048 × 2048 pixels</li>
+<li><strong>Detector:</strong> YOLO11M</li>
+<li><strong>Segmentation model:</strong> U-Net with a ResNet34 encoder</li>
+<li><strong>Ensembling:</strong> Five fold-specific segmentation models</li>
+<li><strong>Evaluation metric:</strong> Panoptic Quality (PQ)</li>
 </ul>
+<p><a href="https://github.com/saint1st/cv-solar-filament-detection">View the GitHub repository</a> · <a href="https://www.kaggle.com/competitions/filament-segmentation-2026/overview">Kaggle competition</a></p>
 </section>
-<section id="methodology" class="level2">
-<h2 class="anchored" data-anchor-id="methodology">Methodology</h2>
-<p>The final approach combines object detection with instance segmentation.</p>
-<section id="image-preprocessing" class="level3">
-<h3 class="anchored" data-anchor-id="image-preprocessing">1. Image Preprocessing</h3>
-<p>Images are converted to grayscale, the solar disk is isolated, and local contrast is enhanced using Contrast Limited Adaptive Histogram Equalization (CLAHE).</p>
-</section>
-<section id="instance-detection" class="level3">
-<h3 class="anchored" data-anchor-id="instance-detection">2. Instance Detection</h3>
-<p>YOLO11M is used to localize individual filament instances in the input image.</p>
-<p>The detected bounding boxes define regions of interest (ROIs) for the segmentation stage.</p>
-</section>
-<section id="roi-segmentation" class="level3">
-<h3 class="anchored" data-anchor-id="roi-segmentation">3. ROI Segmentation</h3>
-<p>Each detected region is cropped with additional padding and processed by a U-Net architecture with a ResNet34 encoder.</p>
-<p>This allows the segmentation model to focus on local filament structures instead of predicting all instances directly from the full image.</p>
-</section>
-<section id="model-ensembling" class="level3">
-<h3 class="anchored" data-anchor-id="model-ensembling">4. Model Ensembling</h3>
-<p>Predictions from five fold-specific U-Net models are combined by averaging their probability maps.</p>
-</section>
-<section id="post-processing" class="level3">
-<h3 class="anchored" data-anchor-id="post-processing">5. Post-processing</h3>
-<p>The resulting probability maps are thresholded and processed to separate overlapping instances and generate the required Run-Length Encoding (RLE) predictions.</p>
-<p>Group-based splitting and duplicate-aware preprocessing are used to reduce validation leakage.</p>
-</section>
-</section>
-<section id="results" class="level2">
-<h2 class="anchored" data-anchor-id="results">Results</h2>
-<p>The experiments investigated different segmentation architectures and two-stage detection-segmentation pipelines.</p>
+<section id="dataset-magfilo" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-magfilo">Dataset: MAGFiLO</h2>
+<p>The models are trained and evaluated on <strong>MAGFiLO (Manually Annotated GONG Filaments from H-alpha Observations)</strong>.</p>
+<section id="image-specifications" class="level3">
+<h3 class="anchored" data-anchor-id="image-specifications">Image specifications</h3>
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th>Approach</th>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Image dimensions</td>
+<td>2048 × 2048 pixels</td>
+</tr>
+<tr class="even">
+<td>Format</td>
+<td>8-bit JPEG</td>
+</tr>
+<tr class="odd">
+<td>Color space</td>
+<td>Grayscale</td>
+</tr>
+<tr class="even">
+<td>Filename format</td>
+<td><code>YYYYMMDDHHMMSSII</code></td>
+</tr>
+</tbody>
+</table>
+<p>For example, <code>20260901165702Bh.jpeg</code> encodes the capture date, time, and observatory identifier.</p>
+</section>
+<section id="training-image-examples" class="level3">
+<h3 class="anchored" data-anchor-id="training-image-examples">Training image examples</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<figcaption>MAGFiLO training image example 1</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/2.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<figcaption>MAGFiLO training image example 2</figcaption>
+</figure>
+</div>
+</section>
+<section id="annotation-format" class="level3">
+<h3 class="anchored" data-anchor-id="annotation-format">Annotation format</h3>
+<p>Ground-truth filament instances are represented as polygons encoded using Run-Length Encoding (RLE), allowing compact storage and conversion to binary masks.</p>
+<p>A single H-alpha observation may contain multiple filaments. The same underlying image may also appear in multiple records annotated independently, creating duplicate observations and overlapping annotations that require careful handling.</p>
+</section>
+</section>
+<section id="exploratory-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis">Exploratory Data Analysis</h2>
+<p>The dataset contains <strong>1,154 images and 8,199 annotations</strong>.</p>
+<p>The EDA investigated filament size, shape, branching, overlap, pixel occupancy, intensity distributions, temporal sampling, and duplicate observations.</p>
+<section id="filament-area-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="filament-area-distribution">1. Filament area distribution</h3>
+<p>Filament areas vary substantially, from small, thin structures to large and complex instances.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Percentile</th>
+<th style="text-align: right;">Area (pixels)</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P1</td>
+<td style="text-align: right;">209</td>
+<td>Lower bound, excluding extreme outliers</td>
+</tr>
+<tr class="even">
+<td>P5</td>
+<td style="text-align: right;">317</td>
+<td>Very small structures</td>
+</tr>
+<tr class="odd">
+<td>P10</td>
+<td style="text-align: right;">410</td>
+<td>Small filament threshold</td>
+</tr>
+<tr class="even">
+<td>P25</td>
+<td style="text-align: right;">670</td>
+<td>Lower quartile</td>
+</tr>
+<tr class="odd">
+<td>P50</td>
+<td style="text-align: right;">1,228</td>
+<td>Median</td>
+</tr>
+<tr class="even">
+<td>P75</td>
+<td style="text-align: right;">2,438</td>
+<td>Upper quartile</td>
+</tr>
+<tr class="odd">
+<td>P90</td>
+<td style="text-align: right;">4,685</td>
+<td>Large structures</td>
+</tr>
+<tr class="even">
+<td>P95</td>
+<td style="text-align: right;">6,947</td>
+<td>Very large structures</td>
+</tr>
+<tr class="odd">
+<td>P99</td>
+<td style="text-align: right;">13,703</td>
+<td>Upper bound, excluding extreme values</td>
+</tr>
+</tbody>
+</table>
+<p>The observed area distribution extends from 9 to 37,739 pixels.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/filaments_number_distribution.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Filament count distribution</figcaption>
+</figure>
+</div>
+<p>This analysis informed two important design choices:</p>
+<ul>
+<li><strong>Receptive field:</strong> Large structures require models capable of capturing broad spatial context.</li>
+<li><strong>Resolution preservation:</strong> Aggressive downscaling from 2048 × 2048 to 640 × 640 risks losing fine structures and morphological details.</li>
+</ul>
+</section>
+<section id="instance-geometry-and-skeleton-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="instance-geometry-and-skeleton-analysis">2. Instance geometry and skeleton analysis</h3>
+<p>To characterize individual filaments, the analysis examined area, aspect ratio, perimeter, solidity, and skeleton length.</p>
+<p>Solidity measures the ratio between a mask’s area and the area of its convex hull. Skeletonization extracts a filament’s central spine and helps reveal its branching structure.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/geometry1.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Filament geometry analysis 1</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/geometry2.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Filament geometry analysis 2</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/geometry3.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Filament geometry analysis 3</figcaption>
+</figure>
+</div>
+<p>The analysis revealed several important characteristics:</p>
+<ul>
+<li><strong>Branching and barbs:</strong> Thin secondary branches extend from the primary filament spine.</li>
+<li><strong>Irregular geometry:</strong> Filaments are elongated and often highly non-convex.</li>
+<li><strong>Fine structures:</strong> Small branches can be lost through resizing or aggressive preprocessing.</li>
+</ul>
+<p>These characteristics make pixel-level segmentation more suitable than bounding boxes alone.</p>
+<section id="geometric-statistics" class="level4">
+<h4 class="anchored" data-anchor-id="geometric-statistics">Geometric statistics</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Statistic</th>
+<th style="text-align: right;">Area (px)</th>
+<th style="text-align: right;">Aspect ratio</th>
+<th style="text-align: right;">Perimeter (px)</th>
+<th style="text-align: right;">Solidity</th>
+<th style="text-align: right;">Skeleton length (px)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Count</td>
+<td style="text-align: right;">8,199</td>
+<td style="text-align: right;">8,199</td>
+<td style="text-align: right;">8,199</td>
+<td style="text-align: right;">8,199</td>
+<td style="text-align: right;">8,199</td>
+</tr>
+<tr class="even">
+<td>Mean</td>
+<td style="text-align: right;">2,282.9</td>
+<td style="text-align: right;">1.38</td>
+<td style="text-align: right;">390.2</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">176.1</td>
+</tr>
+<tr class="odd">
+<td>Std</td>
+<td style="text-align: right;">2,860.4</td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">318.5</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">158.3</td>
+</tr>
+<tr class="even">
+<td>Min</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">6.8</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">3.0</td>
+</tr>
+<tr class="odd">
+<td>5%</td>
+<td style="text-align: right;">354.0</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">105.6</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">37.0</td>
+</tr>
+<tr class="even">
+<td>25%</td>
+<td style="text-align: right;">745.5</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">183.3</td>
+<td style="text-align: right;">0.45</td>
+<td style="text-align: right;">74.0</td>
+</tr>
+<tr class="odd">
+<td>50%</td>
+<td style="text-align: right;">1,355.0</td>
+<td style="text-align: right;">1.11</td>
+<td style="text-align: right;">292.4</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">127.0</td>
+</tr>
+<tr class="even">
+<td>75%</td>
+<td style="text-align: right;">2,638.0</td>
+<td style="text-align: right;">1.79</td>
+<td style="text-align: right;">488.1</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">221.0</td>
+</tr>
+<tr class="odd">
+<td>95%</td>
+<td style="text-align: right;">7,336.7</td>
+<td style="text-align: right;">3.34</td>
+<td style="text-align: right;">1,026.6</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">487.1</td>
+</tr>
+<tr class="even">
+<td>Max</td>
+<td style="text-align: right;">39,145.0</td>
+<td style="text-align: right;">12.78</td>
+<td style="text-align: right;">3,047.5</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1,777.0</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="area-aspect-ratio-and-skeleton-length" class="level3">
+<h3 class="anchored" data-anchor-id="area-aspect-ratio-and-skeleton-length">3. Area, aspect ratio, and skeleton length</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/output.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Bivariate geometry analysis</figcaption>
+</figure>
+</div>
+<p>The bivariate analysis provides additional insights:</p>
+<ol type="1">
+<li><strong>Area vs.&nbsp;aspect ratio:</strong> Filament orientations vary across the dataset, making it important to avoid assumptions about a dominant direction.</li>
+<li><strong>Area vs.&nbsp;skeleton length:</strong> These quantities exhibit a strong relationship in log-log space. Their ratio may provide a useful heuristic for identifying morphologically unusual predictions.</li>
+<li><strong>Pixel-level imbalance:</strong> Filament pixels occupy only a small fraction of each image, making foreground-background imbalance a central training challenge.</li>
+</ol>
+</section>
+<section id="instance-overlap" class="level3">
+<h3 class="anchored" data-anchor-id="instance-overlap">4. Instance overlap</h3>
+<p>Most images contain multiple filament instances, but direct overlap between annotated masks is relatively uncommon.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th style="text-align: right;">Count</th>
+<th style="text-align: right;">Percentage / proportion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Images with at least 2 filaments</td>
+<td style="text-align: right;">1,051</td>
+<td style="text-align: right;">91.1%</td>
+</tr>
+<tr class="even">
+<td>Images with overlapping masks</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.6%</td>
+</tr>
+<tr class="odd">
+<td>Images with touching masks</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.7%</td>
+</tr>
+<tr class="even">
+<td>Overlapping instance pairs</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7 / 36,064 pairs</td>
+</tr>
+<tr class="odd">
+<td>Touching instance pairs</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9 / 36,064 pairs</td>
+</tr>
+</tbody>
+</table>
+<p>Even when overlap is uncommon, correctly separating instances remains important because the competition evaluates instance-level predictions.</p>
+</section>
+<section id="pixel-level-class-imbalance" class="level3">
+<h3 class="anchored" data-anchor-id="pixel-level-class-imbalance">5. Pixel-level class imbalance</h3>
+<p>Each image contains 4,194,304 pixels, but the filament foreground occupies only a small proportion of the image.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/pixel_occupancy.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Pixel occupancy distribution</figcaption>
+</figure>
+</div>
+<p>The estimated mean foreground occupancy is approximately <strong>0.30%</strong>.</p>
+<p>This imbalance can cause a model trained with standard Binary Cross-Entropy (BCE) alone to favor background predictions.</p>
+<p>To address this issue, the experiments investigated composite losses such as:</p>
+<ul>
+<li>BCE + Dice Loss</li>
+<li>BCE + Tversky Loss</li>
+<li>Focal Loss + Dice Loss</li>
+</ul>
+<p>These objectives combine pixel-level classification with measures of overlap.</p>
+</section>
+<section id="image-intensity-distributions" class="level3">
+<h3 class="anchored" data-anchor-id="image-intensity-distributions">6. Image intensity distributions</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/intencity.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Image intensity analysis</figcaption>
+</figure>
+</div>
+<p>Sampling intensity distributions across 100 images revealed substantial overlap between background pixels and filament pixels.</p>
+<ul>
+<li>The spike near zero primarily represents the dark space outside the solar disk.</li>
+<li>Filament intensities overlap with the broader intensity distribution of the solar disk.</li>
+<li>Global thresholding methods such as Otsu’s method cannot reliably distinguish filaments from the surrounding solar surface.</li>
+</ul>
+<p><strong>Preprocessing strategy:</strong> CLAHE (Contrast Limited Adaptive Histogram Equalization) was incorporated to enhance local contrast before model training.</p>
+</section>
+<section id="temporal-sampling-and-validation-leakage" class="level3">
+<h3 class="anchored" data-anchor-id="temporal-sampling-and-validation-leakage">7. Temporal sampling and validation leakage</h3>
+<p>Image timestamps extracted from filenames revealed the temporal structure of the dataset.</p>
+<ul>
+<li><strong>Dataset span:</strong> January 9, 2011, to August 3, 2022.</li>
+<li><strong>Observation days:</strong> 656 unique days.</li>
+<li><strong>Median interval between sequential frames:</strong> 1,440 minutes (24 hours).</li>
+<li><strong>Closely sampled observations:</strong> 456 frames, or 39.5%, were captured less than 15 minutes apart.</li>
+</ul>
+<p>Temporally correlated observations can be very similar. Randomly assigning these images to different folds risks overestimating validation performance.</p>
+<p>For this reason, the validation strategy uses grouping to keep duplicate or correlated observations together.</p>
+</section>
+<section id="adversarial-validation" class="level3">
+<h3 class="anchored" data-anchor-id="adversarial-validation">8. Adversarial validation</h3>
+<p>An adversarial validation experiment was used to investigate potential differences between training and test images.</p>
+<p>The experiment extracted image intensity statistics, including mean, standard deviation, and selected percentiles, then trained a Random Forest classifier to distinguish training samples from test samples using five-fold cross-validation.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/std.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Intensity standard deviation distribution</figcaption>
+</figure>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ROC-AUC</td>
+<td>0.559</td>
+</tr>
+<tr class="even">
+<td>Interpretation</td>
+<td>Limited ability to distinguish training and test samples</td>
+</tr>
+<tr class="odd">
+<td>Conclusion</td>
+<td>No severe covariate shift detected by these features</td>
+</tr>
+</tbody>
+</table>
+<p>The result is close to 0.50, suggesting that the selected low-level intensity features have limited power to distinguish the two sets. It does not rule out every possible distribution shift.</p>
+</section>
+<section id="duplicate-analysis-and-annotation-fusion" class="level3">
+<h3 class="anchored" data-anchor-id="duplicate-analysis-and-annotation-fusion">9. Duplicate analysis and annotation fusion</h3>
+<p>Duplicate analysis used byte-level MD5 hashing and timestamp-prefix matching to identify redundant observations.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Finding</th>
+<th style="text-align: right;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Images mapped to exact duplicate groups</td>
+<td style="text-align: right;">743</td>
+</tr>
+<tr class="even">
+<td>Unique duplicate groups</td>
+<td style="text-align: right;">296</td>
+</tr>
+<tr class="odd">
+<td>Original image records</td>
+<td style="text-align: right;">1,154</td>
+</tr>
+<tr class="even">
+<td>Clean unique frames after fusion</td>
+<td style="text-align: right;">707</td>
+</tr>
+<tr class="odd">
+<td>Preserved filament annotations</td>
+<td style="text-align: right;">8,199</td>
+</tr>
+</tbody>
+</table>
+<p>By fusing annotations across duplicate records and selecting a primary frame for each hash group, the dataset was reduced from <strong>1,154 records to 707 clean, unique frames</strong>, while preserving the annotations.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/duplicate1.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Duplicate analysis example 1</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/duplicate2.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Duplicate analysis example 2</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/fusion_result1.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Annotation fusion result</figcaption>
+</figure>
+</div>
+<p>The resulting annotations were serialized into:</p>
+<p><code>MAGFiLO_1.0_Annotations_kaggle2026_train_fused_deduplicated.json</code></p>
+<section id="groupkfold-validation" class="level4">
+<h4 class="anchored" data-anchor-id="groupkfold-validation">GroupKFold validation</h4>
+<p>A unified <code>group_id</code> mapping was generated and saved to <code>train_image_groups.csv</code>.</p>
+<p>GroupKFold uses these identifiers to keep duplicate observations in the same fold, reducing leakage between training and validation sets.</p>
+</section>
+</section>
+</section>
+<section id="methodology" class="level2">
+<h2 class="anchored" data-anchor-id="methodology">Methodology</h2>
+<p>The final approach is a two-stage detection and segmentation pipeline designed to preserve the fine structure of solar filaments.</p>
+<section id="pipeline-architecture" class="level3">
+<h3 class="anchored" data-anchor-id="pipeline-architecture">Pipeline architecture</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/solar-filament/pipeline.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Solar filament detection pipeline</figcaption>
+</figure>
+</div>
+</section>
+<section id="stage-1-image-preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="stage-1-image-preprocessing">Stage 1: Image preprocessing</h3>
+<ul>
+<li>Convert images to grayscale.</li>
+<li>Isolate the solar disk using an intensity threshold.</li>
+<li>Apply CLAHE to enhance local contrast.</li>
+<li>Preserve the original 2048 × 2048 resolution for detector input.</li>
+</ul>
+</section>
+<section id="stage-2-yolo11m-instance-detection" class="level3">
+<h3 class="anchored" data-anchor-id="stage-2-yolo11m-instance-detection">Stage 2: YOLO11M instance detection</h3>
+<p>YOLO11M detects filament instances on the full-resolution solar image.</p>
+<p>The detector is configured to operate at a 1280-pixel input resolution in the best-performing configuration. Detected bounding boxes are used to extract regions of interest.</p>
+</section>
+<section id="stage-3-roi-segmentation" class="level3">
+<h3 class="anchored" data-anchor-id="stage-3-roi-segmentation">Stage 3: ROI segmentation</h3>
+<p>Each detected region is cropped with approximately 20% padding and resized to 512 × 512 pixels.</p>
+<p>A U-Net with a ResNet34 encoder predicts the filament mask inside each crop.</p>
+<p>This design allows the segmentation model to focus on local structures while relying on the detector to localize instances.</p>
+</section>
+<section id="stage-4-five-fold-ensemble" class="level3">
+<h3 class="anchored" data-anchor-id="stage-4-five-fold-ensemble">Stage 4: Five-fold ensemble</h3>
+<p>Five fold-specific U-Net models are ensembled by averaging their predicted probability maps.</p>
+<p>Probability averaging reduces dependence on a single segmentation model and combines predictions from multiple training folds.</p>
+</section>
+<section id="stage-5-post-processing" class="level3">
+<h3 class="anchored" data-anchor-id="stage-5-post-processing">Stage 5: Post-processing</h3>
+<p>The final predictions undergo:</p>
+<ol type="1">
+<li>Probability thresholding.</li>
+<li>Panoptic Painting to resolve overlaps between predicted instances.</li>
+<li>Conversion of instance masks into the required RLE representation.</li>
+</ol>
+<p>The resulting predictions are serialized in the format required by the competition.</p>
+</section>
+</section>
+<section id="model-and-experiment-summary" class="level2">
+<h2 class="anchored" data-anchor-id="model-and-experiment-summary">Model and Experiment Summary</h2>
+<p>The project evolved from full-image semantic segmentation into a two-stage YOLO → U-Net instance segmentation pipeline.</p>
+<p>The primary evaluation metric is <strong>Panoptic Quality (PQ)</strong> on the Kaggle leaderboard.</p>
+<section id="kaggle-results" class="level3">
+<h3 class="anchored" data-anchor-id="kaggle-results">Kaggle results</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">#</th>
+<th>Architecture / strategy</th>
+<th>Resolution and setup</th>
+<th>Configuration</th>
 <th style="text-align: right;">Kaggle PQ</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: right;">1</td>
 <td>Baseline U-Net</td>
+<td>2048 → 512</td>
+<td>BCE + Dice, connected components</td>
 <td style="text-align: right;">0.01</td>
 </tr>
 <tr class="even">
-<td>YOLO + U-Net</td>
+<td style="text-align: right;">2</td>
+<td>Oracle GT BBox + U-Net</td>
+<td>Ground-truth crops → 512</td>
+<td>Upper-bound benchmark</td>
+<td style="text-align: right;">Local validation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td>Two-stage YOLO + U-Net</td>
+<td>YOLO 1280, crop 512</td>
+<td>Detection + ROI segmentation</td>
 <td style="text-align: right;">~0.30</td>
 </tr>
-<tr class="odd">
-<td>YOLO + U-Net with EfficientNet-B4</td>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td>YOLO + U-Net, EfficientNet-B4</td>
+<td>YOLO 1280, crop 512</td>
+<td>Heavier segmentation backbone</td>
 <td style="text-align: right;">0.26</td>
 </tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td>Two-stage variants</td>
+<td>YOLO 1280, crop 512</td>
+<td>Flip TTA and 5 × 5 hole filling</td>
+<td style="text-align: right;">~0.26</td>
+</tr>
 <tr class="even">
-<td>YOLO11M + U-Net, 5-fold ensemble</td>
-<td style="text-align: right;">~0.29</td>
+<td style="text-align: right;">6</td>
+<td>YOLO11M + U-Net, five-fold ensemble</td>
+<td>1280 + crop 512</td>
+<td>Five segmentation folds</td>
+<td style="text-align: right;">0.29</td>
 </tr>
 <tr class="odd">
-<td>YOLO11L experiments</td>
+<td style="text-align: right;">7</td>
+<td>YOLO11M confidence sweep</td>
+<td>1280</td>
+<td>Best tested confidence: 0.30</td>
+<td style="text-align: right;">0.29</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td>YOLO11L scaling experiments</td>
+<td>1280 / 1536 / 2048</td>
+<td>Resolution, epochs, and optimizer</td>
 <td style="text-align: right;">0.28</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td>YOLO11M tiled training</td>
+<td>1024 × 1024 tiles</td>
+<td>Tiling with 20% overlap</td>
+<td style="text-align: right;">In progress</td>
 </tr>
 </tbody>
 </table>
-<p>The best reported score was approximately <strong>0.30 Panoptic Quality (PQ)</strong>.</p>
-<p>The experiments demonstrated the importance of accurate instance localization and ROI-based segmentation. The two-stage approach substantially improved upon the initial full-image segmentation baseline.</p>
-<p><em>Note: These values are approximate experiment results and should be checked against the final competition submissions before publication.</em></p>
+<blockquote class="blockquote">
+<p><strong>Best reported Kaggle score: approximately 0.30 PQ.</strong></p>
+</blockquote>
+<p>The two-stage approach substantially improved upon the initial full-image U-Net baseline. The results also indicate that detector localization and recall are important bottlenecks for instance-level segmentation.</p>
 </section>
-<section id="key-challenges" class="level2">
-<h2 class="anchored" data-anchor-id="key-challenges">Key Challenges</h2>
-<section id="thin-structures" class="level3">
-<h3 class="anchored" data-anchor-id="thin-structures">Thin Structures</h3>
-<p>Very thin filaments contain only a few pixels in width. Downscaling and aggressive preprocessing can remove important structural details.</p>
+<section id="final-pipeline" class="level3">
+<h3 class="anchored" data-anchor-id="final-pipeline">Final pipeline</h3>
+<p><strong>2048 × 2048 image → Solar disk isolation + CLAHE → YOLO11M detection → 20% padded crops → U-Net ResNet34 five-fold ensemble → Probability averaging → Thresholding → Panoptic Painting → RLE output</strong></p>
 </section>
-<section id="instance-separation" class="level3">
-<h3 class="anchored" data-anchor-id="instance-separation">Instance Separation</h3>
-<p>Neighboring filaments may overlap or appear connected, making it difficult to assign pixels to the correct instance.</p>
-</section>
-<section id="data-leakage" class="level3">
-<h3 class="anchored" data-anchor-id="data-leakage">Data Leakage</h3>
-<p>Repeated or correlated solar observations can make validation scores overly optimistic. Duplicate-aware grouping is important for more reliable evaluation.</p>
-</section>
-<section id="detection-recall" class="level3">
-<h3 class="anchored" data-anchor-id="detection-recall">Detection Recall</h3>
-<p>The segmentation stage depends on the detected bounding boxes. Filaments missed by the detector cannot be recovered by the subsequent ROI segmentation stage.</p>
-</section>
-</section>
-<section id="key-takeaways" class="level2">
-<h2 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h2>
+<section id="key-findings" class="level3">
+<h3 class="anchored" data-anchor-id="key-findings">Key findings</h3>
 <ul>
-<li>High-resolution inputs help preserve fine filament structures.</li>
-<li>Duplicate-aware validation is important for reliable model evaluation.</li>
-<li>A two-stage detection and segmentation pipeline can outperform a full-image segmentation baseline.</li>
-<li>Detector recall and instance separation remain important directions for further improvement.</li>
+<li><strong>Instance-level evaluation:</strong> A full-image U-Net achieved approximately 0.70 Dice in validation but only 0.01 PQ on the leaderboard. Pixel-level overlap alone did not translate into strong instance-level results.</li>
+<li><strong>Two-stage architecture:</strong> Combining YOLO-based detection with ROI segmentation improved the competition score substantially.</li>
+<li><strong>Backbone selection:</strong> ResNet34 performed better than the tested EfficientNet-B4 configuration.</li>
+<li><strong>Post-processing:</strong> Test-time augmentation and coarse morphological operations did not consistently improve PQ.</li>
+<li><strong>Ensembling:</strong> Combining five segmentation models improved robustness, although performance varied across folds.</li>
+<li><strong>Detector configuration:</strong> YOLO11M outperformed the tested YOLO11L configurations. Increasing the input resolution to 2048 did not improve the best reported result.</li>
+<li><strong>Remaining limitation:</strong> Thin, faint, and low-contrast filaments are still difficult for the detector to localize reliably.</li>
 </ul>
+</section>
+</section>
+<section id="results-on-test-images" class="level2">
+<h2 class="anchored" data-anchor-id="results-on-test-images">Results on Test Images</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/solar-filament/test_set.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Solar filament segmentation predictions on test images</figcaption>
+</figure>
+</div>
+<p>The test-set visualizations help assess how the final pipeline handles filament localization, mask boundaries, thin structures, and separation between instances.</p>
 </section>
 <section id="future-work" class="level2">
 <h2 class="anchored" data-anchor-id="future-work">Future Work</h2>
-<p>Potential improvements include increasing detector recall for faint filaments, hard-negative mining, more effective instance separation, and architectures specifically designed for elongated structures.</p>
+<ol type="1">
+<li><p><strong>Improve detector recall</strong></p>
+<p>Investigate stronger data augmentation, hard-negative mining, and multi-scale training.</p></li>
+<li><p><strong>Improve thin-filament detection</strong></p>
+<p>Develop preprocessing and training strategies specifically targeting faint, thin, and low-contrast structures.</p></li>
+<li><p><strong>Improve instance separation</strong></p>
+<p>Reduce split and merge errors between neighboring or touching filaments.</p></li>
+<li><p><strong>Explore alternative detection architectures</strong></p>
+<p>Investigate DETR, RT-DETR, transformer-based detectors, and oriented bounding boxes.</p></li>
+<li><p><strong>Explore stronger segmentation backbones</strong></p>
+<p>Evaluate ConvNeXt, Swin Transformer, and other high-capacity segmentation architectures.</p></li>
+<li><p><strong>Exploit temporal information</strong></p>
+<p>Consecutive solar observations could provide useful temporal priors for filament detection and tracking.</p></li>
+<li><p><strong>Improve post-processing</strong></p>
+<p>Investigate instance-aware refinement, geometric constraints, and more sophisticated mask separation methods.</p></li>
+</ol>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>This project developed a two-stage <strong>YOLO11M + U-Net ResNet34 ensemble</strong> for solar filament instance segmentation.</p>
+<p>The pipeline combines high-resolution detection, padded ROI crops, five-fold segmentation ensembling, and instance-aware post-processing. Dataset analysis and duplicate-aware validation were important components of the workflow.</p>
+<p>The best reported competition result was approximately <strong>0.30 Panoptic Quality</strong>. Improving detector recall for thin and faint filaments remains a key direction for future work.</p>
 </section>
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li><a href="https://github.com/saint1st/cv-solar-filament-detection">GitHub Repository</a></li>
-<li><a href="https://www.kaggle.com/competitions/filament-segmentation-2026">Kaggle</a></li>
+<li><a href="https://github.com/saint1st/cv-solar-filament-detection">GitHub repository</a></li>
+<li><a href="https://www.kaggle.com/competitions/filament-segmentation-2026/overview">Kaggle competition</a></li>
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
