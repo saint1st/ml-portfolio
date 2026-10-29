@@ -1,24 +1,10 @@
 [
   {
-    "objectID": "about.html#about",
-    "href": "about.html#about",
+    "objectID": "about.html",
+    "href": "about.html",
     "title": "About",
-    "section": "About",
-    "text": "About\nI am a graduate student in the Erasmus Mundus Joint Master’s programme in Imaging, currently studying at Tampere University in Finland, following my first year at Politecnico di Milano in Italy.\nWith a background in Applied Mathematics and Computer Science, I am interested in machine learning, computer vision, and data-driven approaches to solving real-world problems.\nMy experience spans data analytics, recommender systems, and medical imaging research. I previously worked at Kaspi.kz, where I contributed to the development and optimization of recommendation systems, and at Fondazione IRCCS Istituto Nazionale dei Tumori di Milano, where I worked on medical imaging and predictive modeling.\nI enjoy working at the intersection of mathematics, software engineering, and machine learning, particularly on problems that require both analytical thinking and practical implementation."
-  },
-  {
-    "objectID": "about.html#education",
-    "href": "about.html#education",
-    "title": "About",
-    "section": "Education",
-    "text": "Education\n\nTampere University\nMSc in Imaging — Erasmus Mundus Joint Master’s programme\nFinland | 2025 – 2026\n\n\nPolitecnico di Milano\nMSc in Computer Science and Engineering — Erasmus Mundus Joint Master’s programme\nItaly | 2024 – 2025\n\n\nAl-Farabi Kazakh National University\nBSc in Mathematical and Computer Modeling\nKazakhstan | 2020 – 2024\nBachelor’s degree in Applied Mathematics, with a focus on mathematical modeling and computational methods.\nDiploma project: Development of a mobile application for OCR-based text recognition and AI-generated text detection."
-  },
-  {
-    "objectID": "about.html#experience",
-    "href": "about.html#experience",
-    "title": "About",
-    "section": "Experience",
-    "text": "Experience\n\nKaspi.kz\nData Analyst\nAlmaty, Kazakhstan | November 2025 – August 2026\nWorked on data analytics and business intelligence, using SQL and analytical methods to investigate business processes, evaluate performance, and support data-driven decision-making.\n\n\nFondazione IRCCS Istituto Nazionale dei Tumori di Milano\nResearch Assistant\nMilan, Italy | February 2025 – July 2025\nWorked on medical imaging and predictive modeling, developing data processing and analytical pipelines for radiotherapy-related research.\n\n\nKaspi.kz\nJunior Data Miner\nAlmaty, Kazakhstan | May 2024 – August 2024\nContributed to the development and optimization of a recommender system for Kaspi Shop.\nExtended the recommendation logic to use a longer historical data window, improving recommendation performance.\nThe change resulted in a 2% increase in click-through rate (CTR) and a 3.5% increase in conversion rate within two weeks."
+    "section": "",
+    "text": "About\nDarkhan Islam is a graduate student in the Erasmus Mundus Joint Master’s programme in Imaging, currently studying at Tampere University in Finland, following his first year at Politecnico di Milano in Italy.\nWith a background in Applied Mathematics and Computer Science, he is interested in machine learning, computer vision, and data-driven approaches to solving real-world problems.\nHis experience spans data analytics, recommender systems, and medical imaging research. He previously worked at Kaspi.kz, contributing to the development and optimization of recommendation systems, and at Fondazione IRCCS Istituto Nazionale dei Tumori di Milano, where he worked on medical imaging and predictive modeling.\nHe enjoys working at the intersection of mathematics, software engineering, and machine learning, particularly on problems that require both analytical thinking and practical implementation.\n\n\nEducation\nMSc in Imaging — Erasmus Mundus Joint Master’s | Tampere University, Finland | 2025–2026\nMSc in Computer Science and Engineering — Erasmus Mundus Joint Master’s | Politecnico di Milano, Italy | 2024–2025\nBSc in Mathematical and Computer Modeling | Al-Farabi Kazakh National University, Kazakhstan | 2020–2024\nBachelor’s degree in Applied Mathematics. Diploma project: a mobile application for OCR-based text recognition and AI-generated text detection.\n\n\nExperience\nData Analyst — Kaspi.kz | Almaty, Kazakhstan | Nov 2025 – Aug 2026\nWorked on data analytics and business intelligence, using SQL and statistical methods to evaluate business performance and support data-driven decisions.\nResearch Assistant — Fondazione IRCCS Istituto Nazionale dei Tumori di Milano | Milan, Italy | Feb 2025 – Jul 2025\nDeveloped data processing and analytical pipelines for medical imaging and radiotherapy research, including statistical analysis and predictive modeling.\nJunior Data Miner — Kaspi.kz | Almaty, Kazakhstan | May 2024 – Aug 2024\nWorked on Kaspi Shop’s recommender system optimization\n:::"
   },
   {
     "objectID": "projects/solar-filaments.html",
