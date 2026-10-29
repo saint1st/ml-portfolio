@@ -3,7 +3,7 @@ title: "About"
 image: Job_fair-2784.jpg
 about:
   id: hero-heading
-  template: trestless
+  template: trestles
   image: Job_fair-2784.jpg
 
 
