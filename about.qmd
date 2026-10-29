@@ -9,27 +9,75 @@ about:
 
 ---
 
-### This content appears above the formatted about page content.
+### About.
 
-:::{#hero-heading}
+---
+title: "About"
+image: IMG_7218.jpg
+about:
+  id: hero-heading
+  template: jolla
+  image: IMG_7218.jpg
+---
 
-Finley Malloc is the Chief Data Scientist at Wengo Analytics. When not innovating on data platforms, Finley enjoys spending time unicycling and playing with her pet iguana.
+::: {#hero-heading}
+
+## About
+
+I am a graduate student in the Erasmus Mundus Joint Master's programme in Imaging, currently studying at Tampere University in Finland, following my first year at Politecnico di Milano in Italy.
+
+With a background in Applied Mathematics and Computer Science, I am interested in machine learning, computer vision, and data-driven approaches to solving real-world problems.
+
+My experience spans data analytics, recommender systems, and medical imaging research. I previously worked at Kaspi.kz, where I contributed to the development and optimization of recommendation systems, and at Fondazione IRCCS Istituto Nazionale dei Tumori di Milano, where I worked on medical imaging and predictive modeling.
+
+I enjoy working at the intersection of mathematics, software engineering, and machine learning, particularly on problems that require both analytical thinking and practical implementation.
 
 ## Education
 
-University of California, San Diego | San Diego, CA
-PhD in Mathematics | Sept 2011 - June 2015
+### Tampere University
+**MSc in Imaging — Erasmus Mundus Joint Master's programme**
 
-Macalester College | St. Paul, MN
-B.A in Economics | Sept 2007 - June 2011
+Finland | 2025 – 2026
+
+### Politecnico di Milano
+**MSc in Computer Science and Engineering — Erasmus Mundus Joint Master's programme**
+
+Italy | 2024 – 2025
+
+### Al-Farabi Kazakh National University
+**BSc in Mathematical and Computer Modeling**
+
+Kazakhstan | 2020 – 2024
+
+Bachelor's degree in Applied Mathematics, with a focus on mathematical modeling and computational methods.
+
+Diploma project: Development of a mobile application for OCR-based text recognition and AI-generated text detection.
 
 ## Experience
 
-Wengo Analytics | Head Data Scientist | April 2018 - present
+### Kaspi.kz
+**Data Analyst**
 
-GeoScynce | Chief Analyst | Sept 2012 - April 2018
+Almaty, Kazakhstan | November 2025 – August 2026
+
+Worked on data analytics and business intelligence, using SQL and analytical methods to investigate business processes, evaluate performance, and support data-driven decision-making.
+
+### Fondazione IRCCS Istituto Nazionale dei Tumori di Milano
+**Research Assistant**
+
+Milan, Italy | February 2025 – July 2025
+
+Worked on medical imaging and predictive modeling, developing data processing and analytical pipelines for radiotherapy-related research.
+
+### Kaspi.kz
+**Junior Data Miner**
+
+Almaty, Kazakhstan | May 2024 – August 2024
+
+Contributed to the development and optimization of a recommender system for Kaspi Shop.
+
+Extended the recommendation logic to use a longer historical data window, improving recommendation performance.
+
+The change resulted in a 2% increase in click-through rate (CTR) and a 3.5% increase in conversion rate within two weeks.
 
 :::
-
-### This content appears below the formatted about page content.
-
