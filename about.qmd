@@ -1,83 +1,45 @@
 ---
 title: "About"
-image: IMG_7218.jpg
+image: Job_fair-2784.jpg
 about:
   id: hero-heading
-  template: jolla
-  image: IMG_7218.jpg
+  template: trestless
+  image: Job_fair-2784.jpg
 
 
 ---
+##### About
 
-### About.
+Darkhan Islam is a graduate student in the Erasmus Mundus Joint Master’s programme in Imaging, currently studying at Tampere University in Finland, following his first year at Politecnico di Milano in Italy.
 
----
-title: "About"
-image: IMG_7218.jpg
-about:
-  id: hero-heading
-  template: jolla
-  image: IMG_7218.jpg
----
+With a background in Applied Mathematics and Computer Science, he is interested in machine learning, computer vision, and data-driven approaches to solving real-world problems.
 
-::: {#hero-heading}
+His experience spans data analytics, recommender systems, and medical imaging research. He previously worked at Kaspi.kz, contributing to the development and optimization of recommendation systems, and at Fondazione IRCCS Istituto Nazionale dei Tumori di Milano, where he worked on medical imaging and predictive modeling.
 
-## About
+He enjoys working at the intersection of mathematics, software engineering, and machine learning, particularly on problems that require both analytical thinking and practical implementation.
 
-I am a graduate student in the Erasmus Mundus Joint Master's programme in Imaging, currently studying at Tampere University in Finland, following my first year at Politecnico di Milano in Italy.
+##### Education
 
-With a background in Applied Mathematics and Computer Science, I am interested in machine learning, computer vision, and data-driven approaches to solving real-world problems.
+**MSc in Imaging — Erasmus Mundus Joint Master's** | Tampere University, Finland | 2025–2026
 
-My experience spans data analytics, recommender systems, and medical imaging research. I previously worked at Kaspi.kz, where I contributed to the development and optimization of recommendation systems, and at Fondazione IRCCS Istituto Nazionale dei Tumori di Milano, where I worked on medical imaging and predictive modeling.
+**MSc in Computer Science and Engineering — Erasmus Mundus Joint Master's** | Politecnico di Milano, Italy | 2024–2025
 
-I enjoy working at the intersection of mathematics, software engineering, and machine learning, particularly on problems that require both analytical thinking and practical implementation.
+**BSc in Mathematical and Computer Modeling** | Al-Farabi Kazakh National University, Kazakhstan | 2020–2024
 
-## Education
+Bachelor's degree in Applied Mathematics. Diploma project: a mobile application for OCR-based text recognition and AI-generated text detection.
 
-### Tampere University
-**MSc in Imaging — Erasmus Mundus Joint Master's programme**
+##### Experience
 
-Finland | 2025 – 2026
+**Data Analyst — Kaspi.kz** | Almaty, Kazakhstan | Nov 2025 – Aug 2026
 
-### Politecnico di Milano
-**MSc in Computer Science and Engineering — Erasmus Mundus Joint Master's programme**
+Worked on data analytics and business intelligence, using SQL and statistical methods to evaluate business performance and support data-driven decisions.
 
-Italy | 2024 – 2025
+**Research Assistant — Fondazione IRCCS Istituto Nazionale dei Tumori di Milano** | Milan, Italy | Feb 2025 – Jul 2025
 
-### Al-Farabi Kazakh National University
-**BSc in Mathematical and Computer Modeling**
+Developed data processing and analytical pipelines for medical imaging and radiotherapy research, including statistical analysis and predictive modeling.
 
-Kazakhstan | 2020 – 2024
+**Junior Data Miner — Kaspi.kz** | Almaty, Kazakhstan | May 2024 – Aug 2024
 
-Bachelor's degree in Applied Mathematics, with a focus on mathematical modeling and computational methods.
-
-Diploma project: Development of a mobile application for OCR-based text recognition and AI-generated text detection.
-
-## Experience
-
-### Kaspi.kz
-**Data Analyst**
-
-Almaty, Kazakhstan | November 2025 – August 2026
-
-Worked on data analytics and business intelligence, using SQL and analytical methods to investigate business processes, evaluate performance, and support data-driven decision-making.
-
-### Fondazione IRCCS Istituto Nazionale dei Tumori di Milano
-**Research Assistant**
-
-Milan, Italy | February 2025 – July 2025
-
-Worked on medical imaging and predictive modeling, developing data processing and analytical pipelines for radiotherapy-related research.
-
-### Kaspi.kz
-**Junior Data Miner**
-
-Almaty, Kazakhstan | May 2024 – August 2024
-
-Contributed to the development and optimization of a recommender system for Kaspi Shop.
-
-Extended the recommendation logic to use a longer historical data window, improving recommendation performance.
-
-The change resulted in a 2% increase in click-through rate (CTR) and a 3.5% increase in conversion rate within two weeks.
+Worked on Kaspi Shop's recommender system optimization
 
 :::
