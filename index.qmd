@@ -1,19 +1,12 @@
 ---
-title: "Blog"
+title: "Darkhan Islam"
+description: "Machine Learning, Computer Vision, and Data Science."
+
 listing:
   contents: posts
-  type: default
   sort: "date desc"
-  fields: [image, date, title, categories, description, reading-time]
-  filter-ui: false     # quick filters by tag/category
+  type: default
+  categories: true
+  filter-ui: true
   sort-ui: false
-page-layout: article
 ---
-
-<div class="hero">
-  <h1>ML Notes & Projects</h1>
-  <p>Algorithms explained, experiments reproduced, and tiny demos.</p>
-</div>
-
-Welcome! I write about the math behind algorithms, minimal PyTorch/NumPy reference
-implementations, and reproducible experiments. Below are the latest posts.

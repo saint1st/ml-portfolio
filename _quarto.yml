@@ -3,12 +3,34 @@ project:
   output-dir: _site
 
 website:
-  title: "Darkhan — Personal website"
-  site-url: https://darkhanislam.github.io/ml-portfolio
-  description: "Algorithms, experiments, and projects."
+  title: "Darkhan Islam"
+  site-url: "https://saint1st.github.io/ml-portfolio/"
+  description: "Machine Learning, Computer Vision, and Data Science."
   favicon: images/favicon.png
+
+  
+
+
+  sidebar:
+    style: docked
+    background: "#2A3439"
+    foreground: "#c9d1d9"
+    border: false
+    search: true
+    contents:
+      - section: "Posts"
+        contents:
+          - posts/post-with-code/index.qmd
+          - posts/post2/index.qmd
+          - posts/post3/index.qmd
+          - posts/post4/index.qmd
+          - posts/post5/index.qmd
+          - posts/post6/index.qmd
+          - posts/post7/index.qmd
+          - posts/welcome/index.qmd
+
   navbar:
-    logo: images/logo.svg   # optional; remove if you don't have one
+    background: secondary
     left:
       - text: Blog
         href: index.qmd
@@ -21,13 +43,20 @@ website:
         href: https://github.com/saint1st
       - icon: linkedin
         href: https://www.linkedin.com/in/dmazhi/
+
+  
+
+
+
   page-footer:
-    left: "© saint1st"
+    left: "© Darkhan Islam"
     right: ""
+
   search: true
 
 format:
   html:
+    page-layout: article
     theme:
       light: cosmo
       dark: darkly
@@ -40,3 +69,5 @@ format:
     include-in-header:
       - fonts.html
     link-external-newwindow: true
+
+

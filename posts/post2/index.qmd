@@ -4,6 +4,14 @@ author: "Darkhan Islam"
 date: "2024-10-26"
 categories: [theory, code]
 image: "main.jpg"
+
+format:
+  html:
+    code-fold: true
+    toc: true
+    toc-location: left
+    page-layout: full
+
 ---
 
 In this blog we will try to extend general regression model to support

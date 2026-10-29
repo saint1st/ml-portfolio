@@ -40,5 +40,8 @@
   },
   "projects/lung-cancer.qmd": {
     "lung-cancer.html": "60a48d93"
+  },
+  "projects/solar-filaments.qmd": {
+    "solar-filaments.html": "d29fe003"
   }
 }

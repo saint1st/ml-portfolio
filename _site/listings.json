@@ -2,6 +2,7 @@
   {
     "listing": "/projects.html",
     "items": [
+      "/projects/solar-filaments.html",
       "/projects/lung-cancer.html",
       "/projects/pedestrian-detection.html"
     ]

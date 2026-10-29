@@ -1,13 +1,21 @@
+
 ---
 title: "About"
 image: Job_fair-2784.jpg
+
 about:
-  id: hero-heading
   template: trestles
-  image: Job_fair-2784.jpg
-
-
+  image-width: 20em
+  image-shape: rectangle
+  links:
+    - icon: github
+      text: GitHub
+      href: https://github.com/saint1st
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/dmazhi/
 ---
+
 ##### About
 
 Darkhan Islam is a graduate student in the Erasmus Mundus Joint Master’s programme in Imaging, currently studying at Tampere University in Finland, following his first year at Politecnico di Milano in Italy.
@@ -20,9 +28,9 @@ He enjoys working at the intersection of mathematics, software engineering, and 
 
 ##### Education
 
-**MSc in Imaging — Erasmus Mundus Joint Master's** | Tampere University, Finland | 2025–2026
+**MSc in Imaging — Erasmus Mundus Joint Master's** | Tampere University, Finland | 2026–present
 
-**MSc in Computer Science and Engineering — Erasmus Mundus Joint Master's** | Politecnico di Milano, Italy | 2024–2025
+**MSc in Computer Science and Engineering — Erasmus Mundus Joint Master's** | Politecnico di Milano, Italy | 2024–present
 
 **BSc in Mathematical and Computer Modeling** | Al-Farabi Kazakh National University, Kazakhstan | 2020–2024
 
@@ -42,4 +50,3 @@ Developed data processing and analytical pipelines for medical imaging and radio
 
 Worked on Kaspi Shop's recommender system optimization
 
-:::
